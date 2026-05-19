@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
-const DASHBOARD_LOGIN_ROUTE = "/dashboard/login"
+const APP_URL = "https://signal-flo-ai.vercel.app"
 
 const tickerTape = [
   ["SPY", "+0.42%", "up"],
@@ -152,10 +152,10 @@ function Navbar() {
         </nav>
         <div className="hidden items-center gap-2 sm:flex">
           <Button asChild variant="ghost" size="sm" className="h-8 text-xs">
-            <a href={DASHBOARD_LOGIN_ROUTE}>Login</a>
+            <a href={APP_URL}>Login</a>
           </Button>
           <Button asChild size="sm" className="h-8 bg-blue-500 text-xs text-white hover:bg-blue-400">
-            <a href={DASHBOARD_LOGIN_ROUTE}>Start Free Trial</a>
+            <a href={APP_URL}>Start Free Trial</a>
           </Button>
         </div>
         <Button className="sm:hidden" variant="outline" size="icon" aria-label="Open navigation">
@@ -192,13 +192,13 @@ function Hero() {
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] hover:bg-blue-400">
-              <a href={DASHBOARD_LOGIN_ROUTE}>
+              <a href={APP_URL}>
                 Start Free Trial
                 <ArrowRight />
               </a>
             </Button>
             <Button asChild variant="outline" className="border-white/10 bg-white/[0.03]">
-              <a href="#dashboard">View Dashboard</a>
+              <a href={APP_URL}>View Dashboard</a>
             </Button>
           </div>
           <p className="mt-5 text-xs text-slate-500">
@@ -515,10 +515,10 @@ function FinalCta() {
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Button asChild className="bg-blue-500 text-white hover:bg-blue-400">
-            <a href={DASHBOARD_LOGIN_ROUTE}>Start Free Trial</a>
+            <a href={APP_URL}>Start Free Trial</a>
           </Button>
           <Button asChild variant="outline" className="border-white/10 bg-white/[0.03]">
-            <a href="#dashboard">View Dashboard</a>
+            <a href={APP_URL}>View Dashboard</a>
           </Button>
         </div>
       </div>
@@ -557,7 +557,7 @@ function Footer() {
                 <p className="text-xs font-semibold text-slate-300">{head}</p>
                 <div className="mt-3 space-y-2">
                   {links.map((link) => (
-                    <a key={link} href={link === "Login" ? DASHBOARD_LOGIN_ROUTE : "#"} className="block text-xs text-slate-500 hover:text-cyan-300">
+                    <a key={link} href={link === "Login" ? APP_URL : "#"} className="block text-xs text-slate-500 hover:text-cyan-300">
                       {link}
                     </a>
                   ))}
