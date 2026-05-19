@@ -1,0 +1,18 @@
+0 verbose cli C:\Users\mike_\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a\package\bin\npm-cli.js
+1 info using npm@11.14.1
+2 info using node@v24.14.0
+3 silly config load:file:C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a\package\npmrc
+4 silly config load:file:C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a\.npmrc
+5 silly config load:file:C:\Users\mike_\.npmrc
+6 silly config load:file:C:\Users\mike_\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\etc\npmrc
+7 verbose title npm run lint
+8 verbose argv "run" "lint"
+9 verbose logfile logs-max:10 dir:C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a\.npm-cache\_logs\2026-05-18T06_18_00_913Z-
+10 verbose logfile C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a\.npm-cache\_logs\2026-05-18T06_18_00_913Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd C:\Users\mike_\Documents\Codex\2026-05-18\set-up-this-project-as-a
+13 verbose os Windows_NT 10.0.26200
+14 verbose node v24.14.0
+15 verbose npm  v11.14.1
+16 verbose exit 1
+17 verbose code 1
