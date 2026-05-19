@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Workflow,
 } from "lucide-react"
+import type { ComponentType, ReactNode } from "react"
 import { motion } from "motion/react"
 import { AnimatedGradientText } from "@/components/magic/animated-gradient-text"
 import { BorderBeam } from "@/components/magic/border-beam"
@@ -46,42 +47,10 @@ const tickerTape = [
 ]
 
 const alertCards = [
-  {
-    ticker: "NVDA",
-    direction: "Bullish",
-    confidence: "94%",
-    entry: "$924.20",
-    tp: "$952.80",
-    sl: "$908.40",
-    status: "Live",
-  },
-  {
-    ticker: "SPY 525C",
-    direction: "Bullish",
-    confidence: "88%",
-    entry: "$3.20",
-    tp: "$4.10",
-    sl: "$2.65",
-    status: "Watching",
-  },
-  {
-    ticker: "TSLA",
-    direction: "Bearish",
-    confidence: "81%",
-    entry: "$178.30",
-    tp: "$171.50",
-    sl: "$182.90",
-    status: "Alert",
-  },
-  {
-    ticker: "MSFT",
-    direction: "Bullish",
-    confidence: "86%",
-    entry: "$421.10",
-    tp: "$431.40",
-    sl: "$416.20",
-    status: "Live",
-  },
+  { ticker: "NVDA", direction: "Bullish", confidence: "94%", entry: "$924.20", tp: "$952.80", sl: "$908.40", status: "Live" },
+  { ticker: "SPY 525C", direction: "Bullish", confidence: "88%", entry: "$3.20", tp: "$4.10", sl: "$2.65", status: "Watching" },
+  { ticker: "TSLA", direction: "Bearish", confidence: "81%", entry: "$178.30", tp: "$171.50", sl: "$182.90", status: "Alert" },
+  { ticker: "MSFT", direction: "Bullish", confidence: "86%", entry: "$421.10", tp: "$431.40", sl: "$416.20", status: "Live" },
 ]
 
 const features = [
@@ -144,22 +113,24 @@ function Navbar() {
           SignalFlo AI
         </a>
         <nav className="hidden items-center gap-8 text-xs text-slate-400 lg:flex">
-          <a href="#features" className="hover:text-white">Features</a>
-          <a href="#dashboard" className="hover:text-white">Dashboard</a>
-          <a href="#alerts" className="hover:text-white">Trade Alerts</a>
-          <a href="#pricing" className="hover:text-white">Pricing</a>
-          <a href="#faq" className="hover:text-white">FAQ</a>
+          <a href="#features" className="transition-colors hover:text-white">Features</a>
+          <a href="#dashboard" className="transition-colors hover:text-white">Dashboard</a>
+          <a href="#alerts" className="transition-colors hover:text-white">Trade Alerts</a>
+          <a href="#pricing" className="transition-colors hover:text-white">Pricing</a>
+          <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
         </nav>
         <div className="hidden items-center gap-2 sm:flex">
-          <Button asChild variant="ghost" size="sm" className="h-8 text-xs">
+          <Button asChild variant="ghost" size="sm" className="h-8 text-xs transition-all hover:bg-white/[0.06]">
             <a href={APP_URL}>Login</a>
           </Button>
-          <Button asChild size="sm" className="h-8 bg-blue-500 text-xs text-white hover:bg-blue-400">
+          <Button asChild size="sm" className="h-8 bg-blue-500 text-xs text-white shadow-[0_0_20px_rgba(59,130,246,0.28)] transition-all hover:-translate-y-0.5 hover:bg-blue-400">
             <a href={APP_URL}>Start Free Trial</a>
           </Button>
         </div>
-        <Button className="sm:hidden" variant="outline" size="icon" aria-label="Open navigation">
-          <Menu />
+        <Button asChild className="sm:hidden" variant="outline" size="icon" aria-label="Open dashboard">
+          <a href={APP_URL}>
+            <Menu />
+          </a>
         </Button>
       </div>
     </header>
@@ -169,35 +140,35 @@ function Navbar() {
 function Hero() {
   return (
     <section className="relative border-b border-white/[0.06] pt-14">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_28%,rgba(37,99,235,0.18),transparent_30%),radial-gradient(circle_at_20%_24%,rgba(34,211,238,0.1),transparent_24%),linear-gradient(180deg,#07101f_0%,#050914_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_28%,rgba(56,189,248,0.2),transparent_28%),radial-gradient(circle_at_24%_18%,rgba(37,99,235,0.18),transparent_25%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
       <div className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:48px_48px]" />
-      <div className="relative z-10 mx-auto grid min-h-[620px] max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:min-h-[610px] lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
-          className="max-w-xl"
+          className="max-w-xl pt-2 lg:pt-0"
         >
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             <Sparkles className="text-cyan-300" />
             AI watchlists, alerts, and trade plans
           </Badge>
-          <h1 className="mt-5 text-4xl font-semibold leading-[0.98] tracking-tight sm:text-6xl">
+          <h1 className="mt-5 text-4xl font-semibold leading-[0.98] tracking-tight sm:text-5xl lg:text-6xl">
             AI-powered trading signals{" "}
             <AnimatedGradientText>built for professionals</AnimatedGradientText>
           </h1>
-          <p className="mt-5 max-w-lg text-sm leading-7 text-slate-400 sm:text-base">
+          <p className="mt-5 max-w-lg text-sm leading-7 text-slate-400 sm:text-[15px]">
             SignalFlo AI helps teams publish structured stock and options alerts,
             monitor TP/SL status, and keep users aligned from one premium dashboard.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] hover:bg-blue-400">
+            <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-blue-400">
               <a href={APP_URL}>
                 Start Free Trial
                 <ArrowRight />
               </a>
             </Button>
-            <Button asChild variant="outline" className="border-white/10 bg-white/[0.03]">
+            <Button asChild variant="outline" className="border-white/10 bg-white/[0.03] transition-all hover:-translate-y-0.5 hover:bg-white/[0.06]">
               <a href={APP_URL}>View Dashboard</a>
             </Button>
           </div>
@@ -219,8 +190,12 @@ function HeroDashboardCard() {
       transition={{ duration: 0.7, delay: 0.12 }}
       className="relative"
     >
-      <div className="absolute -inset-5 rounded-[2rem] bg-cyan-400/10 blur-3xl" />
-      <div className="relative overflow-hidden rounded-xl border border-cyan-300/15 bg-[#071121]/92 p-4 shadow-2xl shadow-cyan-950/50">
+      <motion.div
+        className="absolute -inset-5 rounded-[2rem] bg-cyan-400/12 blur-3xl"
+        animate={{ opacity: [0.55, 0.9, 0.55], scale: [0.98, 1.02, 0.98] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div className="relative overflow-hidden rounded-xl border border-cyan-300/15 bg-[#071121]/92 p-3 shadow-2xl shadow-cyan-950/50 sm:p-4">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex gap-1.5">
             <span className="size-2.5 rounded-full bg-red-400" />
@@ -237,10 +212,10 @@ function HeroDashboardCard() {
               <span className="text-slate-400">NVDA alert stream</span>
               <span className="text-cyan-300">+2.84%</span>
             </div>
-            <MiniChart className="h-48" />
+            <MiniChart className="h-40 sm:h-48" />
           </div>
           <div className="space-y-3">
-            <Metric label="Account value" value="$52,436" tone="text-cyan-300" />
+            <Metric label="Tracked value" value="$52,436" tone="text-cyan-300" />
             <Metric label="Active alerts" value="7" tone="text-blue-300" />
             <Metric label="Refresh cycle" value="60s" tone="text-cyan-300" />
           </div>
@@ -267,15 +242,19 @@ function HeroDashboardCard() {
 }
 
 function MarketTicker() {
+  const tickerItems = [...tickerTape, ...tickerTape]
+
   return (
-    <section className="border-y border-white/[0.06] bg-[#050914] py-3">
-      <div className="mx-auto flex max-w-7xl gap-6 overflow-hidden px-4 text-[11px] sm:px-6 lg:px-8">
-        {tickerTape.map(([symbol, change, dir]) => (
-          <div key={symbol} className="flex shrink-0 items-center gap-2 text-slate-400">
-            <span className="font-medium text-slate-200">{symbol}</span>
-            <span className={dir === "up" ? "text-cyan-300" : "text-red-300"}>{change}</span>
-          </div>
-        ))}
+    <section className="border-y border-white/[0.06] bg-[#050914] py-2.5">
+      <div className="ticker-mask mx-auto max-w-7xl overflow-hidden px-4 sm:px-6 lg:px-8">
+        <div className="animate-ticker flex w-max gap-6 text-[11px]">
+          {tickerItems.map(([symbol, change, dir], index) => (
+            <div key={`${symbol}-${index}`} className="flex shrink-0 items-center gap-2 text-slate-400">
+              <span className="font-medium text-slate-200">{symbol}</span>
+              <span className={dir === "up" ? "text-cyan-300" : "text-red-300"}>{change}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -283,78 +262,86 @@ function MarketTicker() {
 
 function AlertCards() {
   return (
-    <section id="alerts" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <FadeUp as="section" id="alerts" className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-8 lg:px-8">
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {alertCards.map((alert) => (
-          <Card key={alert.ticker} className="bg-[#081225]/82 shadow-[0_0_24px_rgba(15,23,42,0.45)]">
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className={cn("size-2 rounded-full", alert.status === "Alert" ? "bg-yellow-300" : "bg-cyan-300")} />
-                    <p className="text-sm font-semibold">{alert.ticker}</p>
+        {alertCards.map((alert, index) => (
+          <MotionCard key={alert.ticker} delay={index * 0.04}>
+            <Card className="h-full bg-[#081225]/82 shadow-[0_0_24px_rgba(15,23,42,0.45)] transition-colors hover:border-cyan-300/25">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className={cn("size-2 rounded-full", alert.status === "Alert" ? "bg-blue-300" : "bg-cyan-300")} />
+                      <p className="text-sm font-semibold">{alert.ticker}</p>
+                    </div>
+                    <p className="mt-1 text-xs text-slate-500">{alert.direction} setup</p>
                   </div>
-                  <p className="mt-1 text-xs text-slate-500">{alert.direction} setup</p>
+                  <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+                    {alert.confidence}
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-                  {alert.confidence}
-                </Badge>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-[11px]">
-                <TradeLevel label="Entry" value={alert.entry} />
-                <TradeLevel label="TP" value={alert.tp} />
-                <TradeLevel label="SL" value={alert.sl} />
-              </div>
-            </CardContent>
-          </Card>
+                <div className="mt-4 grid grid-cols-3 gap-2 text-[11px]">
+                  <TradeLevel label="Entry" value={alert.entry} />
+                  <TradeLevel label="TP" value={alert.tp} />
+                  <TradeLevel label="SL" value={alert.sl} />
+                </div>
+              </CardContent>
+            </Card>
+          </MotionCard>
         ))}
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function Features() {
   return (
-    <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <FadeUp as="section" id="features" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <SectionHeading
         kicker="Platform features"
         title="Everything You Need to Trade Smarter"
         highlight="Trade Smarter"
         description="A compact toolkit for publishing, monitoring, and reviewing AI-assisted trade alerts."
       />
-      <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((feature) => {
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
+        {features.map((feature, index) => {
           const Icon = feature.icon
 
           return (
-          <Card key={feature.title} className="bg-[#081225]/82 transition hover:border-cyan-300/25 hover:bg-[#0a152a]">
-            <CardHeader className="p-4">
-              <span className="flex size-9 items-center justify-center rounded-md bg-cyan-400/12 text-cyan-300">
-                <Icon className="size-4" />
-              </span>
-              <CardTitle className="text-sm">{feature.title}</CardTitle>
-              <CardDescription className="text-xs leading-5">{feature.copy}</CardDescription>
-            </CardHeader>
-          </Card>
+            <MotionCard key={feature.title} delay={index * 0.035}>
+              <Card className="h-full bg-[#081225]/82 transition hover:border-cyan-300/25 hover:bg-[#0a152a] hover:shadow-[0_18px_60px_rgba(14,165,233,0.08)]">
+                <CardHeader className="p-4">
+                  <span className="flex size-9 items-center justify-center rounded-md bg-cyan-400/12 text-cyan-300">
+                    <Icon className="size-4" />
+                  </span>
+                  <CardTitle className="text-sm">{feature.title}</CardTitle>
+                  <CardDescription className="text-xs leading-5">{feature.copy}</CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionCard>
           )
         })}
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function DashboardCommandCenter() {
   return (
-    <section id="dashboard" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <FadeUp as="section" id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <SectionHeading
         kicker="Live dashboard"
         title="Your Trading Command Center"
         highlight="Command Center"
         description="Monitor alerts, open trades, closed outcomes, and price action from one high-trust view."
       />
-      <div className="relative mx-auto mt-10 max-w-6xl">
-        <div className="absolute -inset-6 rounded-[2rem] bg-cyan-400/10 blur-3xl" />
-        <div className="relative overflow-hidden rounded-xl border border-cyan-300/15 bg-[#071121]/95 p-4 shadow-2xl shadow-cyan-950/40">
+      <div className="relative mx-auto mt-8 max-w-6xl lg:mt-10">
+        <motion.div
+          className="absolute -inset-6 rounded-[2rem] bg-[radial-gradient(circle,rgba(34,211,238,0.18),rgba(37,99,235,0.08),transparent_65%)] blur-3xl"
+          animate={{ opacity: [0.55, 0.9, 0.55] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="relative overflow-hidden rounded-xl border border-cyan-300/15 bg-[#071121]/95 p-3 shadow-2xl shadow-cyan-950/40 sm:p-4">
           <BorderBeam />
           <div className="relative z-10">
             <div className="mb-4 flex items-center justify-between border-b border-white/[0.07] pb-3">
@@ -371,7 +358,7 @@ function DashboardCommandCenter() {
                   <span className="text-slate-400">Portfolio watch</span>
                   <span className="text-cyan-300">+$2,436 tracked</span>
                 </div>
-                <MiniChart className="h-64" />
+                <MiniChart className="h-52 sm:h-64" />
               </div>
               <div className="rounded-lg border border-white/[0.07] bg-white/[0.03] p-4">
                 <p className="text-xs font-medium text-slate-300">Recent alerts</p>
@@ -401,13 +388,13 @@ function DashboardCommandCenter() {
           </div>
         </div>
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function Numbers() {
   return (
-    <section className="border-y border-white/[0.06] bg-[#07101f] px-4 py-20 sm:px-6 lg:px-8">
+    <FadeUp as="section" id="pricing" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           kicker="Platform metrics"
@@ -415,56 +402,60 @@ function Numbers() {
           highlight="Speak for Themselves"
           description="Operational metrics for alert publishing and tracking. No profit guarantees, just clearer workflow."
         />
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {stats.map(([value, label, copy]) => (
-            <Card key={label} className="bg-[#081225]/82">
-              <CardContent className="p-4 text-center">
-                <p className="text-2xl font-semibold text-cyan-300">{value}</p>
-                <p className="mt-1 text-xs font-medium">{label}</p>
-                <p className="mt-2 text-[11px] leading-4 text-slate-500">{copy}</p>
-              </CardContent>
-            </Card>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-5">
+          {stats.map(([value, label, copy], index) => (
+            <MotionCard key={label} delay={index * 0.04}>
+              <Card className="h-full bg-[#081225]/82 transition hover:border-cyan-300/25">
+                <CardContent className="p-4 text-center">
+                  <p className="text-2xl font-semibold text-cyan-300">{value}</p>
+                  <p className="mt-1 text-xs font-medium">{label}</p>
+                  <p className="mt-2 text-[11px] leading-4 text-slate-500">{copy}</p>
+                </CardContent>
+              </Card>
+            </MotionCard>
           ))}
         </div>
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function Process() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <FadeUp as="section" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <SectionHeading
         kicker="How it works"
         title="Three Steps to Smarter Trading"
         highlight="Smarter Trading"
         description="A simple human-reviewed workflow from market scan to real-time tracking."
       />
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
+      <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-3">
         {steps.map((step, index) => {
           const Icon = step.icon
 
           return (
-          <Card key={step.title} className="relative overflow-hidden bg-[#081225]/82">
-            <CardHeader className="p-5">
-              <span className="absolute right-5 top-4 text-4xl font-semibold text-white/[0.03]">0{index + 1}</span>
-              <span className="flex size-10 items-center justify-center rounded-md bg-cyan-400/12 text-cyan-300">
-                <Icon className="size-5" />
-              </span>
-              <CardTitle className="text-base">{step.title}</CardTitle>
-              <CardDescription>{step.copy}</CardDescription>
-            </CardHeader>
-          </Card>
+            <MotionCard key={step.title} delay={index * 0.06}>
+              <Card className="relative h-full overflow-hidden bg-[#081225]/82 transition hover:border-cyan-300/25">
+                <CardHeader className="p-5">
+                  <span className="absolute right-5 top-4 text-4xl font-semibold text-white/[0.03]">0{index + 1}</span>
+                  <span className="flex size-10 items-center justify-center rounded-md bg-cyan-400/12 text-cyan-300">
+                    <Icon className="size-5" />
+                  </span>
+                  <CardTitle className="text-base">{step.title}</CardTitle>
+                  <CardDescription>{step.copy}</CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionCard>
           )
         })}
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function Testimonials() {
   return (
-    <section className="border-y border-white/[0.06] bg-[#07101f] px-4 py-20 sm:px-6 lg:px-8">
+    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
           kicker="Social proof"
@@ -472,41 +463,47 @@ function Testimonials() {
           highlight="Serious Traders"
           description="Realistic workflows for teams that need structure, not hype."
         />
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {testimonials.map(([quote, name, role]) => (
-            <Card key={name} className="bg-[#081225]/82">
-              <CardContent className="p-5">
-                <div className="text-xs text-yellow-300">★★★★★</div>
-                <p className="mt-4 text-sm leading-6 text-slate-300">"{quote}"</p>
-                <MiniChart className="mt-5 h-14 opacity-70" />
-                <div className="mt-4 flex items-center gap-3 border-t border-white/[0.07] pt-4">
-                  <span className="flex size-8 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
-                    {name.charAt(0)}
-                  </span>
-                  <div>
-                    <p className="text-sm font-medium">{name}</p>
-                    <p className="text-xs text-slate-500">{role}</p>
+        <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-3">
+          {testimonials.map(([quote, name, role], index) => (
+            <MotionCard key={name} delay={index * 0.06}>
+              <Card className="h-full bg-[#081225]/82 transition hover:border-cyan-300/25">
+                <CardContent className="p-5">
+                  <div className="text-xs text-cyan-300">*****</div>
+                  <p className="mt-4 text-sm leading-6 text-slate-300">"{quote}"</p>
+                  <MiniChart className="mt-5 h-14 opacity-70" />
+                  <div className="mt-4 flex items-center gap-3 border-t border-white/[0.07] pt-4">
+                    <span className="flex size-8 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
+                      {name.charAt(0)}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium">{name}</p>
+                      <p className="text-xs text-slate-500">{role}</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </MotionCard>
           ))}
         </div>
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function FinalCta() {
   return (
-    <section className="relative px-4 py-24 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,0.24),transparent_38%)]" />
+    <FadeUp as="section" className="relative px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <motion.div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(34,211,238,0.2),rgba(37,99,235,0.12),transparent_42%)]"
+        animate={{ opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
       <div className="relative z-10 mx-auto max-w-3xl text-center">
         <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
           <Sparkles className="text-cyan-300" />
           Start your alert workflow
         </Badge>
-        <h2 className="mt-5 text-4xl font-semibold sm:text-5xl">
+        <h2 className="mt-5 text-3xl font-semibold sm:text-5xl">
           Trade Smarter <AnimatedGradientText>With AI</AnimatedGradientText>
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
@@ -514,21 +511,21 @@ function FinalCta() {
           and human-reviewed trade plans.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button asChild className="bg-blue-500 text-white hover:bg-blue-400">
+          <Button asChild className="bg-blue-500 text-white transition-all hover:-translate-y-0.5 hover:bg-blue-400">
             <a href={APP_URL}>Start Free Trial</a>
           </Button>
-          <Button asChild variant="outline" className="border-white/10 bg-white/[0.03]">
+          <Button asChild variant="outline" className="border-white/10 bg-white/[0.03] transition-all hover:-translate-y-0.5 hover:bg-white/[0.06]">
             <a href={APP_URL}>View Dashboard</a>
           </Button>
         </div>
       </div>
-    </section>
+    </FadeUp>
   )
 }
 
 function Footer() {
   return (
-    <footer id="faq" className="border-t border-white/[0.06] px-4 py-12 sm:px-6 lg:px-8">
+    <footer id="faq" className="border-t border-white/[0.06] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 rounded-lg border border-white/[0.07] bg-[#081225]/70 px-4 py-3 text-[11px] text-slate-500">
           SignalFlo AI is an alert publishing and tracking interface. It does not provide individualized financial advice or guarantee outcomes.
@@ -557,7 +554,7 @@ function Footer() {
                 <p className="text-xs font-semibold text-slate-300">{head}</p>
                 <div className="mt-3 space-y-2">
                   {links.map((link) => (
-                    <a key={link} href={link === "Login" ? APP_URL : "#"} className="block text-xs text-slate-500 hover:text-cyan-300">
+                    <a key={link} href={link === "Login" ? APP_URL : "#"} className="block text-xs text-slate-500 transition-colors hover:text-cyan-300">
                       {link}
                     </a>
                   ))}
@@ -653,7 +650,7 @@ function StatusCard({
 }: {
   title: string
   value: string
-  icon: React.ComponentType<{ className?: string }>
+  icon: ComponentType<{ className?: string }>
   tone: string
 }) {
   return (
@@ -664,6 +661,54 @@ function StatusCard({
       </div>
       <p className={cn("mt-3 text-2xl font-semibold", tone)}>{value}</p>
     </div>
+  )
+}
+
+function FadeUp({
+  children,
+  className,
+  id,
+  as = "div",
+}: {
+  children: ReactNode
+  className?: string
+  id?: string
+  as?: "div" | "section"
+}) {
+  const Component = motion[as]
+
+  return (
+    <Component
+      id={id}
+      className={className}
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+    >
+      {children}
+    </Component>
+  )
+}
+
+function MotionCard({
+  children,
+  delay = 0,
+}: {
+  children: ReactNode
+  delay?: number
+}) {
+  return (
+    <motion.div
+      className="h-full"
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -4 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.45, delay, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
   )
 }
 

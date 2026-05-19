@@ -160,6 +160,14 @@
   .animate-accordion-up {
     animation: accordion-up 0.2s ease-out;
   }
+
+  .animate-ticker {
+    animation: ticker-scroll 32s linear infinite;
+  }
+
+  .ticker-mask {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
 }
 
 @keyframes gradient-slide {
@@ -189,6 +197,23 @@
   }
   to {
     height: 0;
+  }
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .animate-beam,
+  .animate-ticker {
+    animation: none;
   }
 }
 
