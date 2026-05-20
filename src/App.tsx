@@ -41,6 +41,19 @@ import { cn } from "@/lib/utils"
 
 const APP_URL = "https://signal-flo-ai.vercel.app"
 
+const tickerTape = [
+  ["NVDA", "+2.84%", "up"],
+  ["SPY", "+0.82%", "up"],
+  ["TSLA", "-0.31%", "down"],
+  ["AAPL", "+0.64%", "up"],
+  ["MSFT", "+1.12%", "up"],
+  ["COIN", "+3.40%", "up"],
+  ["AMD", "+1.75%", "up"],
+  ["QQQ", "+0.58%", "up"],
+  ["NQ", "+148 pts", "up"],
+  ["BTC", "+4.18%", "up"],
+]
+
 const alertCards = [
   { ticker: "NVDA", direction: "Bullish", confidence: "94%", entry: "$924.20", tp: "$952.80", sl: "$908.40", status: "Live" },
   { ticker: "SPY 525C", direction: "Bullish", confidence: "88%", entry: "$3.20", tp: "$4.10", sl: "$2.65", status: "Watching" },
@@ -153,6 +166,7 @@ function App() {
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <Navbar />
       <Hero />
+      <MarketTicker />
       <Process />
       <Features />
       <DashboardCommandCenter />
@@ -430,10 +444,31 @@ function HeroAlertLevel({ label, value }: { label: string; value: string }) {
   )
 }
 
-function AlertCards() {
+function MarketTicker() {
+  const tickerItems = [...tickerTape, ...tickerTape]
+
   return (
-    <FadeUp as="section" id="alerts" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-      <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <section className="border-y border-white/[0.06] bg-[#050914]/95 py-2">
+      <div className="ticker-mask mx-auto max-w-7xl overflow-hidden px-4 sm:px-6 lg:px-8">
+        <div className="animate-ticker flex w-max gap-6 text-[11px]">
+          {tickerItems.map(([symbol, change, dir], index) => (
+            <div key={`${symbol}-${index}`} className="flex shrink-0 items-center gap-2 text-slate-500">
+              <span className="font-medium text-slate-200">{symbol}</span>
+              <span className={dir === "up" ? "text-cyan-300" : "text-red-300"}>{change}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function AlertCards() {
+  const scrollingAlerts = [...alertCards, ...alertCards]
+
+  return (
+    <FadeUp as="section" id="alerts" className="mx-auto max-w-7xl px-4 pb-14 pt-4 sm:px-6 sm:pb-16 sm:pt-5 lg:px-8 lg:pt-6">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Live Alert Examples</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -447,14 +482,16 @@ function AlertCards() {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-background to-transparent" />
-        <div className="flex snap-x gap-3 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {alertCards.map((alert, index) => (
-            <MotionCard key={alert.ticker} delay={index * 0.04}>
+        <div className="overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="animate-ticker flex w-max snap-x gap-3 hover:[animation-play-state:paused]">
+          {scrollingAlerts.map((alert, index) => (
+            <MotionCard key={`${alert.ticker}-${index}`} delay={(index % alertCards.length) * 0.04}>
               <div className="w-[280px] snap-start sm:w-[310px] lg:w-[330px]">
-                <AlertPreviewCard alert={alert} index={index} />
+                <AlertPreviewCard alert={alert} index={index % alertCards.length} />
               </div>
             </MotionCard>
           ))}
+          </div>
         </div>
       </div>
     </FadeUp>
@@ -606,7 +643,7 @@ function DashboardCommandCenter() {
   }, [updatedLabels.length])
 
   return (
-    <FadeUp as="section" id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" id="dashboard" className="mx-auto max-w-7xl px-4 pb-8 pt-14 sm:px-6 sm:pb-10 sm:pt-16 lg:px-8 lg:pb-12 lg:pt-20">
       <SectionHeading
         kicker="Live dashboard"
         title="Your Trading Command Center"
@@ -783,19 +820,20 @@ function DashboardPanel({
 }
 
 function AnimatedDashboardChart({ className }: { className?: string }) {
-  const points = [
-    [0, 158],
-    [45, 142],
-    [88, 118],
-    [130, 124],
-    [174, 88],
-    [220, 76],
-    [264, 92],
-    [314, 54],
-    [362, 44],
-    [420, 28],
+  const candles = [
+    { x: 34, wickTop: 118, wickBottom: 154, bodyY: 128, bodyH: 18, up: true },
+    { x: 68, wickTop: 104, wickBottom: 148, bodyY: 112, bodyH: 24, up: true },
+    { x: 102, wickTop: 92, wickBottom: 138, bodyY: 100, bodyH: 28, up: false },
+    { x: 136, wickTop: 82, wickBottom: 128, bodyY: 92, bodyH: 22, up: true },
+    { x: 170, wickTop: 72, wickBottom: 118, bodyY: 80, bodyH: 26, up: true },
+    { x: 204, wickTop: 76, wickBottom: 126, bodyY: 88, bodyH: 24, up: false },
+    { x: 238, wickTop: 62, wickBottom: 108, bodyY: 70, bodyH: 24, up: true },
+    { x: 272, wickTop: 52, wickBottom: 98, bodyY: 60, bodyH: 28, up: true },
+    { x: 306, wickTop: 58, wickBottom: 106, bodyY: 70, bodyH: 22, up: false },
+    { x: 340, wickTop: 42, wickBottom: 88, bodyY: 50, bodyH: 26, up: true },
+    { x: 374, wickTop: 34, wickBottom: 78, bodyY: 44, bodyH: 22, up: true },
   ]
-  const path = "M0 158 C 42 148, 58 132, 88 118 S 140 118, 174 88 S 226 72, 264 92 S 314 54, 362 44 S 396 36, 420 28"
+  const averagePath = "M28 142 C 82 126, 126 116, 170 98 S 246 88, 292 76 S 350 58, 392 48"
 
   return (
     <div className={cn("relative overflow-hidden rounded-md bg-[#05101d]", className)}>
@@ -807,12 +845,11 @@ function AnimatedDashboardChart({ className }: { className?: string }) {
       />
       <svg className="absolute inset-0 size-full" viewBox="0 0 420 180" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="dashboard-chart-gradient" x1="0" x2="1">
+          <linearGradient id="dashboard-average-gradient" x1="0" x2="1">
             <stop offset="0%" stopColor="#2563eb" />
-            <stop offset="52%" stopColor="#38bdf8" />
             <stop offset="100%" stopColor="#22d3ee" />
           </linearGradient>
-          <filter id="dashboard-chart-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="dashboard-candle-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="4" result="coloredBlur" />
             <feMerge>
               <feMergeNode in="coloredBlur" />
@@ -821,42 +858,52 @@ function AnimatedDashboardChart({ className }: { className?: string }) {
           </filter>
         </defs>
         <motion.path
-          d={path}
+          d={averagePath}
           fill="none"
-          stroke="rgba(34,211,238,0.12)"
-          strokeWidth="10"
+          stroke="url(#dashboard-average-gradient)"
+          strokeWidth="2"
+          strokeDasharray="4 7"
+          opacity="0.55"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
+          transition={{ duration: 1.1, ease: "easeOut" }}
         />
-        <motion.path
-          d={path}
-          fill="none"
-          stroke="url(#dashboard-chart-gradient)"
-          strokeWidth="3"
-          filter="url(#dashboard-chart-glow)"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-        />
-        {points.slice(1).map(([cx, cy], index) => (
-          <motion.circle
-            key={`${cx}-${cy}`}
-            cx={cx}
-            cy={cy}
-            r="4"
-            fill="#22d3ee"
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: [0.45, 1, 0.65], scale: [0.8, 1.35, 1] }}
+        {candles.map((candle, index) => (
+          <motion.g
+            key={`${candle.x}-${index}`}
+            initial={{ opacity: 0, y: 12, scaleY: 0.7 }}
+            whileInView={{ opacity: 1, y: 0, scaleY: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, delay: 0.45 + index * 0.08, ease: "easeOut" }}
-          />
+            transition={{ duration: 0.45, delay: index * 0.06, ease: "easeOut" }}
+            style={{ transformOrigin: `${candle.x}px ${candle.wickBottom}px` }}
+          >
+            <line
+              x1={candle.x}
+              x2={candle.x}
+              y1={candle.wickTop}
+              y2={candle.wickBottom}
+              stroke={candle.up ? "#67e8f9" : "#f87171"}
+              strokeOpacity={candle.up ? 0.7 : 0.45}
+              strokeWidth="2"
+            />
+            <rect
+              x={candle.x - 7}
+              y={candle.bodyY}
+              width="14"
+              height={candle.bodyH}
+              rx="3"
+              fill={candle.up ? "#22d3ee" : "#ef4444"}
+              fillOpacity={candle.up ? 0.72 : 0.42}
+              stroke={candle.up ? "#a5f3fc" : "#fca5a5"}
+              strokeOpacity={candle.up ? 0.7 : 0.45}
+              filter={candle.up ? "url(#dashboard-candle-glow)" : undefined}
+            />
+          </motion.g>
         ))}
       </svg>
       <div className="absolute bottom-3 left-3 rounded-md border border-cyan-300/15 bg-cyan-300/8 px-2 py-1 text-[10px] text-cyan-200">
-        Alert trend active
+        Candlestick trend active
       </div>
     </div>
   )
@@ -987,7 +1034,7 @@ function Testimonials() {
 function Pricing() {
   return (
     <FadeUp as="section" id="pricing" className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(34,211,238,0.12),transparent_34%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-[58%] h-[560px] w-[980px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.13),rgba(37,99,235,0.08),transparent_62%)] blur-2xl" />
       <div className="relative z-10 mx-auto max-w-7xl">
       <SectionHeading
         kicker="Pricing"
