@@ -42,7 +42,7 @@ import { cn } from "@/lib/utils"
 const APP_URL = "https://signal-flo-ai.vercel.app"
 const LEGAL_URL = "/legal"
 const LEGAL_ACKNOWLEDGMENT =
-  "I acknowledge that SignalFlo provides AI-generated market analysis, trade alerts, educational content, and informational materials only. SignalFlo is not a registered investment adviser, broker-dealer, financial planner, or fiduciary. I understand that trading involves substantial risk, that I may lose money, and that all trading decisions are made solely by me. I agree to the Terms, Risk Disclosure & Refund Policy."
+  "I have read and agree to the Terms, Risk Disclosure & Refund Policy, including the no-refund policy, risk disclosure, automatic renewal terms, and the fact that SignalFlo provides educational and informational content only, not personalized investment advice."
 
 const tickerTape = [
   ["NVDA", "+2.84%", "up"],
@@ -99,25 +99,37 @@ const testimonials = [
 
 const pricingPlans = [
   {
-    name: "Starter",
-    price: "$99/mo",
-    copy: "For traders who want clean stock alerts and dashboard access.",
-    cta: "Get Started",
+    name: "Monthly",
+    price: "$295/month",
+    billing: "Billed monthly",
+    renewal: "Renews monthly until canceled",
+    refund: "No refunds after access is granted",
+    copy: "Flexible monthly access to SignalFlo alerts and dashboard tools.",
+    cta: "Choose Monthly",
     features: ["Stock alerts", "Basic dashboard access", "Recent alerts", "Email support"],
   },
   {
-    name: "Pro",
-    price: "$299/mo",
-    copy: "For active traders tracking stocks, options, and alert history.",
-    cta: "Start Free Trial",
+    name: "Annual",
+    price: "$2,395/year",
+    billing: "Billed annually",
+    monthlyEquivalent: "$199.58/month",
+    savings: "Save $1,145 per year",
+    renewal: "Renews annually until canceled",
+    refund: "Refunds only within 7 calendar days if access has not been materially used",
+    copy: "Best value for active traders tracking stocks, options, and alert history.",
+    cta: "Choose Annual",
     features: ["Stocks + options alerts", "Active trade dashboard", "Confidence scoring", "Historical alert tracking", "Priority support"],
   },
   {
-    name: "Elite",
-    price: "$999/mo",
-    copy: "For advanced users who want expanded coverage and onboarding.",
-    cta: "Get Started",
-    features: ["Everything in Pro", "Futures section when available", "Advanced market insights", "Premium alert categories", "Priority onboarding"],
+    name: "Founder Lifetime",
+    price: "$4,995 one-time",
+    billing: "One-time payment",
+    access: "Lifetime access during the life of the SignalFlo platform",
+    refund: "Non-refundable after access is granted",
+    scarcity: "Limited founding-member pricing",
+    copy: "Founding-member access for advanced users who want expanded coverage and onboarding.",
+    cta: "Choose Founder Lifetime",
+    features: ["Everything in Annual", "Futures section when available", "Advanced market insights", "Premium alert categories", "Priority onboarding"],
   },
 ]
 
@@ -235,11 +247,15 @@ function LegalPage() {
             ],
             [
               "Refund Policy",
-              "Subscription fees and plan purchases are generally non-refundable once access is provided, except where required by applicable law or expressly approved by SignalFlo in writing. Promotional, discounted, or partial-period payments may be non-refundable.",
+              "Monthly plan payments are not refundable after access is granted. Annual plan payments are refundable only within 7 calendar days if access has not been materially used. Founder Lifetime payments are non-refundable after access is granted.",
             ],
             [
               "Account and Subscription Terms",
-              "By purchasing, subscribing, or upgrading, you agree to pay the listed fees for the selected plan and to comply with all applicable SignalFlo terms, platform rules, and acceptable-use requirements.",
+              "The Monthly plan is $295/month, billed monthly, and renews monthly until canceled. The Annual plan is $2,395/year, billed annually, equals $199.58/month, saves $1,145 per year compared with monthly billing, and renews annually until canceled. The Founder Lifetime plan is $4,995 one-time for lifetime access during the life of the SignalFlo platform and is not a recurring subscription.",
+            ],
+            [
+              "Required Checkout Acknowledgment",
+              `Before payment, subscription, or upgrade confirmation, users must check a required, unchecked acknowledgment box that states: "${LEGAL_ACKNOWLEDGMENT}"`,
             ],
             [
               "Acknowledgment",
@@ -1127,7 +1143,7 @@ function Pricing() {
             <Card
               className={cn(
                 "group relative h-full overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_22px_70px_rgba(2,8,23,0.42)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_28px_90px_rgba(14,165,233,0.14)]",
-                plan.name === "Pro" && "border-cyan-300/30 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_60px_rgba(34,211,238,0.14)]",
+                plan.name === "Annual" && "border-cyan-300/30 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_60px_rgba(34,211,238,0.14)]",
               )}
             >
               <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.16),transparent_36%)] opacity-80" />
@@ -1139,44 +1155,36 @@ function Pricing() {
                     <CardTitle className="text-xl">{plan.name}</CardTitle>
                     <CardDescription className="mt-2 min-h-10 text-sm leading-6 text-slate-500">{plan.copy}</CardDescription>
                   </div>
-                  {plan.name === "Pro" && (
+                  {plan.name === "Annual" && (
                     <Badge className="shrink-0 bg-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.25)]">Most Popular</Badge>
                   )}
                 </div>
                 <div className="mt-6 flex items-end gap-2">
-                  <p className="text-4xl font-semibold tracking-tight text-cyan-300">{plan.price.replace("/mo", "")}</p>
-                  <span className="pb-1 text-sm text-slate-500">/mo</span>
+                  <p className="text-4xl font-semibold tracking-tight text-cyan-300">{plan.price}</p>
+                </div>
+                <div className="mt-4 space-y-2 text-xs text-slate-500">
+                  <p>{plan.billing}</p>
+                  {"monthlyEquivalent" in plan && <p className="text-cyan-300">{plan.monthlyEquivalent}</p>}
+                  {"savings" in plan && <p className="text-blue-300">{plan.savings}</p>}
+                  {"access" in plan && <p className="text-cyan-300">{plan.access}</p>}
+                  {"scarcity" in plan && <p className="text-blue-300">{plan.scarcity}</p>}
+                  {"renewal" in plan && <p>{plan.renewal}</p>}
+                  <p>{plan.refund}</p>
                 </div>
               </CardHeader>
               <CardContent className="relative z-10 px-6 pb-6 sm:px-7 sm:pb-7">
-                <form action={APP_URL} className="space-y-4">
-                  <label className="flex gap-3 rounded-lg border border-white/[0.07] bg-black/15 p-3 text-[11px] leading-5 text-slate-400">
-                    <input
-                      required
-                      type="checkbox"
-                      className="mt-1 size-4 shrink-0 accent-cyan-300"
-                      aria-label="Required legal acknowledgment"
-                    />
-                    <span>
-                      {LEGAL_ACKNOWLEDGMENT}{" "}
-                      <a href={LEGAL_URL} className="text-cyan-300 underline-offset-4 hover:underline">
-                        Read policy
-                      </a>
-                    </span>
-                  </label>
-                  <Button
-                    type="submit"
-                    className={cn(
-                      "h-10 w-full transition-all hover:-translate-y-0.5",
-                      plan.name === "Pro"
-                        ? "bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)] hover:bg-blue-400"
-                        : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
-                    )}
-                    variant={plan.name === "Pro" ? "default" : "outline"}
-                  >
-                    {plan.cta}
-                  </Button>
-                </form>
+                <Button
+                  asChild
+                  className={cn(
+                    "h-10 w-full transition-all hover:-translate-y-0.5",
+                    plan.name === "Annual"
+                      ? "bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)] hover:bg-blue-400"
+                      : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
+                  )}
+                  variant={plan.name === "Annual" ? "default" : "outline"}
+                >
+                  <a href={APP_URL}>{plan.cta}</a>
+                </Button>
                 <div className="mt-6 space-y-3.5">
                   {plan.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-3 text-sm text-slate-400">
@@ -1193,7 +1201,7 @@ function Pricing() {
         ))}
       </div>
       <p className="mt-5 text-center text-xs text-slate-500">
-        Pricing and features can be adjusted before launch.
+        Annual savings are calculated against the $295 monthly plan billed for 12 months.
       </p>
       </div>
     </FadeUp>
