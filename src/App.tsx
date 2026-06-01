@@ -6,6 +6,7 @@ import {
   CircleDollarSign,
   Cpu,
   FileClock,
+  Loader2,
   LockKeyhole,
   Menu,
   MonitorSmartphone,
@@ -41,8 +42,21 @@ import { cn } from "@/lib/utils"
 
 const APP_URL = "https://signal-flo-ai.vercel.app"
 const LEGAL_URL = "/legal"
+const LEGAL_VERSION = "v1.0"
+const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
 const LEGAL_ACKNOWLEDGMENT =
   "I have read and agree to the Terms, Risk Disclosure & Refund Policy, including the no-refund policy, risk disclosure, automatic renewal terms, and the fact that SignalFlo provides educational and informational content only, not personalized investment advice."
+
+const supabaseConfig = {
+  url: import.meta.env.VITE_SUPABASE_URL,
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+}
+
+const whopCheckoutUrls = {
+  monthly: import.meta.env.VITE_WHOP_MONTHLY_URL,
+  annual: import.meta.env.VITE_WHOP_ANNUAL_URL,
+  lifetime: import.meta.env.VITE_WHOP_LIFETIME_URL,
+}
 
 const tickerTape = [
   ["NVDA", "+2.84%", "up"],
@@ -99,7 +113,7 @@ const testimonials = [
 
 const corePricingFeatures = [
   "Real-time AI trade alerts",
-  "Stocks alerts",
+  "Stock alerts",
   "Options alerts",
   "Active trade dashboard",
   "Historical trade tracking",
@@ -111,29 +125,38 @@ const corePricingFeatures = [
 
 const pricingPlans = [
   {
+    id: "monthly",
     name: "Monthly",
     price: "$295/month",
     copy: "Flexible month-to-month access to the full SignalFlo platform.",
     cta: "Choose Monthly",
+    checkoutUrl: whopCheckoutUrls.monthly,
+    checkoutEnvName: "VITE_WHOP_MONTHLY_URL",
     details: ["Full platform access", "Billed monthly", "Renews monthly until canceled"],
     features: corePricingFeatures,
   },
   {
+    id: "annual",
     name: "Annual",
     price: "$2,395/year",
     copy: "Best value for traders committed to consistent alert tracking.",
     cta: "Choose Annual",
-    details: ["Full platform access", "Billed annually", "Save $1,145 per year", "Equivalent to $199.58/month", "Renews annually until canceled"],
+    checkoutUrl: whopCheckoutUrls.annual,
+    checkoutEnvName: "VITE_WHOP_ANNUAL_URL",
+    details: ["Full platform access", "Billed annually", "$199.58/month", "Save $1,145 per year", "Renews annually until canceled"],
     features: corePricingFeatures,
   },
   {
+    id: "lifetime",
     name: "Founder Lifetime",
     price: "$4,995 one-time",
     copy: "Founding-member access with platform-lifetime benefits and bonuses.",
     cta: "Choose Founder Lifetime",
+    checkoutUrl: whopCheckoutUrls.lifetime,
+    checkoutEnvName: "VITE_WHOP_LIFETIME_URL",
     details: [
-      "Lifetime access during the life of the SignalFlo platform",
       "One-time payment",
+      "Lifetime access during the life of the SignalFlo platform",
       "Limited founding-member pricing",
       "Future premium categories included",
       "Futures section access when available",
@@ -142,6 +165,8 @@ const pricingPlans = [
     features: corePricingFeatures,
   },
 ]
+
+type PricingPlan = (typeof pricingPlans)[number]
 
 const faqs = [
   ["How often are alerts sent?", "Alert frequency depends on market conditions and setup quality. SignalFlo prioritizes clear trade ideas over constant noise."],
@@ -218,6 +243,8 @@ const engineFeatures = [
 ]
 
 function App() {
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
+
   if (window.location.pathname === LEGAL_URL) {
     return <LegalPage />
   }
@@ -232,11 +259,15 @@ function App() {
       <DashboardCommandCenter />
       <AlertCards />
       <SignalFloEngine />
-      <Pricing />
+      <Pricing onSelectPlan={setSelectedPlan} />
       <Testimonials />
       <Faq />
       <FinalCta />
       <Footer />
+      <LegalAcknowledgmentModal
+        plan={selectedPlan}
+        onClose={() => setSelectedPlan(null)}
+      />
     </main>
   )
 }
@@ -1356,7 +1387,183 @@ function Testimonials() {
   )
 }
 
-function Pricing() {
+async function recordLegalAcceptance(plan: PricingPlan) {
+  const { url, anonKey } = supabaseConfig
+
+  if (!url || !anonKey) {
+    console.warn(
+      "SignalFlo legal acceptance was not saved because VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY is missing.",
+    )
+    return
+  }
+
+  const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/legal_acceptances`, {
+    method: "POST",
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${anonKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      selected_plan: plan.name,
+      legal_version: LEGAL_VERSION,
+      source: LEGAL_ACCEPTANCE_SOURCE,
+      user_agent: window.navigator.userAgent,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Supabase legal acceptance insert failed: ${response.status} ${errorText}`)
+  }
+}
+
+function LegalAcknowledgmentModal({
+  plan,
+  onClose,
+}: {
+  plan: PricingPlan | null
+  onClose: () => void
+}) {
+  const [accepted, setAccepted] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  useEffect(() => {
+    setAccepted(false)
+    setIsProcessing(false)
+
+    if (!plan) {
+      document.body.style.overflow = ""
+      return
+    }
+
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [plan])
+
+  if (!plan) {
+    return null
+  }
+
+  const handleContinue = async () => {
+    if (!accepted || isProcessing) {
+      return
+    }
+
+    if (!plan.checkoutUrl) {
+      console.warn(
+        `SignalFlo checkout redirect prevented: missing Whop checkout URL for ${plan.name}. Configure ${plan.checkoutEnvName}.`,
+      )
+      return
+    }
+
+    setIsProcessing(true)
+
+    try {
+      await recordLegalAcceptance(plan)
+    } catch (error) {
+      console.error("SignalFlo legal acceptance could not be saved before Whop redirect. Continuing to checkout.", error)
+    }
+
+    window.location.href = plan.checkoutUrl
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
+      <button
+        type="button"
+        aria-label="Close checkout acknowledgment"
+        className="absolute inset-0 bg-slate-950/82 backdrop-blur-md"
+        onClick={isProcessing ? undefined : onClose}
+      />
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="legal-acknowledgment-title"
+        className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-cyan-300/14 bg-[#07111f]/96 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_120px_rgba(2,8,23,0.72)] sm:p-6"
+        initial={{ opacity: 0, y: 18, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
+      >
+        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.17),transparent_42%)]" />
+        <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
+        <div className="relative z-10">
+          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+            Checkout protection
+          </Badge>
+          <h2 id="legal-acknowledgment-title" className="mt-4 text-2xl font-semibold tracking-tight text-slate-50">
+            Before You Continue
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-slate-400">
+            Before joining SignalFlo, please review and acknowledge the following:
+          </p>
+          <div className="mt-5 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4">
+            <p className="text-sm font-medium text-slate-200">{plan.name}</p>
+            <p className="mt-1 text-2xl font-semibold text-cyan-300">{plan.price}</p>
+          </div>
+
+          <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-blue-300/10 bg-[#081225]/86 p-4 transition-colors hover:border-cyan-300/22">
+            <input
+              type="checkbox"
+              required
+              checked={accepted}
+              onChange={(event) => setAccepted(event.target.checked)}
+              className="mt-1 size-4 shrink-0 rounded border-cyan-300/25 bg-slate-950 accent-cyan-400"
+            />
+            <span className="text-sm leading-6 text-slate-400">
+              I have read and agree to the{" "}
+              <a
+                href={LEGAL_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-cyan-300 underline-offset-4 transition-colors hover:text-cyan-200 hover:underline"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Terms, Risk Disclosure & Refund Policy
+              </a>
+              , including the no-refund policy, risk disclosure, automatic
+              renewal terms, and the fact that SignalFlo provides AI-generated
+              market insights, alerts, and educational content only, not
+              personalized investment advice.
+            </span>
+          </label>
+
+          <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              className="border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
+              onClick={onClose}
+              disabled={isProcessing}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              className="bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)] transition-all hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={handleContinue}
+              disabled={!accepted || isProcessing}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Processing
+                </>
+              ) : (
+                "Continue to Checkout"
+              )}
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function Pricing({ onSelectPlan }: { onSelectPlan: (plan: PricingPlan) => void }) {
   return (
     <FadeUp as="section" id="pricing" className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="pointer-events-none absolute left-1/2 top-[58%] h-[560px] w-[980px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.13),rgba(37,99,235,0.08),transparent_62%)] blur-2xl" />
@@ -1399,7 +1606,7 @@ function Pricing() {
                       key={detail}
                       className={cn(
                         detail.includes("Save") || detail.includes("Limited") ? "text-blue-300" : "",
-                        detail.includes("Equivalent") || detail.includes("Lifetime") || detail.includes("Future") ? "text-cyan-300" : "",
+                        detail.includes("$199.58") || detail.includes("Lifetime") || detail.includes("Future") ? "text-cyan-300" : "",
                       )}
                     >
                       {detail}
@@ -1409,7 +1616,8 @@ function Pricing() {
               </CardHeader>
               <CardContent className="relative z-10 flex flex-1 flex-col px-6 pb-6 sm:px-7 sm:pb-7">
                 <Button
-                  asChild
+                  type="button"
+                  onClick={() => onSelectPlan(plan)}
                   className={cn(
                     "h-10 w-full transition-all hover:-translate-y-0.5",
                     plan.name === "Annual"
@@ -1418,7 +1626,7 @@ function Pricing() {
                   )}
                   variant={plan.name === "Annual" ? "default" : "outline"}
                 >
-                  <a href={APP_URL}>{plan.cta}</a>
+                  {plan.cta}
                 </Button>
                 <div className="mt-8 space-y-3.5">
                   {plan.features.map((feature) => (
