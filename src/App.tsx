@@ -242,6 +242,45 @@ const engineFeatures = [
   { title: "Risk Framework", icon: ShieldCheck, copy: "Scores opportunities based on risk-to-reward quality, confirmation strength, and trade structure." },
 ]
 
+const engineMetrics = [
+  ["24/7", "Market Surveillance"],
+  ["Real-Time", "Signal Validation"],
+  ["Multi-Layer", "Intelligence Engine"],
+  ["Institutional", "Data Analysis"],
+  ["High-Conviction", "Opportunity Scoring"],
+]
+
+const intelligenceDiscoveries = [
+  ["UNUSUAL FLOW DETECTED", "AAPL 220C", "$4.2M PREMIUM"],
+  ["LIQUIDITY CLUSTER", "SPY 590.50", "Price reaction zone"],
+  ["GAMMA WALL", "QQQ 530", "Dealer pressure"],
+  ["VOLATILITY EXPANSION", "VIX +8.2%", "Regime shift"],
+  ["DARK POOL ACTIVITY", "Institutional accumulation", "Detected"],
+  ["SECTOR ROTATION", "Technology Leading", "Relative strength"],
+]
+
+const workflowStages = [
+  {
+    step: "STEP 01",
+    title: "DATA INGESTION",
+    copy: "SignalFlo continuously monitors multiple layers of market intelligence.",
+    chips: ["Options Flow", "Dark Pools", "Gamma Exposure", "Liquidity Zones", "Volatility", "Macro Events", "Relative Strength", "Institutional Positioning"],
+  },
+  {
+    step: "STEP 02",
+    title: "AI ANALYSIS",
+    copy: "The engine evaluates relationships between market variables to identify institutional-grade confluence and favorable opportunity structures.",
+    chips: ["Confluence Map", "Signal Integrity", "Context Filter", "Participation Model"],
+  },
+  {
+    step: "STEP 03",
+    title: "OPPORTUNITY SCORING",
+    copy: "Only opportunities with strong structure, confirmation, and risk characteristics reach the platform.",
+    score: "92",
+    chips: ["Risk Profile", "Trend Alignment", "Liquidity Quality", "Confirmation Strength"],
+  },
+]
+
 function App() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
 
@@ -1131,39 +1170,54 @@ function CountUp({ to }: { to: number }) {
 
 function SignalFloEngine() {
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(37,99,235,0.18),transparent_34%),radial-gradient(circle_at_78%_42%,rgba(34,211,238,0.13),transparent_30%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-40" />
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-45" />
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-cyan-300/8 to-transparent"
+        animate={{ y: ["-20%", "520%"], opacity: [0, 0.7, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid gap-8 lg:grid-cols-[0.96fr_1.04fr] lg:items-center">
-          <div>
-            <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-              <Cpu className="text-cyan-300" />
-              Market intelligence layer
-            </Badge>
-            <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
-              THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
-              Built to filter market noise, identify institutional-grade
-              confluence, and surface high-conviction trade opportunities in
-              real time.
-            </p>
+        <div className="mx-auto max-w-4xl text-center">
+          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+            <Cpu className="text-cyan-300" />
+            Market intelligence layer
+          </Badge>
+          <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
+            THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
+          </h2>
+          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
+            Built to filter market noise, identify institutional-grade
+            confluence, and surface high-conviction trade opportunities in
+            real time.
+          </p>
+        </div>
 
-            <div className="mt-7 grid gap-3">
-              {engineCopyBlocks.slice(0, 3).map((copy, index) => (
-                <MotionCard key={copy} delay={index * 0.05}>
-                  <div className="group relative overflow-hidden rounded-xl border border-blue-300/10 bg-[#081225]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-[#0a1428]/86">
-                    <CardEffects />
-                    <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
-                  </div>
-                </MotionCard>
-              ))}
-            </div>
+        <EngineMetricStrip />
+
+        <div className="mt-10 grid gap-8 xl:grid-cols-[0.82fr_1.38fr] xl:items-stretch">
+          <div className="grid content-start gap-4">
+            <EngineWorkflowStage stage={workflowStages[0]} index={0} />
+            <EngineWorkflowStage stage={workflowStages[1]} index={1} />
+            <EngineWorkflowStage stage={workflowStages[2]} index={2} />
           </div>
-
           <DecisionEngineVisual />
         </div>
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {engineCopyBlocks.slice(0, 3).map((copy, index) => (
+            <MotionCard key={copy} delay={index * 0.05}>
+              <div className="group relative h-full overflow-hidden rounded-xl border border-blue-300/10 bg-[#081225]/78 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-[#0a1428]/86">
+                <CardEffects />
+                <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
+              </div>
+            </MotionCard>
+          ))}
+        </div>
+
+        <MarketIntelligenceStack />
 
         <div className="mt-8 grid gap-3 lg:grid-cols-3">
           {engineCopyBlocks.slice(3).map((copy, index) => (
@@ -1176,142 +1230,328 @@ function SignalFloEngine() {
           ))}
         </div>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {engineFeatures.map((feature, index) => {
-            const Icon = feature.icon
-
-            return (
-              <MotionCard key={feature.title} delay={index * 0.04}>
-                <Card className={cardSurfaceClass}>
-                  <CardEffects />
-                  <CardHeader className="relative z-10 p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-cyan-300/10 bg-gradient-to-br from-blue-500/24 to-cyan-300/12 text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.08)] transition-all duration-300 group-hover:border-cyan-300/25 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.18)]">
-                        <Icon className="size-4" />
-                      </span>
-                      <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-600">
-                        Layer {index + 1}
-                      </span>
-                    </div>
-                    <CardTitle className="mt-4 text-base text-slate-100">{feature.title}</CardTitle>
-                    <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{feature.copy}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </MotionCard>
-            )
-          })}
-        </div>
+        <EngineClosingStatement />
       </div>
     </FadeUp>
   )
 }
 
+function EngineMetricStrip() {
+  return (
+    <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      {engineMetrics.map(([value, label], index) => (
+        <MotionCard key={label} delay={index * 0.035}>
+          <div className="group relative h-full overflow-hidden rounded-xl border border-cyan-300/10 bg-[#081225]/74 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24">
+            <CardEffects />
+            <p className="relative z-10 text-xl font-semibold tracking-tight text-cyan-200">{value}</p>
+            <p className="relative z-10 mt-2 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">{label}</p>
+          </div>
+        </MotionCard>
+      ))}
+    </div>
+  )
+}
+
+function EngineWorkflowStage({
+  stage,
+  index,
+}: {
+  stage: (typeof workflowStages)[number]
+  index: number
+}) {
+  return (
+    <MotionCard delay={index * 0.06}>
+      <div className="group relative overflow-hidden rounded-2xl border border-blue-300/10 bg-[#071326]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_18px_60px_rgba(2,8,23,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24">
+        <CardEffects />
+        <div className="relative z-10 flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-blue-300">{stage.step}</p>
+            <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-100">{stage.title}</h3>
+          </div>
+          {stage.score ? (
+            <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/8 px-4 py-3 text-center shadow-[0_0_30px_rgba(34,211,238,0.08)]">
+              <p className="text-3xl font-semibold text-cyan-300">{stage.score}</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">High Conviction</p>
+            </div>
+          ) : (
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-cyan-300/10 bg-cyan-300/8 text-cyan-200">
+              {index === 0 ? <RadioTower className="size-4" /> : <Bot className="size-4" />}
+            </span>
+          )}
+        </div>
+        <p className="relative z-10 mt-4 text-sm leading-6 text-slate-400">{stage.copy}</p>
+        <div className="relative z-10 mt-5 flex flex-wrap gap-2">
+          {stage.chips.map((chip, chipIndex) => (
+            <motion.span
+              key={chip}
+              className="rounded-full border border-white/[0.07] bg-white/[0.035] px-2.5 py-1 text-[10px] text-slate-400"
+              animate={{ opacity: [0.55, 1, 0.55] }}
+              transition={{ duration: 2.6, repeat: Infinity, delay: chipIndex * 0.13, ease: "easeInOut" }}
+            >
+              {chip}
+            </motion.span>
+          ))}
+        </div>
+        {index === 1 && (
+          <div className="relative z-10 mt-5 h-16 overflow-hidden rounded-lg border border-white/[0.06] bg-black/18">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(34,211,238,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(34,211,238,0.08)_1px,transparent_1px)] bg-[size:28px_28px]" />
+            <motion.div
+              className="absolute left-3 top-1/2 size-2 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.9)]"
+              animate={{ x: [0, 250, 0], y: [-10, 8, -10] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent"
+              animate={{ x: ["-20%", "620%"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+        )}
+      </div>
+    </MotionCard>
+  )
+}
+
 function DecisionEngineVisual() {
+  const networkPaths = [
+    "M88 88 C210 156, 258 196, 360 252 S520 362, 660 420",
+    "M88 420 C216 340, 270 306, 360 252 S520 144, 660 88",
+    "M72 254 C200 252, 268 252, 360 252 S520 254, 676 254",
+    "M360 58 C360 162, 360 190, 360 252 S360 354, 360 454",
+    "M150 150 C238 184, 284 210, 360 252 S474 302, 574 356",
+    "M150 354 C238 310, 284 284, 360 252 S474 198, 574 150",
+  ]
+
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-2xl border border-cyan-300/12 bg-[#07111f]/88 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_30px_110px_rgba(14,165,233,0.12)] sm:p-5"
+      className="group relative min-h-[620px] overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_36px_140px_rgba(14,165,233,0.16)] sm:p-5 lg:min-h-[720px]"
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.55, ease: "easeOut" }}
     >
-      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.16),transparent_38%)]" />
+      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(34,211,238,0.2),transparent_38%),radial-gradient(circle_at_22%_20%,rgba(37,99,235,0.18),transparent_26%)]" />
       <motion.span
-        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cyan-300/12 to-transparent"
-        animate={{ y: ["-40%", "470%"], opacity: [0, 0.8, 0] }}
-        transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-cyan-300/16 to-transparent"
+        animate={{ y: ["-35%", "650%"], opacity: [0, 0.9, 0] }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
       />
       <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.055)_1px,transparent_1px)] bg-[size:38px_38px]" />
 
-      <div className="relative z-10 rounded-xl border border-white/[0.07] bg-black/20 p-4 sm:p-5">
-        <div className="mb-5 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Decision engine</p>
-            <p className="mt-1 text-sm text-slate-500">Confluence scan active</p>
-          </div>
-          <span className="flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-xs text-cyan-200">
-            <span className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.8)]" />
-            Live
-          </span>
+      <div className="relative z-10 flex items-center justify-between gap-4 rounded-2xl border border-white/[0.07] bg-black/20 p-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Decision engine</p>
+          <p className="mt-1 text-sm text-slate-500">AI Evaluating... confluence scan active</p>
         </div>
+        <span className="flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-xs text-cyan-200">
+          <motion.span
+            className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.8)]"
+            animate={{ scale: [1, 1.9, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          Live
+        </span>
+      </div>
 
-        <div className="relative min-h-[360px] overflow-hidden rounded-xl border border-white/[0.06] bg-[#050b16]/84 p-4 sm:min-h-[410px]">
-          <svg className="absolute inset-0 size-full opacity-70" viewBox="0 0 620 430" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="engine-line-gradient" x1="0" x2="1">
-                <stop offset="0%" stopColor="#2563eb" stopOpacity="0.05" />
-                <stop offset="55%" stopColor="#22d3ee" stopOpacity="0.65" />
-                <stop offset="100%" stopColor="#2563eb" stopOpacity="0.05" />
-              </linearGradient>
-            </defs>
-            {[
-              "M80 80 C190 130, 250 160, 310 212 S430 295, 540 340",
-              "M88 340 C190 286, 248 258, 310 212 S432 142, 532 88",
-              "M72 210 C180 210, 238 212, 310 212 S440 212, 548 212",
-              "M310 54 C310 144, 310 160, 310 212 S310 292, 310 378",
-            ].map((path, index) => (
+      <div className="relative mt-4 min-h-[520px] overflow-hidden rounded-2xl border border-white/[0.06] bg-[#050b16]/86 p-4 lg:min-h-[620px]">
+        <svg className="absolute inset-0 size-full opacity-85" viewBox="0 0 720 520" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="engine-line-gradient" x1="0" x2="1">
+              <stop offset="0%" stopColor="#2563eb" stopOpacity="0.08" />
+              <stop offset="55%" stopColor="#22d3ee" stopOpacity="0.78" />
+              <stop offset="100%" stopColor="#2563eb" stopOpacity="0.08" />
+            </linearGradient>
+            <filter id="engine-node-glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          {networkPaths.map((path, index) => (
+            <g key={path}>
               <motion.path
-                key={path}
                 d={path}
                 fill="none"
                 stroke="url(#engine-line-gradient)"
-                strokeWidth="1.3"
+                strokeWidth="1.4"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.25, delay: index * 0.12, ease: "easeOut" }}
+                transition={{ duration: 1.35, delay: index * 0.1, ease: "easeOut" }}
               />
-            ))}
-          </svg>
-
-          <motion.div
-            className="absolute left-1/2 top-1/2 flex size-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/8 shadow-[0_0_70px_rgba(34,211,238,0.18)] sm:size-40"
-            animate={{ boxShadow: ["0 0 48px rgba(34,211,238,0.12)", "0 0 86px rgba(34,211,238,0.22)", "0 0 48px rgba(34,211,238,0.12)"] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <span className="absolute inset-4 rounded-full border border-blue-300/10" />
-            <span className="absolute inset-8 rounded-full border border-cyan-300/12" />
-            <div className="relative text-center">
-              <Bot className="mx-auto size-7 text-cyan-200" />
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200">Signal score</p>
-              <p className="mt-1 text-2xl font-semibold text-cyan-300">94.2</p>
-            </div>
-          </motion.div>
-
-          <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:pb-28">
-            {engineLabels.map((label, index) => (
-              <motion.div
-                key={label}
-                className={cn(
-                  "relative rounded-lg border border-white/[0.07] bg-[#071326]/82 px-3 py-2 text-[11px] text-slate-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]",
-                  index % 3 === 1 && "sm:mt-8",
-                  index % 3 === 2 && "sm:mt-16",
-                )}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: index * 0.04 }}
-                whileHover={{ y: -3, borderColor: "rgba(34,211,238,0.28)" }}
+              <motion.circle
+                r="3.2"
+                fill="#67e8f9"
+                filter="url(#engine-node-glow)"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, delay: index * 0.35, ease: "easeInOut" }}
               >
-                <span className="absolute left-2 top-2 size-1 rounded-full bg-cyan-300/80" />
-                <span className="pl-3">{label}</span>
-              </motion.div>
-            ))}
-          </div>
+                <animateMotion dur={`${4.5 + index * 0.35}s`} repeatCount="indefinite" path={path} />
+              </motion.circle>
+            </g>
+          ))}
+        </svg>
 
-          <div className="relative z-10 mt-8 grid gap-2 sm:absolute sm:inset-x-4 sm:bottom-4 sm:mt-0 sm:grid-cols-3">
-            {[
-              ["Noise filtered", "Low-quality setups removed"],
-              ["Confluence", "Independent factors aligned"],
-              ["Risk profile", "Structure and asymmetry scored"],
-            ].map(([title, copy]) => (
-              <div key={title} className="rounded-lg border border-cyan-300/10 bg-cyan-300/[0.045] p-3">
-                <p className="text-xs font-medium text-cyan-200">{title}</p>
-                <p className="mt-1 text-[11px] leading-4 text-slate-500">{copy}</p>
-              </div>
-            ))}
+        <motion.div
+          className="absolute left-1/2 top-1/2 flex size-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-300/25 bg-cyan-300/8 shadow-[0_0_92px_rgba(34,211,238,0.22)] sm:size-56"
+          animate={{ boxShadow: ["0 0 54px rgba(34,211,238,0.15)", "0 0 118px rgba(34,211,238,0.3)", "0 0 54px rgba(34,211,238,0.15)"] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <motion.span className="absolute -inset-8 rounded-full border border-cyan-300/10" animate={{ scale: [0.94, 1.08, 0.94], opacity: [0.25, 0.6, 0.25] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.span className="absolute -inset-2 rounded-full border border-blue-300/12" animate={{ rotate: 360 }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }} />
+          <motion.span className="absolute inset-4 rounded-full border border-cyan-300/15" animate={{ rotate: -360 }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }} />
+          <motion.span
+            className="absolute left-1/2 top-1/2 h-px w-28 origin-left bg-gradient-to-r from-cyan-300/80 to-transparent"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: "linear" }}
+          />
+          <div className="relative text-center">
+            <Bot className="mx-auto size-8 text-cyan-200" />
+            <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">AI Evaluating...</p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200">Signal score</p>
+            <motion.p className="mt-1 text-5xl font-semibold text-cyan-300" animate={{ opacity: [0.78, 1, 0.78] }} transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}>
+              94.2
+            </motion.p>
           </div>
+        </motion.div>
+
+        <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {engineLabels.map((label, index) => (
+            <motion.div
+              key={label}
+              className={cn(
+                "relative rounded-lg border border-white/[0.07] bg-[#071326]/86 px-3 py-2 text-[11px] text-slate-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] backdrop-blur",
+                index % 3 === 1 && "sm:mt-10",
+                index % 3 === 2 && "sm:mt-20",
+              )}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              animate={{ boxShadow: ["inset 0 1px 0 rgba(255,255,255,0.035),0 0 0 rgba(34,211,238,0)", "inset 0 1px 0 rgba(255,255,255,0.05),0 0 22px rgba(34,211,238,0.08)", "inset 0 1px 0 rgba(255,255,255,0.035),0 0 0 rgba(34,211,238,0)"] }}
+              transition={{ duration: 3.2, repeat: Infinity, delay: index * 0.13, ease: "easeInOut" }}
+              whileHover={{ y: -3, borderColor: "rgba(34,211,238,0.28)" }}
+            >
+              <span className="absolute left-2 top-2 size-1 rounded-full bg-cyan-300/80" />
+              <span className="pl-3">{label}</span>
+            </motion.div>
+          ))}
         </div>
+
+        <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 grid gap-2 sm:grid-cols-3">
+          {[
+            ["Noise filtered", "Low-quality setups removed"],
+            ["Confluence", "Independent factors aligned"],
+            ["Risk profile", "Structure and asymmetry scored"],
+          ].map(([title, copy]) => (
+            <div key={title} className="rounded-lg border border-cyan-300/10 bg-cyan-300/[0.045] p-3 backdrop-blur">
+              <p className="text-xs font-medium text-cyan-200">{title}</p>
+              <p className="mt-1 text-[11px] leading-4 text-slate-500">{copy}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="pointer-events-none absolute inset-4 hidden sm:block">
+          {intelligenceDiscoveries.map(([title, subject, value], index) => (
+            <motion.div
+              key={title}
+              className={cn(
+                "absolute w-44 rounded-xl border border-cyan-300/12 bg-[#081225]/88 p-3 shadow-[0_18px_50px_rgba(2,8,23,0.36)] backdrop-blur",
+                index === 0 && "left-5 top-12",
+                index === 1 && "right-8 top-20",
+                index === 2 && "left-10 bottom-28",
+                index === 3 && "right-6 bottom-32",
+                index === 4 && "left-1/2 top-6 -translate-x-1/2",
+                index === 5 && "left-1/2 bottom-20 -translate-x-1/2",
+              )}
+              animate={{ opacity: [0.28, 1, 0.28], y: [0, -8, 0] }}
+              transition={{ duration: 5.2, repeat: Infinity, delay: index * 0.55, ease: "easeInOut" }}
+            >
+              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-300">{title}</p>
+              <p className="mt-2 text-sm font-semibold text-slate-100">{subject}</p>
+              <p className="mt-1 text-[11px] text-slate-500">{value}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function MarketIntelligenceStack() {
+  return (
+    <div className="mt-14">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Architecture</p>
+        <h3 className="mt-3 text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl">
+          MARKET INTELLIGENCE <AnimatedGradientText>STACK</AnimatedGradientText>
+        </h3>
+      </div>
+      <div className="mx-auto mt-8 max-w-5xl space-y-3">
+        {engineFeatures.map((feature, index) => {
+          const Icon = feature.icon
+          return (
+            <motion.div
+              key={feature.title}
+              className="group relative overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/78 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_22px_80px_rgba(2,8,23,0.28)] transition-all duration-300 hover:border-cyan-300/26"
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.42 }}
+              transition={{ duration: 0.55, delay: index * 0.05, ease: "easeOut" }}
+              whileHover={{ x: 8, y: -2 }}
+              style={{ marginLeft: `${index * 10}px`, marginRight: `${index * 10}px` }}
+            >
+              <CardEffects />
+              <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-300/8 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.08)]">
+                    <Icon className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">Layer 0{index + 1}</p>
+                    <h4 className="mt-1 text-lg font-semibold text-slate-100">{feature.title}</h4>
+                  </div>
+                </div>
+                <p className="max-w-xl text-sm leading-6 text-slate-500">{feature.copy}</p>
+              </div>
+            </motion.div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function EngineClosingStatement() {
+  return (
+    <motion.div
+      className="relative mt-14 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#07111f]/86 p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_100px_rgba(14,165,233,0.12)] sm:p-10"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+    >
+      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_44%)]" />
+      <span className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
+      <div className="relative z-10 mx-auto max-w-4xl">
+        <h3 className="text-3xl font-semibold tracking-tight text-slate-50 sm:text-5xl">
+          NOT MORE ALERTS. <AnimatedGradientText>BETTER INTELLIGENCE.</AnimatedGradientText>
+        </h3>
+        <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
+          SignalFlo does not generate alerts because a single indicator crossed
+          a line.
+        </p>
+        <p className="mx-auto mt-4 max-w-4xl text-sm leading-7 text-slate-400 sm:text-base">
+          Every opportunity must pass through multiple layers of market
+          intelligence, confluence analysis, liquidity validation, risk
+          modeling, and contextual confirmation before it reaches the platform.
+        </p>
+        <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
+          The result is fewer alerts, higher conviction, and a more disciplined
+          approach to identifying opportunities in today's markets.
+        </p>
       </div>
     </motion.div>
   )
