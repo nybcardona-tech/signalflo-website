@@ -281,6 +281,24 @@ const workflowStages = [
   },
 ]
 
+const engineLayerChips = [
+  ["Flow", "OI", "Skew"],
+  ["HVN", "LVN", "Order Book"],
+  ["GEX", "IV", "Delta"],
+  ["Trend", "Momentum", "Breadth"],
+  ["Earnings", "Macro", "Sector"],
+  ["R:R", "Confirmation", "Probability"],
+]
+
+const engineParagraphLabels = [
+  ["01 / Market Load", Activity],
+  ["02 / Intelligence", Cpu],
+  ["03 / Confluence", Workflow],
+  ["01 / Evaluate", Target],
+  ["02 / Automate", Bot],
+  ["03 / Execute", TrendingUp],
+]
+
 function App() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
 
@@ -324,7 +342,7 @@ function LegalPage() {
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             Legal
           </Badge>
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl">
             Terms, Risk Disclosure & Refund Policy
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
@@ -391,7 +409,7 @@ function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.07] bg-[#050a14]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#" className="flex items-center gap-2.5 text-sm font-semibold">
+        <a href="#" className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.01em]">
           <span className="flex size-8 items-center justify-center rounded-md bg-cyan-400 text-slate-950 shadow-[0_0_26px_rgba(34,211,238,0.35)]">
             <Activity className="size-4" />
           </span>
@@ -438,7 +456,7 @@ function Hero() {
             <Sparkles className="text-cyan-300" />
             AI watchlists, alerts, and trade plans
           </Badge>
-          <h1 className="mt-4 max-w-2xl text-[2.65rem] font-semibold leading-[0.96] tracking-tight sm:text-5xl lg:text-[3.55rem]">
+          <h1 className="mt-4 max-w-2xl text-[2.65rem] font-extrabold leading-[0.94] tracking-[-0.035em] sm:text-5xl lg:text-[3.55rem]">
             <span className="block">AI-Powered Trading Alerts</span>
             <span className="mt-0.5 block sm:mt-1">
               <AnimatedGradientText>Built for Smarter Traders</AnimatedGradientText>
@@ -510,7 +528,7 @@ function HeroDashboardCard() {
                 animate={{ scale: [1, 1.45, 1], opacity: [0.65, 1, 0.65] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
-              <p className="text-sm font-semibold text-slate-100">Live Alert Feed</p>
+            <p className="text-sm font-semibold tracking-[0.01em] text-slate-100">Live Alert Feed</p>
             </div>
             <p className="mt-0.5 text-[11px] text-slate-500">AI-ranked setups updating in real time</p>
           </div>
@@ -678,7 +696,7 @@ function AlertCards() {
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Live Alert Examples</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-bold tracking-[-0.015em] sm:text-3xl">
             Active trade alert previews
           </h2>
         </div>
@@ -754,7 +772,7 @@ function FeatureCard({
         <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/10 bg-gradient-to-br from-blue-500/28 to-cyan-300/12 text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.08)] transition-all duration-300 group-hover:border-cyan-300/25 group-hover:shadow-[0_0_28px_rgba(34,211,238,0.18)]">
           <Icon className="size-4" />
         </span>
-        <CardTitle className="mt-4 text-sm font-semibold tracking-tight text-slate-100">{feature.title}</CardTitle>
+        <CardTitle className="mt-4 text-sm font-semibold tracking-[-0.005em] text-slate-100">{feature.title}</CardTitle>
         <CardDescription className="mt-1 text-xs leading-5 text-slate-500">{feature.copy}</CardDescription>
         <div className="mt-auto flex items-center gap-2 pt-5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600">
           <span className="size-1 rounded-full bg-cyan-300/80" />
@@ -1185,7 +1203,7 @@ function SignalFloEngine() {
             <Cpu className="text-cyan-300" />
             Market intelligence layer
           </Badge>
-          <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
+          <h2 className="mt-5 text-3xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
             THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
           </h2>
           <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
@@ -1208,12 +1226,7 @@ function SignalFloEngine() {
 
         <div className="mt-8 grid gap-3 lg:grid-cols-3">
           {engineCopyBlocks.slice(0, 3).map((copy, index) => (
-            <MotionCard key={copy} delay={index * 0.05}>
-              <div className="group relative h-full overflow-hidden rounded-xl border border-blue-300/10 bg-[#081225]/78 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-[#0a1428]/86">
-                <CardEffects />
-                <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
-              </div>
-            </MotionCard>
+            <EngineParagraphCard key={copy} copy={copy} index={index} />
           ))}
         </div>
 
@@ -1221,18 +1234,46 @@ function SignalFloEngine() {
 
         <div className="mt-8 grid gap-3 lg:grid-cols-3">
           {engineCopyBlocks.slice(3).map((copy, index) => (
-            <MotionCard key={copy} delay={index * 0.05}>
-              <div className="group relative h-full overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.025] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-white/[0.04]">
-                <CardEffects />
-                <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
-              </div>
-            </MotionCard>
+            <EngineParagraphCard key={copy} copy={copy} index={index + 3} />
           ))}
         </div>
 
         <EngineClosingStatement />
       </div>
     </FadeUp>
+  )
+}
+
+function EngineParagraphCard({
+  copy,
+  index,
+}: {
+  copy: string
+  index: number
+}) {
+  const [label, Icon] = engineParagraphLabels[index] as [
+    string,
+    ComponentType<{ className?: string }>,
+  ]
+
+  return (
+    <MotionCard delay={(index % 3) * 0.05}>
+      <div className="group relative h-full overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/78 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_70px_rgba(2,8,23,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/28 hover:bg-[#0a1428]/90 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_90px_rgba(14,165,233,0.11)] sm:p-6">
+        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(34,211,238,0.12),transparent_36%),linear-gradient(135deg,rgba(37,99,235,0.08),transparent_48%)]" />
+        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:28px_28px] opacity-35" />
+        <span className="pointer-events-none absolute left-0 top-0 size-8 border-l border-t border-cyan-300/24" />
+        <span className="pointer-events-none absolute bottom-0 right-0 size-8 border-b border-r border-blue-300/18" />
+        <span className="pointer-events-none absolute inset-x-5 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-cyan-300 via-blue-400 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+        <span className="pointer-events-none absolute -left-8 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[26rem] group-hover:opacity-100" />
+        <div className="relative z-10 mb-4 flex items-center gap-2">
+          <span className="flex size-8 items-center justify-center rounded-lg border border-cyan-300/12 bg-cyan-300/8 text-cyan-200 shadow-[0_0_22px_rgba(34,211,238,0.08)]">
+            <Icon className="size-3.5" />
+          </span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">{label}</span>
+        </div>
+        <p className="relative z-10 text-sm leading-7 text-slate-400 sm:leading-8">{copy}</p>
+      </div>
+    </MotionCard>
   )
 }
 
@@ -1243,7 +1284,7 @@ function EngineMetricStrip() {
         <MotionCard key={label} delay={index * 0.035}>
           <div className="group relative h-full overflow-hidden rounded-xl border border-cyan-300/10 bg-[#081225]/74 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24">
             <CardEffects />
-            <p className="relative z-10 text-xl font-semibold tracking-tight text-cyan-200">{value}</p>
+            <p className="relative z-10 text-xl font-bold tracking-[-0.01em] text-cyan-200">{value}</p>
             <p className="relative z-10 mt-2 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">{label}</p>
           </div>
         </MotionCard>
@@ -1266,7 +1307,7 @@ function EngineWorkflowStage({
         <div className="relative z-10 flex items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-blue-300">{stage.step}</p>
-            <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-100">{stage.title}</h3>
+            <h3 className="mt-2 text-lg font-bold tracking-[-0.01em] text-slate-100">{stage.title}</h3>
           </div>
           {stage.score ? (
             <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/8 px-4 py-3 text-center shadow-[0_0_30px_rgba(34,211,238,0.08)]">
@@ -1485,58 +1526,128 @@ function MarketIntelligenceStack() {
     <div className="mt-14">
       <div className="mx-auto max-w-3xl text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Architecture</p>
-        <h3 className="mt-3 text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl">
+        <h3 className="mt-3 text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
           MARKET INTELLIGENCE <AnimatedGradientText>STACK</AnimatedGradientText>
         </h3>
       </div>
-      <div className="mx-auto mt-8 max-w-5xl space-y-3">
-        {engineFeatures.map((feature, index) => {
-          const Icon = feature.icon
-          return (
-            <motion.div
-              key={feature.title}
-              className="group relative overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/78 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_22px_80px_rgba(2,8,23,0.28)] transition-all duration-300 hover:border-cyan-300/26"
-              initial={{ opacity: 0, y: 24, scale: 0.98 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.42 }}
-              transition={{ duration: 0.55, delay: index * 0.05, ease: "easeOut" }}
-              whileHover={{ x: 8, y: -2 }}
-              style={{ marginLeft: `${index * 10}px`, marginRight: `${index * 10}px` }}
-            >
-              <CardEffects />
-              <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-4">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-300/8 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.08)]">
-                    <Icon className="size-4" />
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">Layer 0{index + 1}</p>
-                    <h4 className="mt-1 text-lg font-semibold text-slate-100">{feature.title}</h4>
-                  </div>
-                </div>
-                <p className="max-w-xl text-sm leading-6 text-slate-500">{feature.copy}</p>
-              </div>
-            </motion.div>
-          )
-        })}
+      <div className="relative mx-auto mt-8 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/10 bg-[#050b16]/82 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_120px_rgba(2,8,23,0.42)] sm:p-6 lg:p-8">
+        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.14),transparent_38%),radial-gradient(circle_at_12%_20%,rgba(37,99,235,0.14),transparent_28%)]" />
+        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-50" />
+        <motion.span
+          className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent"
+          animate={{ x: ["-35%", "1120%"] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        />
+
+        <div className="relative z-10 grid gap-6 lg:grid-cols-[1fr_230px_1fr] lg:items-center">
+          <div className="grid gap-3">
+            {engineFeatures.slice(0, 3).map((feature, index) => (
+              <EngineLayerModule key={feature.title} feature={feature} index={index} />
+            ))}
+          </div>
+
+          <div className="relative mx-auto flex size-48 items-center justify-center rounded-full border border-cyan-300/14 bg-cyan-300/8 shadow-[0_0_72px_rgba(34,211,238,0.16)] lg:size-56">
+            <motion.span className="absolute -inset-8 rounded-full border border-cyan-300/8" animate={{ rotate: 360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} />
+            <motion.span className="absolute -inset-3 rounded-full border border-blue-300/10" animate={{ rotate: -360 }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }} />
+            <div className="relative text-center">
+              <Cpu className="mx-auto size-7 text-cyan-200" />
+              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">AI Confluence</p>
+              <p className="mt-1 text-xl font-bold text-slate-100">Core</p>
+            </div>
+            <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-cyan-300/30 to-transparent lg:block" />
+            <div className="absolute top-1/2 hidden h-px w-[calc(100vw)] -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent lg:block" />
+          </div>
+
+          <div className="grid gap-3">
+            {engineFeatures.slice(3).map((feature, index) => (
+              <EngineLayerModule key={feature.title} feature={feature} index={index + 3} alignRight />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-function EngineClosingStatement() {
+function EngineLayerModule({
+  feature,
+  index,
+  alignRight = false,
+}: {
+  feature: (typeof engineFeatures)[number]
+  index: number
+  alignRight?: boolean
+}) {
+  const Icon = feature.icon
+
   return (
     <motion.div
-      className="relative mt-14 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#07111f]/86 p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_100px_rgba(14,165,233,0.12)] sm:p-10"
+      className={cn(
+        "group relative overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/82 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_70px_rgba(2,8,23,0.3)] transition-all duration-300 hover:border-cyan-300/28 hover:bg-[#0a1428]/88 sm:p-5",
+        alignRight ? "lg:translate-x-4" : "lg:-translate-x-4",
+      )}
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
+      whileHover={{ y: -4, x: alignRight ? -4 : 4 }}
+    >
+      <CardEffects />
+      <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(34,211,238,0.08),transparent_42%)] opacity-80" />
+      <div className="relative z-10 flex items-start gap-4">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-300/8 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.08)] transition-all duration-300 group-hover:shadow-[0_0_36px_rgba(34,211,238,0.18)]">
+          <Icon className="size-4" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">Layer 0{index + 1}</p>
+          <h4 className="mt-1 text-base font-semibold tracking-[-0.01em] text-slate-100">{feature.title}</h4>
+          <p className="mt-2 text-xs leading-5 text-slate-500">{feature.copy}</p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {engineLayerChips[index].map((chip) => (
+              <span key={chip} className="rounded-full border border-white/[0.07] bg-white/[0.035] px-2 py-0.5 text-[10px] text-slate-500">
+                {chip}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <span className={cn("absolute top-1/2 hidden size-2 -translate-y-1/2 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.8)] lg:block", alignRight ? "-left-1" : "-right-1")} />
+    </motion.div>
+  )
+}
+
+function EngineClosingStatement() {
+  const scrollToPricing = () => {
+    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  return (
+    <motion.div
+      className="relative mt-14 overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_130px_rgba(14,165,233,0.16)] sm:p-10 lg:p-12"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.55, ease: "easeOut" }}
     >
-      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_44%)]" />
+      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(34,211,238,0.24),transparent_42%),radial-gradient(circle_at_50%_70%,rgba(37,99,235,0.16),transparent_44%)]" />
+      <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:36px_36px] opacity-45" />
+      <motion.span
+        className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent"
+        animate={{ x: ["-40%", "1280%"] }}
+        transition={{ duration: 5.5, repeat: Infinity, ease: "linear" }}
+      />
       <span className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
       <div className="relative z-10 mx-auto max-w-4xl">
-        <h3 className="text-3xl font-semibold tracking-tight text-slate-50 sm:text-5xl">
+        <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+          <Sparkles className="text-cyan-300" />
+          SignalFlo Advantage
+        </Badge>
+        <div className="mx-auto mt-7 grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3 text-[10px] uppercase tracking-[0.18em] text-slate-600">
+          <span className="h-px bg-gradient-to-r from-transparent to-cyan-300/24" />
+          <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-3 py-1 text-cyan-200">Alert filtered through intelligence layers</span>
+          <span className="h-px bg-gradient-to-l from-transparent to-cyan-300/24" />
+        </div>
+        <h3 className="mt-6 text-3xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl">
           NOT MORE ALERTS. <AnimatedGradientText>BETTER INTELLIGENCE.</AnimatedGradientText>
         </h3>
         <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
@@ -1552,6 +1663,21 @@ function EngineClosingStatement() {
           The result is fewer alerts, higher conviction, and a more disciplined
           approach to identifying opportunities in today's markets.
         </p>
+        <Button
+          type="button"
+          onClick={scrollToPricing}
+          className="group mt-8 h-12 border border-cyan-300/20 bg-cyan-300/8 px-6 text-cyan-100 shadow-[0_0_34px_rgba(34,211,238,0.14)] transition-all hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-cyan-300/12 hover:shadow-[0_0_48px_rgba(34,211,238,0.22)]"
+          variant="outline"
+        >
+          JOIN NOW
+          <motion.span
+            className="ml-1 inline-block"
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            ↓
+          </motion.span>
+        </Button>
       </div>
     </motion.div>
   )
@@ -1734,7 +1860,7 @@ function LegalAcknowledgmentModal({
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             Checkout protection
           </Badge>
-          <h2 id="legal-acknowledgment-title" className="mt-4 text-2xl font-semibold tracking-tight text-slate-50">
+          <h2 id="legal-acknowledgment-title" className="mt-4 text-2xl font-bold tracking-[-0.015em] text-slate-50">
             Before You Continue
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-400">
@@ -1838,7 +1964,7 @@ function Pricing({ onSelectPlan }: { onSelectPlan: (plan: PricingPlan) => void }
                   )}
                 </div>
                 <div className="mt-6 flex items-end gap-2">
-                  <p className="text-4xl font-semibold tracking-tight text-cyan-300">{plan.price}</p>
+                  <p className="text-4xl font-bold tracking-[-0.02em] text-cyan-300">{plan.price}</p>
                 </div>
                 <div className="mt-6 min-h-40 space-y-2.5 text-xs text-slate-500">
                   {plan.details.map((detail) => (
@@ -1936,7 +2062,7 @@ function FinalCta() {
           <Sparkles className="text-cyan-300" />
           Start your alert workflow
         </Badge>
-        <h2 className="mt-5 text-3xl font-semibold sm:text-5xl">
+        <h2 className="mt-5 text-3xl font-bold tracking-[-0.02em] sm:text-5xl">
           Trade Smarter <AnimatedGradientText>With AI</AnimatedGradientText>
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
@@ -2034,7 +2160,7 @@ function SectionHeading({
   return (
     <div className="mx-auto max-w-3xl text-center">
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">{kicker}</p>
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
         {parts[0]}
         <span className="text-cyan-300">{highlight}</span>
         {parts[1]}
