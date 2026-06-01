@@ -40,6 +40,9 @@ import {
 import { cn } from "@/lib/utils"
 
 const APP_URL = "https://signal-flo-ai.vercel.app"
+const LEGAL_URL = "/legal"
+const LEGAL_ACKNOWLEDGMENT =
+  "I acknowledge that SignalFlo provides AI-generated market analysis, trade alerts, educational content, and informational materials only. SignalFlo is not a registered investment adviser, broker-dealer, financial planner, or fiduciary. I understand that trading involves substantial risk, that I may lose money, and that all trading decisions are made solely by me. I agree to the Terms, Risk Disclosure & Refund Policy."
 
 const tickerTape = [
   ["NVDA", "+2.84%", "up"],
@@ -162,6 +165,10 @@ const analyticsBars = [
 ]
 
 function App() {
+  if (window.location.pathname === LEGAL_URL) {
+    return <LegalPage />
+  }
+
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <Navbar />
@@ -176,6 +183,78 @@ function App() {
       <Faq />
       <FinalCta />
       <Footer />
+    </main>
+  )
+}
+
+function LegalPage() {
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <section className="relative overflow-hidden border-b border-white/[0.06] px-4 py-14 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.16),transparent_35%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+        <div className="relative z-10 mx-auto max-w-4xl">
+          <a href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-cyan-300 transition-colors hover:text-cyan-200">
+            <ArrowRight className="size-4 rotate-180" />
+            Back to SignalFlo
+          </a>
+          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+            Legal
+          </Badge>
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
+            Terms, Risk Disclosure & Refund Policy
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+            Please review these terms carefully before using SignalFlo AI,
+            purchasing a plan, subscribing, or upgrading your account.
+          </p>
+        </div>
+      </section>
+
+      <section className="px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mx-auto grid max-w-4xl gap-5">
+          {[
+            [
+              "Informational and Educational Use Only",
+              "SignalFlo provides AI-generated market analysis, trade alerts, educational content, software tools, and informational materials only. SignalFlo does not provide individualized investment, tax, legal, accounting, or financial advice.",
+            ],
+            [
+              "No Adviser, Broker-Dealer, Planner, or Fiduciary Relationship",
+              "SignalFlo is not a registered investment adviser, broker-dealer, financial planner, or fiduciary. Use of SignalFlo does not create an advisory, brokerage, fiduciary, or planner-client relationship.",
+            ],
+            [
+              "Trading Risk Disclosure",
+              "Trading stocks, options, futures, crypto, ETFs, and other financial instruments involves substantial risk. You may lose money, including your entire principal. Market conditions can change quickly, and past examples, alerts, or analysis do not guarantee future results.",
+            ],
+            [
+              "User Responsibility",
+              "All trading and investment decisions are made solely by you. You are responsible for evaluating alerts, conducting your own research, managing risk, sizing positions, and deciding whether any trade idea is appropriate for your circumstances.",
+            ],
+            [
+              "No Performance Guarantees",
+              "SignalFlo does not guarantee profits, returns, win rates, income, successful trades, or specific outcomes. Any examples shown on the website or in the product are for product demonstration, educational, or informational purposes.",
+            ],
+            [
+              "Refund Policy",
+              "Subscription fees and plan purchases are generally non-refundable once access is provided, except where required by applicable law or expressly approved by SignalFlo in writing. Promotional, discounted, or partial-period payments may be non-refundable.",
+            ],
+            [
+              "Account and Subscription Terms",
+              "By purchasing, subscribing, or upgrading, you agree to pay the listed fees for the selected plan and to comply with all applicable SignalFlo terms, platform rules, and acceptable-use requirements.",
+            ],
+            [
+              "Acknowledgment",
+              LEGAL_ACKNOWLEDGMENT,
+            ],
+          ].map(([title, copy]) => (
+            <Card key={title} className="border-white/[0.07] bg-[#081225]/82">
+              <CardHeader className="p-5">
+                <CardTitle className="text-lg">{title}</CardTitle>
+                <CardDescription className="text-sm leading-7 text-slate-400">{copy}</CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+      </section>
     </main>
   )
 }
@@ -1070,18 +1149,34 @@ function Pricing() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10 px-6 pb-6 sm:px-7 sm:pb-7">
-                <Button
-                  asChild
-                  className={cn(
-                    "h-10 w-full transition-all hover:-translate-y-0.5",
-                    plan.name === "Pro"
-                      ? "bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)] hover:bg-blue-400"
-                      : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
-                  )}
-                  variant={plan.name === "Pro" ? "default" : "outline"}
-                >
-                  <a href={APP_URL}>{plan.cta}</a>
-                </Button>
+                <form action={APP_URL} className="space-y-4">
+                  <label className="flex gap-3 rounded-lg border border-white/[0.07] bg-black/15 p-3 text-[11px] leading-5 text-slate-400">
+                    <input
+                      required
+                      type="checkbox"
+                      className="mt-1 size-4 shrink-0 accent-cyan-300"
+                      aria-label="Required legal acknowledgment"
+                    />
+                    <span>
+                      {LEGAL_ACKNOWLEDGMENT}{" "}
+                      <a href={LEGAL_URL} className="text-cyan-300 underline-offset-4 hover:underline">
+                        Read policy
+                      </a>
+                    </span>
+                  </label>
+                  <Button
+                    type="submit"
+                    className={cn(
+                      "h-10 w-full transition-all hover:-translate-y-0.5",
+                      plan.name === "Pro"
+                        ? "bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)] hover:bg-blue-400"
+                        : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
+                    )}
+                    variant={plan.name === "Pro" ? "default" : "outline"}
+                  >
+                    {plan.cta}
+                  </Button>
+                </form>
                 <div className="mt-6 space-y-3.5">
                   {plan.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-3 text-sm text-slate-400">
@@ -1190,13 +1285,23 @@ function Footer() {
               ["Product", "Features", "Dashboard", "Trade Alerts"],
               ["Company", "Pricing", "FAQ", "Login"],
               ["Resources", "Analytics", "Risk Plans", "Admin Tools"],
-              ["Legal", "Disclaimer", "Terms", "Privacy"],
+              ["Legal", "Terms, Risk Disclosure & Refund Policy", "Disclaimer", "Privacy"],
             ].map(([head, ...links]) => (
               <div key={head}>
                 <p className="text-xs font-semibold text-slate-300">{head}</p>
                 <div className="mt-3 space-y-2">
                   {links.map((link) => (
-                    <a key={link} href={link === "Login" ? APP_URL : "#"} className="block text-xs text-slate-500 transition-colors hover:text-cyan-300">
+                    <a
+                      key={link}
+                      href={
+                        link === "Login"
+                          ? APP_URL
+                          : link === "Terms, Risk Disclosure & Refund Policy"
+                            ? LEGAL_URL
+                            : "#"
+                      }
+                      className="block text-xs text-slate-500 transition-colors hover:text-cyan-300"
+                    >
                       {link}
                     </a>
                   ))}
