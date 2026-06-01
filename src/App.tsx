@@ -186,6 +186,37 @@ const analyticsBars = [
   ["Admin log", 58],
 ]
 
+const engineLabels = [
+  "Options Flow",
+  "Gamma Exposure",
+  "Liquidity Zones",
+  "Volatility Regimes",
+  "Institutional Positioning",
+  "Market Structure",
+  "Sector Rotation",
+  "Risk Asymmetry",
+  "Macro Catalysts",
+  "Relative Strength",
+]
+
+const engineCopyBlocks = [
+  "SignalFlo AI was designed to solve a fundamental problem facing modern traders: there is more market data available today than any individual can realistically process.",
+  "Our proprietary market intelligence engine continuously analyzes multiple layers of market behavior across equities, options, volatility, liquidity, market structure, institutional positioning, sector rotation, and macroeconomic developments in real time.",
+  "Rather than relying on isolated indicators or simplistic signal generation models, SignalFlo evaluates the interaction between numerous market variables simultaneously. The system monitors options flow, dealer gamma exposure, liquidity concentrations, volume dynamics, volatility conditions, relative strength, momentum characteristics, earnings catalysts, economic events, and broader market context to identify opportunities where multiple independent factors align.",
+  "Every potential trade is subjected to a structured evaluation framework designed to measure opportunity quality, risk asymmetry, market participation, and contextual confirmation before an alert is generated. The objective is not to produce more alerts, but to filter out low-quality setups and surface only those opportunities that demonstrate the strongest evidence of institutional participation and favorable risk-to-reward characteristics.",
+  "By automating the research process traditionally performed across multiple platforms, SignalFlo condenses hours of chart analysis, options flow monitoring, market surveillance, and trade validation into a streamlined intelligence layer that operates continuously throughout the trading day.",
+  "The result is a disciplined, data-driven decision framework that helps traders focus less on searching for opportunities and more on executing them.",
+]
+
+const engineFeatures = [
+  { title: "Options Intelligence", icon: Activity, copy: "Monitors unusual options activity, chain structure, premium flow, and contract behavior." },
+  { title: "Liquidity Mapping", icon: Target, copy: "Tracks liquidity concentrations, support/resistance zones, volume behavior, and price reaction areas." },
+  { title: "Dealer Positioning", icon: Workflow, copy: "Evaluates gamma exposure, volatility conditions, and positioning pressure." },
+  { title: "Market Structure", icon: TrendingUp, copy: "Studies trend alignment, momentum shifts, relative strength, and multi-timeframe confirmation." },
+  { title: "Catalyst Awareness", icon: RadioTower, copy: "Factors in earnings, economic events, sector rotation, and broader market context." },
+  { title: "Risk Framework", icon: ShieldCheck, copy: "Scores opportunities based on risk-to-reward quality, confirmation strength, and trade structure." },
+]
+
 function App() {
   if (window.location.pathname === LEGAL_URL) {
     return <LegalPage />
@@ -200,6 +231,7 @@ function App() {
       <Features />
       <DashboardCommandCenter />
       <AlertCards />
+      <SignalFloEngine />
       <Pricing />
       <Testimonials />
       <Faq />
@@ -1064,6 +1096,194 @@ function CountUp({ to }: { to: number }) {
   }, [to])
 
   return <>{count}</>
+}
+
+function SignalFloEngine() {
+  return (
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(37,99,235,0.18),transparent_34%),radial-gradient(circle_at_78%_42%,rgba(34,211,238,0.13),transparent_30%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-40" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="grid gap-8 lg:grid-cols-[0.96fr_1.04fr] lg:items-center">
+          <div>
+            <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+              <Cpu className="text-cyan-300" />
+              Market intelligence layer
+            </Badge>
+            <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
+              THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+              Built to filter market noise, identify institutional-grade
+              confluence, and surface high-conviction trade opportunities in
+              real time.
+            </p>
+
+            <div className="mt-7 grid gap-3">
+              {engineCopyBlocks.slice(0, 3).map((copy, index) => (
+                <MotionCard key={copy} delay={index * 0.05}>
+                  <div className="group relative overflow-hidden rounded-xl border border-blue-300/10 bg-[#081225]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-[#0a1428]/86">
+                    <CardEffects />
+                    <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
+                  </div>
+                </MotionCard>
+              ))}
+            </div>
+          </div>
+
+          <DecisionEngineVisual />
+        </div>
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {engineCopyBlocks.slice(3).map((copy, index) => (
+            <MotionCard key={copy} delay={index * 0.05}>
+              <div className="group relative h-full overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.025] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-white/[0.04]">
+                <CardEffects />
+                <p className="relative z-10 text-sm leading-7 text-slate-400">{copy}</p>
+              </div>
+            </MotionCard>
+          ))}
+        </div>
+
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {engineFeatures.map((feature, index) => {
+            const Icon = feature.icon
+
+            return (
+              <MotionCard key={feature.title} delay={index * 0.04}>
+                <Card className={cardSurfaceClass}>
+                  <CardEffects />
+                  <CardHeader className="relative z-10 p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-cyan-300/10 bg-gradient-to-br from-blue-500/24 to-cyan-300/12 text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.08)] transition-all duration-300 group-hover:border-cyan-300/25 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.18)]">
+                        <Icon className="size-4" />
+                      </span>
+                      <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2 py-1 text-[10px] uppercase tracking-[0.16em] text-slate-600">
+                        Layer {index + 1}
+                      </span>
+                    </div>
+                    <CardTitle className="mt-4 text-base text-slate-100">{feature.title}</CardTitle>
+                    <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{feature.copy}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </MotionCard>
+            )
+          })}
+        </div>
+      </div>
+    </FadeUp>
+  )
+}
+
+function DecisionEngineVisual() {
+  return (
+    <motion.div
+      className="group relative overflow-hidden rounded-2xl border border-cyan-300/12 bg-[#07111f]/88 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_30px_110px_rgba(14,165,233,0.12)] sm:p-5"
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+    >
+      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.16),transparent_38%)]" />
+      <motion.span
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cyan-300/12 to-transparent"
+        animate={{ y: ["-40%", "470%"], opacity: [0, 0.8, 0] }}
+        transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.055)_1px,transparent_1px)] bg-[size:38px_38px]" />
+
+      <div className="relative z-10 rounded-xl border border-white/[0.07] bg-black/20 p-4 sm:p-5">
+        <div className="mb-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Decision engine</p>
+            <p className="mt-1 text-sm text-slate-500">Confluence scan active</p>
+          </div>
+          <span className="flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-xs text-cyan-200">
+            <span className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.8)]" />
+            Live
+          </span>
+        </div>
+
+        <div className="relative min-h-[360px] overflow-hidden rounded-xl border border-white/[0.06] bg-[#050b16]/84 p-4 sm:min-h-[410px]">
+          <svg className="absolute inset-0 size-full opacity-70" viewBox="0 0 620 430" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="engine-line-gradient" x1="0" x2="1">
+                <stop offset="0%" stopColor="#2563eb" stopOpacity="0.05" />
+                <stop offset="55%" stopColor="#22d3ee" stopOpacity="0.65" />
+                <stop offset="100%" stopColor="#2563eb" stopOpacity="0.05" />
+              </linearGradient>
+            </defs>
+            {[
+              "M80 80 C190 130, 250 160, 310 212 S430 295, 540 340",
+              "M88 340 C190 286, 248 258, 310 212 S432 142, 532 88",
+              "M72 210 C180 210, 238 212, 310 212 S440 212, 548 212",
+              "M310 54 C310 144, 310 160, 310 212 S310 292, 310 378",
+            ].map((path, index) => (
+              <motion.path
+                key={path}
+                d={path}
+                fill="none"
+                stroke="url(#engine-line-gradient)"
+                strokeWidth="1.3"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.25, delay: index * 0.12, ease: "easeOut" }}
+              />
+            ))}
+          </svg>
+
+          <motion.div
+            className="absolute left-1/2 top-1/2 flex size-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/8 shadow-[0_0_70px_rgba(34,211,238,0.18)] sm:size-40"
+            animate={{ boxShadow: ["0 0 48px rgba(34,211,238,0.12)", "0 0 86px rgba(34,211,238,0.22)", "0 0 48px rgba(34,211,238,0.12)"] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="absolute inset-4 rounded-full border border-blue-300/10" />
+            <span className="absolute inset-8 rounded-full border border-cyan-300/12" />
+            <div className="relative text-center">
+              <Bot className="mx-auto size-7 text-cyan-200" />
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200">Signal score</p>
+              <p className="mt-1 text-2xl font-semibold text-cyan-300">94.2</p>
+            </div>
+          </motion.div>
+
+          <div className="relative z-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:pb-28">
+            {engineLabels.map((label, index) => (
+              <motion.div
+                key={label}
+                className={cn(
+                  "relative rounded-lg border border-white/[0.07] bg-[#071326]/82 px-3 py-2 text-[11px] text-slate-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]",
+                  index % 3 === 1 && "sm:mt-8",
+                  index % 3 === 2 && "sm:mt-16",
+                )}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: index * 0.04 }}
+                whileHover={{ y: -3, borderColor: "rgba(34,211,238,0.28)" }}
+              >
+                <span className="absolute left-2 top-2 size-1 rounded-full bg-cyan-300/80" />
+                <span className="pl-3">{label}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="relative z-10 mt-8 grid gap-2 sm:absolute sm:inset-x-4 sm:bottom-4 sm:mt-0 sm:grid-cols-3">
+            {[
+              ["Noise filtered", "Low-quality setups removed"],
+              ["Confluence", "Independent factors aligned"],
+              ["Risk profile", "Structure and asymmetry scored"],
+            ].map(([title, copy]) => (
+              <div key={title} className="rounded-lg border border-cyan-300/10 bg-cyan-300/[0.045] p-3">
+                <p className="text-xs font-medium text-cyan-200">{title}</p>
+                <p className="mt-1 text-[11px] leading-4 text-slate-500">{copy}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
 }
 
 function Process() {
