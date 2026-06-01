@@ -97,39 +97,49 @@ const testimonials = [
   ["The dashboard makes it easier to track active trades and review closed alert history without relying on chat threads.", "Elena S.", "Market analyst"],
 ]
 
+const corePricingFeatures = [
+  "Real-time AI trade alerts",
+  "Stocks alerts",
+  "Options alerts",
+  "Active trade dashboard",
+  "Historical trade tracking",
+  "AI confidence scoring",
+  "Discord access",
+  "Telegram access",
+  "Email support",
+]
+
 const pricingPlans = [
   {
     name: "Monthly",
     price: "$295/month",
-    billing: "Billed monthly",
-    renewal: "Renews monthly until canceled",
-    refund: "No refunds after access is granted",
-    copy: "Flexible monthly access to SignalFlo alerts and dashboard tools.",
+    copy: "Flexible month-to-month access to the full SignalFlo platform.",
     cta: "Choose Monthly",
-    features: ["Stock alerts", "Basic dashboard access", "Recent alerts", "Email support"],
+    details: ["Full platform access", "Billed monthly", "Renews monthly until canceled"],
+    features: corePricingFeatures,
   },
   {
     name: "Annual",
     price: "$2,395/year",
-    billing: "Billed annually",
-    monthlyEquivalent: "$199.58/month",
-    savings: "Save $1,145 per year",
-    renewal: "Renews annually until canceled",
-    refund: "Refunds only within 7 calendar days if access has not been materially used",
-    copy: "Best value for active traders tracking stocks, options, and alert history.",
+    copy: "Best value for traders committed to consistent alert tracking.",
     cta: "Choose Annual",
-    features: ["Stocks + options alerts", "Active trade dashboard", "Confidence scoring", "Historical alert tracking", "Priority support"],
+    details: ["Full platform access", "Billed annually", "Save $1,145 per year", "Equivalent to $199.58/month", "Renews annually until canceled"],
+    features: corePricingFeatures,
   },
   {
     name: "Founder Lifetime",
     price: "$4,995 one-time",
-    billing: "One-time payment",
-    access: "Lifetime access during the life of the SignalFlo platform",
-    refund: "Non-refundable after access is granted",
-    scarcity: "Limited founding-member pricing",
-    copy: "Founding-member access for advanced users who want expanded coverage and onboarding.",
+    copy: "Founding-member access with platform-lifetime benefits and bonuses.",
     cta: "Choose Founder Lifetime",
-    features: ["Everything in Annual", "Futures section when available", "Advanced market insights", "Premium alert categories", "Priority onboarding"],
+    details: [
+      "Lifetime access during the life of the SignalFlo platform",
+      "One-time payment",
+      "Limited founding-member pricing",
+      "Future premium categories included",
+      "Futures section access when available",
+      "Priority onboarding",
+    ],
+    features: corePricingFeatures,
   },
 ]
 
@@ -1142,14 +1152,15 @@ function Pricing() {
           <MotionCard key={plan.name} delay={index * 0.06}>
             <Card
               className={cn(
-                "group relative h-full overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_22px_70px_rgba(2,8,23,0.42)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_28px_90px_rgba(14,165,233,0.14)]",
+                "group relative flex h-full min-h-[690px] flex-col overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_22px_70px_rgba(2,8,23,0.42)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_28px_90px_rgba(14,165,233,0.14)]",
                 plan.name === "Annual" && "border-cyan-300/30 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_60px_rgba(34,211,238,0.14)]",
+                plan.name === "Founder Lifetime" && "border-blue-300/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_50px_rgba(59,130,246,0.1)]",
               )}
             >
               <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.16),transparent_36%)] opacity-80" />
               <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
               <span className="pointer-events-none absolute -left-8 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[26rem] group-hover:opacity-100" />
-              <CardHeader className="relative z-10 p-6 sm:p-7">
+              <CardHeader className="relative z-10 min-h-[340px] p-6 sm:p-7">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <CardTitle className="text-xl">{plan.name}</CardTitle>
@@ -1162,17 +1173,21 @@ function Pricing() {
                 <div className="mt-6 flex items-end gap-2">
                   <p className="text-4xl font-semibold tracking-tight text-cyan-300">{plan.price}</p>
                 </div>
-                <div className="mt-4 space-y-2 text-xs text-slate-500">
-                  <p>{plan.billing}</p>
-                  {"monthlyEquivalent" in plan && <p className="text-cyan-300">{plan.monthlyEquivalent}</p>}
-                  {"savings" in plan && <p className="text-blue-300">{plan.savings}</p>}
-                  {"access" in plan && <p className="text-cyan-300">{plan.access}</p>}
-                  {"scarcity" in plan && <p className="text-blue-300">{plan.scarcity}</p>}
-                  {"renewal" in plan && <p>{plan.renewal}</p>}
-                  <p>{plan.refund}</p>
+                <div className="mt-6 min-h-40 space-y-2.5 text-xs text-slate-500">
+                  {plan.details.map((detail) => (
+                    <p
+                      key={detail}
+                      className={cn(
+                        detail.includes("Save") || detail.includes("Limited") ? "text-blue-300" : "",
+                        detail.includes("Equivalent") || detail.includes("Lifetime") || detail.includes("Future") ? "text-cyan-300" : "",
+                      )}
+                    >
+                      {detail}
+                    </p>
+                  ))}
                 </div>
               </CardHeader>
-              <CardContent className="relative z-10 px-6 pb-6 sm:px-7 sm:pb-7">
+              <CardContent className="relative z-10 flex flex-1 flex-col px-6 pb-6 sm:px-7 sm:pb-7">
                 <Button
                   asChild
                   className={cn(
@@ -1185,7 +1200,7 @@ function Pricing() {
                 >
                   <a href={APP_URL}>{plan.cta}</a>
                 </Button>
-                <div className="mt-6 space-y-3.5">
+                <div className="mt-8 space-y-3.5">
                   {plan.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-3 text-sm text-slate-400">
                       <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-cyan-300/15 bg-cyan-300/8">
@@ -1202,6 +1217,11 @@ function Pricing() {
       </div>
       <p className="mt-5 text-center text-xs text-slate-500">
         Annual savings are calculated against the $295 monthly plan billed for 12 months.
+      </p>
+      <p className="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-slate-500">
+        Trading involves substantial risk. SignalFlo provides AI-generated market
+        insights, alerts, and educational content only. Past performance does
+        not guarantee future results.
       </p>
       </div>
     </FadeUp>
