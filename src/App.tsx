@@ -359,6 +359,9 @@ const engineParagraphLabels = [
   ["03 / Execute", TrendingUp],
 ]
 
+void steps
+void engineCopyBlocks
+
 function App() {
   if (window.location.pathname === LEGAL_URL) {
     return <LegalPage />
@@ -368,9 +371,9 @@ function App() {
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <Navbar />
       <Hero />
-      <Features />
       <Process />
-      <WhySignalFlo />
+      <DashboardCommandCenter />
+      <Features />
       <SignalFloEngine />
       <Pricing />
       <Faq />
@@ -942,22 +945,68 @@ function MarketTicker() {
 }
 
 function Features() {
+  const markets = [
+    ["Stocks", TrendingUp],
+    ["Options", CircleDollarSign],
+    ["0DTE", Activity],
+    ["Swing Trades", FileClock],
+    ["Momentum", RadioTower],
+    ["Breakouts", Target],
+    ["Earnings", Sparkles],
+    ["AI Ranked Setups", Bot],
+  ] as const
+  const structureCards = [
+    ["ENTRY", Target, "Know exactly where to enter."],
+    ["RISK", ShieldCheck, "Know exactly where to exit."],
+    ["TRACKING", MonitorSmartphone, "Know exactly what happened."],
+  ] as const
+
   return (
-    <FadeUp as="section" id="features" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" id="features" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <SectionHeading
-        kicker="Platform features"
-        title="Everything You Need to Trade Smarter"
-        highlight="Trade Smarter"
-        description="A compact toolkit for publishing, monitoring, and reviewing AI-assisted trade alerts."
+        kicker="Markets"
+        title="Markets We Cover"
+        highlight="We Cover"
+        description="Focused alert categories for traders who want clear setups without extra noise."
       />
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
-        {features.map((feature, index) => {
-          return (
-            <MotionCard key={feature.title} delay={index * 0.035}>
-              <FeatureCard feature={feature} index={index} />
+        {markets.map(([title, Icon], index) => (
+            <MotionCard key={title} delay={index * 0.035}>
+              <Card className={cardSurfaceClass}>
+                <CardEffects />
+                <CardHeader className="relative z-10 flex min-h-32 flex-col justify-between p-5">
+                  <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/10 bg-gradient-to-br from-blue-500/30 via-cyan-300/14 to-purple-500/16 text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.08)]">
+                    <Icon className="size-4" />
+                  </span>
+                  <CardTitle className="mt-5 text-base font-semibold tracking-[-0.01em] text-slate-100">{title}</CardTitle>
+                </CardHeader>
+              </Card>
             </MotionCard>
-          )
-        })}
+        ))}
+      </div>
+      <div className="mt-10 border-t border-white/[0.06] pt-10">
+        <SectionHeading
+          kicker="Structure"
+          title="Built for Traders Who Want Structure"
+          highlight="Structure"
+          description="SignalFlo keeps the trading workflow focused around levels, risk, and tracking."
+        />
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {structureCards.map(([title, Icon, copy], index) => (
+            <MotionCard key={title} delay={index * 0.04}>
+              <Card className={cardSurfaceClass}>
+                <CardEffects />
+                <CardHeader className="relative z-10 p-5">
+                  <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/10 bg-gradient-to-br from-blue-500/24 to-cyan-300/12 text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.08)]">
+                    <Icon className="size-4" />
+                  </span>
+                  <CardTitle className="mt-4 text-base font-semibold tracking-[-0.01em] text-slate-100">{title}</CardTitle>
+                  <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{copy}</CardDescription>
+                </CardHeader>
+              </Card>
+            </MotionCard>
+          ))}
+        </div>
       </div>
     </FadeUp>
   )
@@ -965,24 +1014,21 @@ function Features() {
 
 function WhySignalFlo() {
   const reasons = [
-    ["Structured Alerts", Target, "Each alert is formatted around entry, target, stop, thesis, and status so the trade plan is clear."],
-    ["AI-Ranked Setups", Bot, "Signals are organized by confidence and setup quality so traders can focus on stronger opportunities."],
-    ["Active Trade Tracking", RadioTower, "Follow open alerts, status changes, and monitored levels from one dashboard."],
-    ["Historical Review", FileClock, "Review active and closed alerts without losing context across chat threads."],
-    ["Cleaner Than Discord-Only Rooms", ShieldCheck, "Use chat for community, but keep the actual alert workflow structured and searchable."],
-    ["Dashboard-First Workflow", MonitorSmartphone, "Track alerts from desktop or mobile with a cleaner command center experience."],
+    ["ENTRY", Target, "Know exactly where to enter."],
+    ["RISK", ShieldCheck, "Know exactly where to exit."],
+    ["TRACKING", MonitorSmartphone, "Know exactly what happened."],
   ] as const
 
   return (
-    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-7xl">
         <SectionHeading
-          kicker="Why SignalFlo"
-          title="Why Traders Use SignalFlo"
-          highlight="Use SignalFlo"
-          description="SignalFlo is built for traders who want structured alerts, cleaner tracking, and less noise."
+          kicker="Structure"
+          title="Built for Traders Who Want Structure"
+          highlight="Structure"
+          description="SignalFlo keeps the trading workflow focused around levels, risk, and tracking."
         />
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3">
+        <div className="mt-8 grid gap-3 lg:mt-10 lg:grid-cols-3">
           {reasons.map(([title, Icon, copy], index) => (
             <MotionCard key={title} delay={index * 0.04}>
               <Card className={cardSurfaceClass}>
@@ -1002,6 +1048,8 @@ function WhySignalFlo() {
     </FadeUp>
   )
 }
+
+void WhySignalFlo
 
 function CardEffects() {
   return (
@@ -1040,6 +1088,8 @@ function FeatureCard({
     </Card>
   )
 }
+
+void FeatureCard
 
 function AlertPreviewCard({
   alert,
@@ -1139,10 +1189,10 @@ function DashboardCommandCenter() {
   return (
     <FadeUp as="section" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <SectionHeading
-        kicker="Product showcase"
-        title="SignalFlo In Action"
-        highlight="In Action"
-        description="See how live alerts, dashboard tracking, trade review, and AI scoring work together inside one clean SignalFlo command center."
+        kicker="Dashboard"
+        title="See Exactly What Members See"
+        highlight="Members See"
+        description="Every alert includes entry, target, stop loss, confidence score, and live tracking."
       />
       <div className="relative mx-auto mt-7 max-w-6xl overflow-visible rounded-[2rem] lg:mt-8">
         <motion.div
@@ -1589,8 +1639,19 @@ function CountUp({ to }: { to: number }) {
 }
 
 function SignalFloEngine() {
+  const scoringFactors = [
+    ["Market Structure", Workflow],
+    ["Momentum", TrendingUp],
+    ["Volume", Activity],
+    ["Volatility", RadioTower],
+    ["Trend", Target],
+    ["Risk", ShieldCheck],
+    ["Options Activity", CircleDollarSign],
+    ["Price Action", Sparkles],
+  ] as const
+
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-45" />
       <motion.div
@@ -1603,15 +1664,15 @@ function SignalFloEngine() {
         <div className="mx-auto max-w-4xl text-center">
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             <Cpu className="text-cyan-300" />
-            Market intelligence layer
+            AI scoring layer
           </Badge>
           <h2 className="mt-5 text-3xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
-            THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
+            HOW SIGNALFLO <AnimatedGradientText>SCORES ALERTS</AnimatedGradientText>
           </h2>
           <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
-            Built to filter market noise, identify institutional-grade
-            confluence, and surface high-conviction trade opportunities in
-            real time.
+            SignalFlo ranks alerts by combining market structure, momentum,
+            risk, options activity, and price action into one clear confidence
+            score.
           </p>
         </div>
 
@@ -1619,32 +1680,44 @@ function SignalFloEngine() {
           <MarketTicker />
         </div>
 
-        <EngineMetricStrip />
-
-        <div className="mt-10 grid gap-8 xl:grid-cols-[0.82fr_1.38fr] xl:items-stretch">
-          <div className="grid content-start gap-4">
-            <EngineWorkflowStage stage={workflowStages[0]} index={0} />
-            <EngineWorkflowStage stage={workflowStages[1]} index={1} />
-            <EngineWorkflowStage stage={workflowStages[2]} index={2} />
+        <div className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
+          <div className="relative overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/88 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.12)]">
+            <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_42%),radial-gradient(circle_at_85%_80%,rgba(124,58,237,0.12),transparent_34%)]" />
+            <div className="relative z-10 flex h-full flex-col justify-between">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-300">Live score</p>
+                <p className="mt-5 text-7xl font-extrabold tracking-[-0.06em] text-cyan-300 sm:text-8xl">94</p>
+                <p className="mt-2 text-xl font-semibold text-slate-100">AI Confidence</p>
+              </div>
+              <div className="mt-8 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-4">
+                <p className="text-sm font-semibold text-slate-200">200+ Market Factors Analyzed</p>
+                <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-800/80">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-blue-500 via-cyan-300 to-purple-400"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "94%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.9, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <DecisionEngineVisual />
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {scoringFactors.map(([title, Icon], index) => (
+              <MotionCard key={title} delay={index * 0.035}>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_18px_70px_rgba(2,8,23,0.26)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/28 hover:bg-[#0a1428]/90">
+                  <CardEffects />
+                  <span className="relative z-10 flex size-10 items-center justify-center rounded-lg border border-cyan-300/12 bg-cyan-300/8 text-cyan-200">
+                    <Icon className="size-4" />
+                  </span>
+                  <p className="relative z-10 mt-5 text-sm font-semibold text-slate-100">{title}</p>
+                </div>
+              </MotionCard>
+            ))}
+          </div>
         </div>
-
-        <div className="mt-8 grid gap-3 lg:grid-cols-3">
-          {engineCopyBlocks.slice(0, 3).map((copy, index) => (
-            <EngineParagraphCard key={copy} copy={copy} index={index} />
-          ))}
-        </div>
-
-        <MarketIntelligenceStack />
-
-        <div className="mt-8 grid gap-3 lg:grid-cols-3">
-          {engineCopyBlocks.slice(3).map((copy, index) => (
-            <EngineParagraphCard key={copy} copy={copy} index={index + 3} />
-          ))}
-        </div>
-
-        <EngineClosingStatement />
       </div>
     </FadeUp>
   )
@@ -2089,7 +2162,19 @@ function EngineClosingStatement() {
   )
 }
 
+void EngineParagraphCard
+void EngineMetricStrip
+void EngineWorkflowStage
+void DecisionEngineVisual
+void MarketIntelligenceStack
+void EngineClosingStatement
+
 function Process() {
+  const workflowSteps = [
+    ["AI scans market conditions", Cpu, "SignalFlo monitors momentum, levels, volatility, and market context."],
+    ["SignalFlo creates structured alerts", LockKeyhole, "Each alert is organized with entry, target, stop loss, score, and notes."],
+    ["Members track alerts in real time", MonitorSmartphone, "Traders follow active alerts, updates, and outcomes from the dashboard."],
+  ] as const
   const alertLevels = [
     ["Entry Zone", "$924.20", "Review before trigger"],
     ["Take Profit", "$952.80", "Target level"],
@@ -2101,25 +2186,24 @@ function Process() {
     <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
-        kicker="Workflow + product demo"
-        title="From Market Scan to Structured Alert"
-        highlight="Structured Alert"
+        kicker="Workflow"
+        title="How SignalFlo Works"
+        highlight="SignalFlo Works"
         description="See how SignalFlo moves from AI research to reviewed alerts, then presents a clear trade plan traders can track."
       />
-        <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-3">
-          {steps.map((step, index) => {
-            const Icon = step.icon
+        <div className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-3">
+          {workflowSteps.map(([title, Icon, copy], index) => {
 
             return (
-              <MotionCard key={step.title} delay={index * 0.06}>
+              <MotionCard key={title} delay={index * 0.06}>
                 <Card className="relative h-full overflow-hidden bg-[#081225]/82 transition hover:border-cyan-300/25">
-                  <CardHeader className="p-5">
+                  <CardHeader className="p-6">
                     <span className="absolute right-5 top-4 text-4xl font-semibold text-white/[0.03]">0{index + 1}</span>
-                    <span className="flex size-10 items-center justify-center rounded-md bg-cyan-400/12 text-cyan-300">
-                      <Icon className="size-5" />
+                    <span className="flex size-12 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-400/12 text-cyan-300 shadow-[0_0_26px_rgba(34,211,238,0.1)]">
+                      <Icon className="size-6" />
                     </span>
-                    <CardTitle className="text-base">{step.title}</CardTitle>
-                    <CardDescription>{step.copy}</CardDescription>
+                    <CardTitle className="mt-5 text-lg">{title}</CardTitle>
+                    <CardDescription className="mt-2 leading-6">{copy}</CardDescription>
                   </CardHeader>
                 </Card>
               </MotionCard>
@@ -2409,12 +2493,12 @@ function Pricing() {
               <Card
                 className={cn(
                   "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_60px_rgba(2,8,23,0.38)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/34 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_24px_80px_rgba(14,165,233,0.15),0_0_34px_rgba(124,58,237,0.08)]",
-                  plan.name === "Annual" && "border-cyan-300/50 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_96px_rgba(34,211,238,0.28),0_0_58px_rgba(124,58,237,0.16)] lg:-translate-y-1 lg:scale-[1.015]",
-                  plan.name === "Founder Lifetime" && "border-cyan-300/18 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_70px_rgba(124,58,237,0.12),0_0_38px_rgba(34,211,238,0.08)]",
+                  plan.name === "Annual" && "border-cyan-300/60 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_110px_rgba(34,211,238,0.34),0_0_70px_rgba(124,58,237,0.18)] lg:-translate-y-2 lg:scale-[1.025]",
+                  plan.name === "Founder Lifetime" && "border-amber-300/24 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_70px_rgba(245,158,11,0.11),0_0_38px_rgba(34,211,238,0.06)]",
                 )}
               >
                 <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_34%),radial-gradient(circle_at_85%_12%,rgba(124,58,237,0.13),transparent_32%),linear-gradient(135deg,rgba(37,99,235,0.08),transparent_44%)] opacity-90" />
-                <span className={cn("pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent", plan.name === "Annual" && "inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-300 to-purple-500")} />
+                <span className={cn("pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent", plan.name === "Annual" && "inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-300 to-purple-500", plan.name === "Founder Lifetime" && "via-amber-300/70")} />
                 <span className="pointer-events-none absolute -left-8 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[26rem] group-hover:opacity-100" />
 
                 <CardHeader className="relative z-10 p-4 pb-3 text-center sm:p-5 sm:pb-3">
