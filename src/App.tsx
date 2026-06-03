@@ -1641,23 +1641,8 @@ function CountUp({ to }: { to: number }) {
 }
 
 function SignalFloEngine() {
-  const enginePanels = [
-    ["Market Scanner", RadioTower, "Scanning momentum, volatility, volume, sector movement, and price action across active markets.", "Live market sweep"],
-    ["AI Analysis", Bot, "Ranks setups by confluence, market structure, risk quality, and alert readiness.", "200+ factors"],
-    ["Trade Setup", Target, "Maps entry, target, stop loss, confidence score, and execution context into one structured alert.", "Entry / TP / SL"],
-    ["Signal Generation", Sparkles, "Organizes reviewed setups into alerts members can track from the dashboard.", "Structured alert"],
-  ] as const
-  const supportingData = [
-    ["Market Structure", "Trend, levels, liquidity"],
-    ["Momentum", "Relative strength shifts"],
-    ["Volatility", "Expansion and compression"],
-    ["Options Activity", "Premium and contract behavior"],
-    ["Price Action", "Breakouts and reactions"],
-    ["Risk Factors", "Stop levels and invalidation"],
-  ] as const
-
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[120px] sm:px-6 lg:px-8">
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-45" />
       <motion.div
@@ -1676,90 +1661,42 @@ function SignalFloEngine() {
             THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
           </h2>
           <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
-            SignalFlo analyzes market conditions, momentum, volatility, price
-            action, and risk factors to organize structured trade alerts.
+            Built to filter market noise, identify institutional-grade
+            confluence, and surface high-conviction trade opportunities in
+            real time.
           </p>
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-[2rem] border border-cyan-300/14 bg-[#071121]/88 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_120px_rgba(14,165,233,0.16)] sm:p-4 lg:mt-12">
-          <div className="relative overflow-hidden rounded-3xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5 lg:p-6">
-            <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(34,211,238,0.18),transparent_38%),radial-gradient(circle_at_85%_18%,rgba(124,58,237,0.14),transparent_34%)]" />
-            <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-45" />
-            <motion.div
-              className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent"
-              animate={{ x: ["-40%", "1280%"] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "linear" }}
-            />
-
-            <div className="relative z-10 grid gap-4 lg:grid-cols-[0.76fr_1.24fr]">
-              <div className="relative overflow-hidden rounded-2xl border border-cyan-300/14 bg-[#071326]/90 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_90px_rgba(34,211,238,0.1)]">
-                <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.2),transparent_42%)]" />
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-300">AI confidence score</p>
-                    <span className="flex items-center gap-2 rounded-full border border-cyan-300/12 bg-cyan-300/8 px-2 py-1 text-[10px] text-cyan-200">
-                      <span className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
-                      Live
-                    </span>
-                  </div>
-                  <p className="mt-6 text-7xl font-extrabold tracking-[-0.06em] text-cyan-300 sm:text-8xl">94</p>
-                  <p className="mt-2 text-xl font-semibold text-slate-100">AI Confidence</p>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">
-                    High-conviction setup identified from aligned market
-                    factors and defined risk levels.
-                  </p>
-                </div>
-                <div className="relative z-10 mt-6 rounded-2xl border border-white/[0.07] bg-white/[0.03] p-4">
-                  <div className="flex items-center justify-between gap-3 text-xs">
-                    <span className="text-slate-400">Market factors analyzed</span>
-                    <span className="font-semibold text-cyan-300">200+</span>
-                  </div>
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-800/80">
-                  <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-blue-500 via-cyan-300 to-purple-400"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "94%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.9, ease: "easeOut" }}
-                  />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {enginePanels.map(([title, Icon, copy, label], index) => (
-                  <MotionCard key={title} delay={index * 0.05}>
-                    <div className="group relative h-full overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/84 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_70px_rgba(2,8,23,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/28 hover:bg-[#0a1428]/90">
-                      <CardEffects />
-                      <div className="relative z-10 flex items-start justify-between gap-4">
-                        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-300/8 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.08)]">
-                          <Icon className="size-4" />
-                        </span>
-                        <span className="rounded-full border border-blue-300/12 bg-blue-400/8 px-2 py-1 text-[10px] font-medium text-blue-200">
-                          {label}
-                        </span>
-                      </div>
-                      <h3 className="relative z-10 mt-5 text-lg font-semibold tracking-[-0.01em] text-slate-100">{title}</h3>
-                      <p className="relative z-10 mt-2 text-sm leading-6 text-slate-400">{copy}</p>
-                    </div>
-                  </MotionCard>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative z-10 mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {supportingData.map(([label, detail], index) => (
-                <MotionCard key={label} delay={index * 0.035}>
-                  <div className="group relative overflow-hidden rounded-xl border border-cyan-300/10 bg-white/[0.025] px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/24 hover:bg-cyan-300/[0.035]">
-                    <CardEffects />
-                    <p className="relative z-10 text-sm font-semibold text-slate-100">{label}</p>
-                    <p className="relative z-10 mt-1 text-xs text-slate-500">{detail}</p>
-                  </div>
-                </MotionCard>
-              ))}
-            </div>
-          </div>
+        <div className="mt-8">
+          <MarketTicker />
         </div>
+
+        <EngineMetricStrip />
+
+        <div className="mt-10 grid gap-8 xl:grid-cols-[0.82fr_1.38fr] xl:items-stretch">
+          <div className="grid content-start gap-4">
+            <EngineWorkflowStage stage={workflowStages[0]} index={0} />
+            <EngineWorkflowStage stage={workflowStages[1]} index={1} />
+            <EngineWorkflowStage stage={workflowStages[2]} index={2} />
+          </div>
+          <DecisionEngineVisual />
+        </div>
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {engineCopyBlocks.slice(0, 3).map((copy, index) => (
+            <EngineParagraphCard key={copy} copy={copy} index={index} />
+          ))}
+        </div>
+
+        <MarketIntelligenceStack />
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {engineCopyBlocks.slice(3).map((copy, index) => (
+            <EngineParagraphCard key={copy} copy={copy} index={index + 3} />
+          ))}
+        </div>
+
+        <EngineClosingStatement />
       </div>
     </FadeUp>
   )
@@ -2203,13 +2140,6 @@ function EngineClosingStatement() {
     </motion.div>
   )
 }
-
-void EngineParagraphCard
-void EngineMetricStrip
-void EngineWorkflowStage
-void DecisionEngineVisual
-void MarketIntelligenceStack
-void EngineClosingStatement
 
 function Process() {
   const workflowSteps = [
