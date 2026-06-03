@@ -18,7 +18,7 @@ import {
   TrendingUp,
   Workflow,
 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import type { ComponentType, ReactNode } from "react"
 import { motion } from "motion/react"
 import { AnimatedGradientText } from "@/components/magic/animated-gradient-text"
@@ -367,10 +367,14 @@ const intelligenceNetworkMetrics = [
 ] as const
 
 const recentAlertActivity = [
-  ["NVDA", "Momentum Alert Published", "2m ago", "published"],
-  ["SPY", "Day Trade Closed", "18m ago", "closed"],
-  ["AAPL", "Breakout Alert Published", "42m ago", "published"],
-  ["TSLA", "Swing Alert Opened", "1h ago", "opened"],
+  ["NVDA", "Momentum Alert Published", "", "2m ago", "published"],
+  ["SPY", "Day Trade Closed", "+12.8%", "18m ago", "closed"],
+  ["AAPL", "Breakout Alert Published", "", "42m ago", "published"],
+  ["TSLA", "Target Hit", "+15.1%", "1h ago", "closed"],
+  ["MSFT", "Risk Level Updated", "", "1h ago", "published"],
+  ["COIN", "Breakout Closed", "+9.4%", "2h ago", "closed"],
+  ["AMD", "Watchlist Alert Published", "", "2h ago", "published"],
+  ["QQQ", "Target Hit", "+7.6%", "3h ago", "closed"],
 ] as const
 
 void steps
@@ -516,7 +520,7 @@ function Hero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
-          className="mx-auto max-w-4xl text-center"
+          className="mx-auto mt-[clamp(1.5rem,5vh,4rem)] max-w-4xl text-center"
         >
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             <Sparkles className="text-cyan-300" />
@@ -573,7 +577,7 @@ function HeroDashboardCard() {
       initial={{ opacity: 0, scale: 0.97, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.12 }}
-      className="relative mx-auto mt-auto -mb-[clamp(1.25rem,4vh,3rem)] w-full max-w-[78rem] overflow-visible rounded-t-[2rem]"
+      className="relative mx-auto mt-[clamp(2rem,4vh,3rem)] -mb-[clamp(1.25rem,4vh,3rem)] w-full max-w-[78rem] overflow-visible rounded-t-[2rem]"
     >
       <motion.div
         className="absolute inset-0 scale-[1.04] rounded-[2rem] bg-[radial-gradient(circle_at_50%_18%,rgba(34,211,238,0.18),rgba(124,58,237,0.12),transparent_68%)] blur-3xl"
@@ -1665,7 +1669,7 @@ function CountUp({ to }: { to: number }) {
 
 function SignalFloEngine() {
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 pb-20 pt-14 sm:px-6 sm:pb-24 sm:pt-16 lg:px-8 lg:pb-28 lg:pt-20">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-45" />
       <motion.div
@@ -1690,13 +1694,9 @@ function SignalFloEngine() {
           </p>
         </div>
 
-        <div className="mt-8">
-          <MarketTicker />
-        </div>
-
         <EngineMetricStrip />
 
-        <div className="mt-10 grid gap-8 xl:grid-cols-[0.82fr_1.38fr] xl:items-stretch">
+        <div className="mt-12 grid gap-8 xl:grid-cols-[0.82fr_1.38fr] xl:items-stretch">
           <div className="grid content-start gap-4">
             <EngineWorkflowStage stage={workflowStages[0]} index={0} />
             <EngineWorkflowStage stage={workflowStages[1]} index={1} />
@@ -1705,7 +1705,7 @@ function SignalFloEngine() {
           <DecisionEngineVisual />
         </div>
 
-        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {engineCopyBlocks.slice(0, 3).map((copy, index) => (
             <EngineParagraphCard key={copy} copy={copy} index={index} />
           ))}
@@ -1713,7 +1713,7 @@ function SignalFloEngine() {
 
         <MarketIntelligenceStack />
 
-        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {engineCopyBlocks.slice(3).map((copy, index) => (
             <EngineParagraphCard key={copy} copy={copy} index={index + 3} />
           ))}
@@ -2004,14 +2004,14 @@ function DecisionEngineVisual() {
 
 function MarketIntelligenceStack() {
   return (
-    <div className="mt-16">
+    <div className="mt-14">
       <div className="mx-auto max-w-3xl text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Architecture</p>
         <h3 className="mt-3 text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
           MARKET INTELLIGENCE <AnimatedGradientText>STACK</AnimatedGradientText>
         </h3>
       </div>
-      <div className="relative mx-auto mt-9 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#050b16]/86 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_140px_rgba(14,165,233,0.16),0_0_80px_rgba(124,58,237,0.08)] sm:p-6 lg:p-8">
+      <div className="relative mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#050b16]/86 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_140px_rgba(14,165,233,0.16),0_0_80px_rgba(124,58,237,0.08)] sm:p-6 lg:p-8">
         <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.2),transparent_38%),radial-gradient(circle_at_12%_20%,rgba(37,99,235,0.16),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(124,58,237,0.14),transparent_28%)]" />
         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-50" />
         <motion.span
@@ -2020,21 +2020,21 @@ function MarketIntelligenceStack() {
           transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
         />
 
-        <div className="relative z-10 grid gap-6 lg:grid-cols-[1fr_230px_1fr] lg:items-center">
-          <div className="grid gap-3">
+        <div className="relative z-10 grid gap-8 lg:grid-cols-[1.1fr_190px_1.1fr] lg:items-center">
+          <div className="grid gap-4">
             {engineFeatures.slice(0, 3).map((feature, index) => (
               <EngineLayerModule key={feature.title} feature={feature} index={index} />
             ))}
           </div>
 
           <motion.div
-            className="relative mx-auto flex size-52 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/10 shadow-[0_0_95px_rgba(34,211,238,0.24),0_0_56px_rgba(124,58,237,0.14)] lg:size-60"
+            className="relative mx-auto flex size-44 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/8 shadow-[0_0_72px_rgba(34,211,238,0.2),0_0_42px_rgba(124,58,237,0.12)] lg:size-52"
             animate={{ boxShadow: ["0 0 72px rgba(34,211,238,0.16),0 0 36px rgba(124,58,237,0.1)", "0 0 112px rgba(34,211,238,0.28),0 0 70px rgba(124,58,237,0.16)", "0 0 72px rgba(34,211,238,0.16),0 0 36px rgba(124,58,237,0.1)"] }}
             transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <motion.span className="absolute -inset-10 rounded-full border border-cyan-300/10" animate={{ rotate: 360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} />
+            <motion.span className="absolute -inset-8 rounded-full border border-cyan-300/10" animate={{ rotate: 360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} />
             <motion.span className="absolute -inset-4 rounded-full border border-blue-300/14" animate={{ rotate: -360 }} transition={{ duration: 22, repeat: Infinity, ease: "linear" }} />
-            <motion.span className="absolute -inset-16 rounded-full border border-purple-300/6" animate={{ scale: [0.96, 1.04, 0.96], opacity: [0.25, 0.55, 0.25] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.span className="absolute -inset-12 rounded-full border border-purple-300/6" animate={{ scale: [0.96, 1.04, 0.96], opacity: [0.25, 0.5, 0.25] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
             <div className="relative text-center">
               <Cpu className="mx-auto size-7 text-cyan-200" />
               <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-500">AI Confluence</p>
@@ -2044,7 +2044,7 @@ function MarketIntelligenceStack() {
             <div className="absolute top-1/2 hidden h-px w-[calc(100vw)] -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent lg:block" />
           </motion.div>
 
-          <div className="grid gap-3">
+          <div className="grid gap-4">
             {engineFeatures.slice(3).map((feature, index) => (
               <EngineLayerModule key={feature.title} feature={feature} index={index + 3} alignRight />
             ))}
@@ -2069,7 +2069,7 @@ function EngineLayerModule({
   return (
     <motion.div
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-blue-300/10 bg-[#081225]/82 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_70px_rgba(2,8,23,0.3)] transition-all duration-300 hover:border-cyan-300/28 hover:bg-[#0a1428]/88 sm:p-5",
+        "group relative overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/86 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_80px_rgba(2,8,23,0.34)] transition-all duration-300 hover:border-cyan-300/28 hover:bg-[#0a1428]/90 sm:p-6",
         alignRight ? "lg:translate-x-4" : "lg:-translate-x-4",
       )}
       initial={{ opacity: 0, y: 20, scale: 0.98 }}
@@ -2109,7 +2109,7 @@ function EngineClosingStatement() {
 
   return (
     <motion.div
-      className="relative mt-20 overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_150px_rgba(14,165,233,0.18)] sm:p-12 lg:p-16"
+      className="relative mt-24 overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-8 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_150px_rgba(14,165,233,0.18)] sm:p-14 lg:p-20"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -2133,26 +2133,26 @@ function EngineClosingStatement() {
           <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-3 py-1 text-cyan-200">Alert filtered through intelligence layers</span>
           <span className="h-px bg-gradient-to-l from-transparent to-cyan-300/24" />
         </div>
-        <h3 className="mt-8 text-4xl font-extrabold tracking-[-0.035em] text-slate-50 sm:text-6xl">
+        <h3 className="mt-9 text-5xl font-extrabold tracking-[-0.04em] text-slate-50 sm:text-7xl">
           NOT MORE ALERTS. <AnimatedGradientText>BETTER INTELLIGENCE.</AnimatedGradientText>
         </h3>
-        <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
+        <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
           SignalFlo does not generate alerts because a single indicator crossed
           a line.
         </p>
-        <p className="mx-auto mt-4 max-w-4xl text-sm leading-7 text-slate-400 sm:text-base">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
           Every opportunity must pass through multiple layers of market
           intelligence, confluence analysis, liquidity validation, risk
           modeling, and contextual confirmation before it reaches the platform.
         </p>
-        <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
           The result is fewer alerts, higher conviction, and a more disciplined
           approach to identifying opportunities in today's markets.
         </p>
         <Button
           type="button"
           onClick={scrollToPricing}
-          className="group mt-10 h-14 border border-cyan-300/24 bg-cyan-300/10 px-8 text-cyan-100 shadow-[0_0_44px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-cyan-300/14 hover:shadow-[0_0_58px_rgba(34,211,238,0.28)]"
+          className="group mt-12 h-16 border border-cyan-300/24 bg-cyan-300/10 px-10 text-base text-cyan-100 shadow-[0_0_44px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-cyan-300/14 hover:shadow-[0_0_58px_rgba(34,211,238,0.28)]"
           variant="outline"
         >
           JOIN NOW
@@ -2221,7 +2221,7 @@ function PricingTrustSections() {
               </span>
             </div>
             <div className="relative z-10 mt-4 grid gap-2">
-              {recentAlertActivity.map(([ticker, action, time, state], index) => (
+              {recentAlertActivity.map(([ticker, action, outcome, time, state], index) => (
                 <motion.div
                   key={`${ticker}-${action}`}
                   className="flex flex-col gap-2 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-3 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-cyan-300/[0.035] sm:flex-row sm:items-center sm:justify-between"
@@ -2234,14 +2234,14 @@ function PricingTrustSections() {
                     <motion.span
                       className={cn(
                         "size-2 shrink-0 rounded-full shadow-[0_0_14px_rgba(34,211,238,0.75)]",
-                        state === "closed" ? "bg-emerald-300" : state === "opened" ? "bg-blue-300" : "bg-cyan-300",
+                        state === "closed" ? "bg-emerald-300" : state === "published" ? "bg-cyan-300" : "bg-blue-300",
                       )}
                       animate={{ scale: [1, 1.55, 1], opacity: [0.6, 1, 0.6] }}
                       transition={{ duration: 1.8, repeat: Infinity, delay: index * 0.16, ease: "easeInOut" }}
                     />
                     <p className="min-w-0 text-slate-300">
                       <span className="font-semibold text-slate-100">{ticker}</span>{" "}
-                      {action}
+                        {action} {outcome && <span className="font-semibold text-emerald-300">{outcome}</span>}
                     </p>
                   </div>
                   <span className="shrink-0 text-xs text-slate-600">{time}</span>
@@ -2257,27 +2257,27 @@ function PricingTrustSections() {
 
 function RecentAlertActivityPanel() {
   return (
-    <div className="relative h-full overflow-hidden rounded-3xl border border-blue-300/10 bg-[#071326]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_90px_rgba(37,99,235,0.1)] sm:p-5">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-blue-300/10 bg-[#071326]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_90px_rgba(37,99,235,0.1)] sm:p-5">
       <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(59,130,246,0.12),transparent_36%)]" />
       <div className="relative z-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-semibold text-slate-100">Recent Alert Activity</p>
           <p className="mt-1 text-xs text-slate-500">Live-style product activity examples from the alert workflow.</p>
         </div>
-        <span className="flex w-fit items-center gap-2 rounded-full border border-blue-300/14 bg-blue-300/8 px-3 py-1 text-[11px] text-blue-200">
+        <span className="flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[11px] text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.12)]">
           <motion.span
-            className="size-1.5 rounded-full bg-blue-300 shadow-[0_0_14px_rgba(59,130,246,0.75)]"
-            animate={{ scale: [1, 1.8, 1], opacity: [0.6, 1, 0.6] }}
+            className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.85)]"
+            animate={{ scale: [1, 1.9, 1], opacity: [0.55, 1, 0.55] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           />
           Monitoring live
         </span>
       </div>
-      <div className="relative z-10 mt-4 grid gap-2">
-        {recentAlertActivity.map(([ticker, action, time, state], index) => (
+      <div className="relative z-10 mt-3 grid gap-1.5">
+        {recentAlertActivity.map(([ticker, action, outcome, time, state], index) => (
           <motion.div
             key={`${ticker}-${action}`}
-            className="flex flex-col gap-2 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3 py-3 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300/22 hover:bg-blue-300/[0.035] sm:flex-row sm:items-center sm:justify-between"
+            className="group flex flex-col gap-1.5 rounded-lg border border-white/[0.07] bg-white/[0.025] px-3 py-2 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-cyan-300/[0.035] hover:shadow-[0_14px_42px_rgba(14,165,233,0.08)] sm:flex-row sm:items-center sm:justify-between"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -2287,14 +2287,14 @@ function RecentAlertActivityPanel() {
               <motion.span
                 className={cn(
                   "size-2 shrink-0 rounded-full shadow-[0_0_14px_rgba(59,130,246,0.65)]",
-                  state === "closed" ? "bg-emerald-300" : state === "opened" ? "bg-blue-300" : "bg-slate-300",
+                  state === "closed" ? "bg-emerald-300" : state === "published" ? "bg-cyan-300" : "bg-blue-300",
                 )}
                 animate={{ scale: [1, 1.55, 1], opacity: [0.6, 1, 0.6] }}
                 transition={{ duration: 1.8, repeat: Infinity, delay: index * 0.16, ease: "easeInOut" }}
               />
               <p className="min-w-0 text-slate-300">
                 <span className="font-semibold text-slate-100">{ticker}</span>{" "}
-                {action}
+                {action} {outcome && <span className="font-semibold text-emerald-300">{outcome}</span>}
               </p>
             </div>
             <span className="shrink-0 text-xs text-slate-600">{time}</span>
@@ -2319,7 +2319,7 @@ function Process() {
   ]
 
   return (
-    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
         kicker="How our system works"
@@ -2327,7 +2327,7 @@ function Process() {
         highlight="Intelligence Network"
         description="See how SignalFlo moves from AI research to reviewed alerts, then presents a clear trade plan traders can track."
       />
-        <div className="mt-8 grid gap-5 lg:mt-10 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 lg:mt-12 lg:grid-cols-3">
           {workflowSteps.map(([title, Icon, copy], index) => {
 
             return (
@@ -2347,28 +2347,43 @@ function Process() {
           })}
         </div>
 
-        <div className="mx-auto mt-10 grid max-w-7xl gap-5 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)]">
-        <div className="overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] sm:p-6">
-          <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-5">
+        <div className="mx-auto mt-12 grid max-w-7xl gap-5 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)]">
+        <div className="group overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5">
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(34,211,238,0.16),transparent_36%)]" />
             <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-45" />
-            <div className="relative z-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-              <div className="flex flex-col justify-between rounded-2xl border border-cyan-300/12 bg-cyan-300/[0.045] p-5">
+            <div className="relative z-10 grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
+              <div className="flex h-full flex-col justify-between rounded-2xl border border-cyan-300/12 bg-cyan-300/[0.045] p-5 transition-all duration-300 group-hover:border-cyan-300/26 group-hover:bg-cyan-300/[0.06]">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge className="bg-blue-500 text-white">NVDA CALL</Badge>
                     <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/8 text-cyan-200">Option</Badge>
                     <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/8 text-cyan-200">Bullish</Badge>
                   </div>
-                  <h3 className="mt-5 text-3xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-4xl">
-                    What an alert looks like
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-slate-400">
-                    A compact trade plan with asset type, direction, entry,
-                    target, stop, confidence score, and thesis in one place.
-                  </p>
+                  <div className="mt-5 rounded-xl border border-white/[0.07] bg-black/20 p-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Live Trade Alert</p>
+                        <h3 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-slate-50 sm:text-2xl">
+                          NVDA $950C Momentum Setup
+                        </h3>
+                      </div>
+                      <span className="rounded-full border border-cyan-300/15 bg-cyan-300/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-cyan-200">
+                        Active
+                      </span>
+                    </div>
+                    <div className="mt-4 grid gap-2 text-xs text-slate-400 sm:grid-cols-2">
+                      <div className="rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2">
+                        Contract <span className="ml-1 font-semibold text-slate-200">NVDA 950C</span>
+                      </div>
+                      <div className="rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2">
+                        Timeframe <span className="ml-1 font-semibold text-slate-200">Day trade</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-6 flex items-center justify-between rounded-xl border border-white/[0.07] bg-black/20 p-4">
+                <div className="mt-4 rounded-xl border border-white/[0.07] bg-black/20 p-4">
+                  <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Status</p>
                     <p className="mt-1 text-sm font-semibold text-cyan-300">Active</p>
@@ -2378,6 +2393,29 @@ function Process() {
                     animate={{ scale: [1, 1.8, 1], opacity: [0.65, 1, 0.65] }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                   />
+                  </div>
+                  <div className="mt-4">
+                    <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      {["Published", "Monitoring", "Target Hit"].map((step, index) => (
+                        <Fragment key={step}>
+                          <div className="flex flex-col items-center gap-1.5">
+                            <motion.span
+                              className={cn(
+                                "size-2.5 rounded-full border",
+                                index < 2
+                                  ? "border-cyan-300/30 bg-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.55)]"
+                                  : "border-emerald-300/30 bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,0.55)]",
+                              )}
+                              animate={index === 2 ? { scale: [1, 1.55, 1], opacity: [0.65, 1, 0.65] } : {}}
+                              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                            />
+                            <span className={index < 2 ? "text-cyan-200" : "text-emerald-200/80"}>{step}</span>
+                          </div>
+                          {index < 2 && <span className="h-px bg-cyan-300/20" />}
+                        </Fragment>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -2385,22 +2423,61 @@ function Process() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   {alertLevels.map(([label, value, detail], index) => (
                     <MotionCard key={label} delay={index * 0.05}>
-                      <div className="group relative overflow-hidden rounded-xl border border-blue-300/10 bg-[#081225]/86 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/26">
+                      <div
+                        className={cn(
+                          "group relative h-full overflow-hidden rounded-xl border bg-[#081225]/86 p-4 transition-all duration-300 hover:-translate-y-0.5",
+                          label === "Take Profit" && "border-emerald-300/18 shadow-[0_0_34px_rgba(16,185,129,0.08)] hover:border-emerald-300/32",
+                          label === "Confidence Score" && "border-cyan-300/18 hover:border-cyan-300/32",
+                          label === "Entry Zone" && "border-blue-300/12 hover:border-blue-300/28",
+                          label === "Stop Loss" && "border-red-300/10 hover:border-red-300/18",
+                        )}
+                      >
                         <CardEffects />
                         <p className="relative z-10 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">{label}</p>
-                        <p className="relative z-10 mt-2 text-2xl font-bold tracking-[-0.02em] text-cyan-300">{value}</p>
-                        <p className="relative z-10 mt-1 text-xs text-slate-500">{detail}</p>
+                        {label === "Confidence Score" ? (
+                          <div className="relative z-10 mt-3 flex items-center gap-4">
+                            <motion.div
+                              className="grid size-16 place-items-center rounded-full shadow-[0_0_28px_rgba(34,211,238,0.14)]"
+                              style={{ background: "conic-gradient(rgba(34,211,238,0.95) 0deg 338deg, rgba(30,41,59,0.85) 338deg 360deg)" }}
+                              animate={{ filter: ["drop-shadow(0 0 0 rgba(34,211,238,0))", "drop-shadow(0 0 14px rgba(34,211,238,0.3))", "drop-shadow(0 0 0 rgba(34,211,238,0))"] }}
+                              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              <span className="grid size-[3.1rem] place-items-center rounded-full bg-[#081225] text-2xl font-bold text-cyan-200">94</span>
+                            </motion.div>
+                            <div>
+                              <p className="text-sm font-semibold text-slate-100">AI Confidence</p>
+                              <p className="mt-1 text-xs leading-5 text-slate-500">{detail}</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <p className={cn("relative z-10 mt-2 text-2xl font-semibold tracking-[-0.02em]", label === "Take Profit" ? "text-emerald-300" : label === "Stop Loss" ? "text-red-200/80" : "text-cyan-300")}>{value}</p>
+                            <p className="relative z-10 mt-1 text-xs text-slate-500">{detail}</p>
+                          </>
+                        )}
                       </div>
                     </MotionCard>
                   ))}
                 </div>
-                <div className="group relative overflow-hidden rounded-xl border border-cyan-300/12 bg-[#081225]/86 p-5 transition-all duration-300 hover:border-cyan-300/26">
+                <div className="group relative overflow-hidden rounded-xl border border-cyan-300/12 bg-[#081225]/86 p-6 transition-all duration-300 hover:border-cyan-300/26">
                   <CardEffects />
                   <p className="relative z-10 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">Trade Thesis</p>
-                  <p className="relative z-10 mt-3 text-sm leading-7 text-slate-300">
-                    Momentum continuation setup with price holding above key
-                    support and volume confirming the move.
-                  </p>
+                  <div className="relative z-10 mt-3">
+                    <div>
+                      <p className="text-sm leading-7 text-slate-300">
+                        Momentum continuation setup with price holding above key
+                        support and volume confirming the move.
+                      </p>
+                      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                        {["Price holding above support", "Volume confirming move", "Bullish momentum trend", "AI validation passed"].map((factor) => (
+                          <div key={factor} className="flex items-center gap-2 text-xs text-slate-400">
+                            <Check className="size-3.5 text-cyan-300" />
+                            {factor}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                   <motion.div
                     className="relative z-10 mt-4 h-1.5 overflow-hidden rounded-full bg-slate-800/80"
                     initial={{ opacity: 0 }}
@@ -2423,7 +2500,7 @@ function Process() {
         <RecentAlertActivityPanel />
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl text-center">
+        <div className="mx-auto mt-16 max-w-3xl text-center">
           <h3 className="text-3xl font-semibold tracking-[-0.025em] text-slate-50 sm:text-4xl">
             Everything you need to <AnimatedGradientText>trade smarter</AnimatedGradientText>
           </h3>
@@ -2432,7 +2509,7 @@ function Process() {
           </p>
         </div>
 
-        <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => {
             const Icon = feature.icon
 
@@ -2635,16 +2712,20 @@ function Pricing() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
 
   return (
-    <FadeUp as="section" id="pricing" className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" id="pricing" className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28 lg:pt-24">
       <div className="pointer-events-none absolute left-1/2 top-[58%] h-[560px] w-[980px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.14),rgba(37,99,235,0.09),rgba(124,58,237,0.08),transparent_64%)] blur-2xl" />
       <div className="relative z-10 mx-auto max-w-7xl">
-      <SectionHeading
-        kicker="Pricing"
-        title="Choose Your Plan"
-        highlight="Your Plan"
-        description="Simple options for traders who want structured alerts, tracking, and clearer trade plans."
-      />
-      <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-3">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Pricing</p>
+        <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
+          Choose <span className="text-cyan-300">Your Plan</span>
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+          Choose the plan that fits your goals. Whether you're just starting out
+          or ready to trade with serious edge.
+        </p>
+      </div>
+      <div className="mt-10 grid items-stretch gap-5 lg:mt-12 lg:grid-cols-3">
         {pricingPlans.map((plan, index) => {
           const meta = pricingPlanMeta[plan.name]
 
@@ -2652,7 +2733,7 @@ function Pricing() {
             <MotionCard key={plan.name} delay={index * 0.06}>
               <Card
                 className={cn(
-                  "group relative flex h-full min-h-[620px] flex-col overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_60px_rgba(2,8,23,0.38)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/34 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_24px_80px_rgba(14,165,233,0.15),0_0_34px_rgba(124,58,237,0.08)] sm:min-h-[660px]",
+                  "group relative flex h-full min-h-[640px] flex-col overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_60px_rgba(2,8,23,0.38)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/34 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_24px_80px_rgba(14,165,233,0.15),0_0_34px_rgba(124,58,237,0.08)] sm:min-h-[680px]",
                   plan.name === "Annual" && "border-cyan-300/70 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_0_130px_rgba(34,211,238,0.4),0_0_86px_rgba(124,58,237,0.22)] lg:-translate-y-3 lg:scale-[1.04]",
                   plan.name === "Founder Lifetime" && "border-amber-300/24 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_70px_rgba(245,158,11,0.11),0_0_38px_rgba(34,211,238,0.06)]",
                 )}
@@ -2676,7 +2757,7 @@ function Pricing() {
                 </CardHeader>
 
                 <CardContent className="relative z-10 flex flex-1 flex-col px-5 pb-5 sm:px-6 sm:pb-6">
-                  <div className="border-b border-white/[0.07] pb-6 text-center">
+                  <div className="flex min-h-[180px] flex-col items-center justify-center border-b border-white/[0.07] pb-6 text-center">
                     <div className="flex flex-wrap items-end justify-center gap-x-2 gap-y-1">
                       <p className="text-[2.6rem] font-extrabold leading-none tracking-[-0.04em] text-cyan-300 sm:text-[3.25rem]">{meta.priceMain}</p>
                       <p className="pb-2 text-sm font-medium text-slate-500">{meta.unit}</p>
@@ -2684,8 +2765,6 @@ function Pricing() {
                     <p className="mx-auto mt-1.5 max-w-xs text-sm leading-5 text-slate-500">{plan.copy}</p>
                     <p className="mt-2 text-xs text-slate-600">{meta.support}</p>
                   </div>
-
-                  <div className="flex-1" />
 
                   <div className="pb-4 pt-3">
                     <div className="grid grid-cols-1 gap-x-3 gap-y-2 text-[13px] sm:grid-cols-2">
@@ -2704,7 +2783,7 @@ function Pricing() {
                     type="button"
                     onClick={() => setSelectedPlan(plan)}
                     className={cn(
-                      "h-12 w-full transition-all hover:-translate-y-0.5",
+                      "mt-auto h-12 w-full transition-all hover:-translate-y-0.5",
                       plan.name === "Annual"
                         ? "bg-blue-500 text-white shadow-[0_0_34px_rgba(59,130,246,0.28)] hover:bg-blue-400"
                         : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
@@ -2738,7 +2817,7 @@ function Pricing() {
 
 function Faq() {
   return (
-    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
       <div className="mx-auto max-w-3xl">
         <SectionHeading
           kicker="FAQ"
@@ -2746,7 +2825,7 @@ function Faq() {
           highlight="Questions"
           description="Everything you need to know before getting started."
         />
-        <Accordion type="single" collapsible className="mt-8 space-y-3">
+        <Accordion type="single" collapsible className="mt-10 space-y-3">
           {faqs.map(([question, answer], index) => (
             <AccordionItem key={question} value={`faq-${index}`} className="rounded-lg border border-white/[0.07] bg-[#081225]/82 px-4">
               <AccordionTrigger className="text-left text-sm hover:text-cyan-300 hover:no-underline">
@@ -2772,15 +2851,15 @@ function Footer() {
   ]
 
   return (
-    <footer className="border-t border-white/[0.06] bg-[#050914] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+    <footer className="border-t border-white/[0.06] bg-[#050914] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         <form
-          className="relative mb-8 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(14,165,233,0.12)] sm:p-6"
+          className="relative mb-12 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(14,165,233,0.12)] sm:p-7"
           onSubmit={(event) => event.preventDefault()}
         >
           <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(34,211,238,0.15),transparent_34%),radial-gradient(circle_at_88%_10%,rgba(37,99,235,0.12),transparent_30%)]" />
           <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
-          <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-xl font-bold tracking-[-0.01em] text-slate-100">Stay Updated With SignalFlo</p>
               <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
@@ -2821,7 +2900,7 @@ function Footer() {
           </div>
         </form>
 
-        <div className="grid gap-10 md:grid-cols-[1.2fr_2fr]">
+        <div className="grid gap-12 md:grid-cols-[1.2fr_2fr]">
           <div>
             <div className="flex items-center gap-3 text-base font-bold tracking-[-0.01em] text-slate-100">
               <span className="flex size-10 items-center justify-center rounded-xl bg-cyan-400 text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.18)]">
@@ -2834,11 +2913,11 @@ function Footer() {
               targets, stop loss, confidence scoring, and real-time tracking.
             </p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-4">
+          <div className="grid gap-10 sm:grid-cols-4">
             {footerColumns.map(([head, ...links]) => (
               <div key={head}>
                 <p className="text-xs font-semibold text-slate-300">{head}</p>
-                <div className="mt-3 space-y-2">
+                <div className="mt-4 space-y-3">
                   {links.map((link) => (
                     <a
                       key={link}
@@ -2859,7 +2938,7 @@ function Footer() {
             ))}
           </div>
         </div>
-        <div className="mt-8 border-t border-white/[0.06] pt-5 text-center">
+        <div className="mt-10 border-t border-white/[0.06] pt-6 text-center">
           <p className="text-xs text-slate-600">© 2026 SignalFlo AI. All rights reserved.</p>
           <p className="mt-1 text-xs text-slate-700">Built for structured trade alerts, tracking, and market monitoring.</p>
         </div>
