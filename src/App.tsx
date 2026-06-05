@@ -42,6 +42,8 @@ import { cn } from "@/lib/utils"
 
 const APP_URL = "https://signal-flo-ai.vercel.app"
 const LEGAL_URL = "/legal"
+const TERMS_URL = "/terms"
+const PRICING_URL = "/pricing"
 const LEGAL_VERSION = "v1.0"
 const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
 const LEGAL_ACKNOWLEDGMENT =
@@ -221,6 +223,61 @@ const faqs = [
   ["Is this financial advice?", "No. SignalFlo is software for alerts, research, and education. It does not provide individualized financial advice."],
 ]
 
+const termsSections = [
+  ["Acceptance of Terms", "By accessing or using SignalFlo, you agree to these Terms & Conditions and any policies referenced here. If you do not agree, do not access the website, dashboard, alerts, community channels, or related services."],
+  ["Platform Overview", "SignalFlo provides trading alerts, AI-generated market intelligence, dashboard tools, watchlists, trade thesis content, risk levels, and educational or informational materials for traders reviewing public market opportunities."],
+  ["Educational and Informational Purposes Only", "SignalFlo is an educational and informational platform only. Alerts, dashboards, examples, data, and market commentary are provided for general informational purposes and are not tailored to any individual user's financial situation."],
+  ["No Financial, Investment, Legal, or Tax Advice", "SignalFlo is not a registered investment adviser, broker-dealer, financial planner, securities professional, legal adviser, tax adviser, or fiduciary. Nothing on the website or inside the platform should be interpreted as financial, investment, legal, tax, or trading advice. Consult a licensed financial professional before making trading decisions."],
+  ["Trading Risk Disclosure", "Trading stocks, options, futures, crypto, ETFs, and other financial instruments involves substantial risk, including the possible loss of capital. Options and futures can involve leverage and may not be suitable for all traders."],
+  ["No Guarantee of Results", "SignalFlo does not guarantee profits, returns, win rates, income, successful trades, execution quality, or any particular outcome. Past performance, examples, backtests, alerts, or demonstrations do not guarantee future results."],
+  ["User Responsibility", "You are solely responsible for evaluating alerts, conducting independent research, sizing positions, managing risk, and deciding whether any trade idea is appropriate for your objectives, account size, risk tolerance, and circumstances."],
+  ["Subscriptions, Billing, and Payments", "Paid plans may renew automatically based on the plan selected at checkout. You authorize the applicable third-party payment processor to charge your selected payment method for subscription fees, renewals, upgrades, taxes, and applicable charges."],
+  ["Refund Policy", "Monthly subscription payments are not refundable unless required by law. Annual and Founder Lifetime plan payments are generally final and non-refundable unless otherwise stated in writing by SignalFlo or required by law. Access to platform features, community channels, alerts, or digital materials may begin immediately after purchase."],
+  ["Account Access and Security", "You are responsible for maintaining the confidentiality of your login credentials and account access. Notify SignalFlo promptly if you believe your account has been compromised or used without authorization."],
+  ["Acceptable Use", "You agree not to copy, resell, redistribute, scrape, reverse engineer, abuse, disrupt, or misuse SignalFlo content, alerts, data, systems, communities, or platform access. SignalFlo may suspend or terminate access for misuse."],
+  ["Intellectual Property", "SignalFlo's website, platform design, alerts, dashboards, text, graphics, trade plan formatting, workflows, and proprietary materials are owned by SignalFlo or its licensors and are protected by intellectual property laws."],
+  ["Third-Party Services and Data Providers", "SignalFlo may rely on third-party services, payment processors, communication platforms, hosting providers, data providers, and integrations. SignalFlo is not responsible for third-party outages, errors, terms, fees, or data inaccuracies."],
+  ["Platform Availability", "SignalFlo may change, suspend, update, limit, or discontinue any part of the website, platform, alerts, community access, data, or features at any time. We do not guarantee uninterrupted or error-free availability."],
+  ["Limitation of Liability", "To the maximum extent permitted by law, SignalFlo and its owners, operators, employees, contractors, affiliates, and partners will not be liable for trading losses, lost profits, lost data, indirect damages, consequential damages, or damages related to use of or inability to use the platform."],
+  ["Indemnification", "You agree to indemnify and hold SignalFlo harmless from claims, losses, damages, liabilities, costs, and expenses arising from your use of the platform, trading decisions, breach of these terms, or misuse of SignalFlo materials."],
+  ["Changes to the Terms", "SignalFlo may update these Terms & Conditions from time to time. Updated terms may be posted on this page with a revised effective date. Continued use of SignalFlo after updates means you accept the revised terms."],
+  ["Contact Information", "Questions about these terms can be sent to SignalFlo support through the contact channels provided on the website or dashboard."],
+] as const
+
+const pricingIncludedItems = [
+  "Real-Time Trade Alerts",
+  "AI Confidence Scores",
+  "Dashboard Access",
+  "Historical Performance Tracking",
+  "Stocks, Options & Futures Coverage",
+  "Recent Alert Activity",
+  "Trade Thesis and Risk Levels",
+  "Platform Updates",
+] as const
+
+const pricingComparisonRows = [
+  ["Dashboard Access", true, true, true],
+  ["AI-Powered Alerts", true, true, true],
+  ["Stocks Alerts", true, true, true],
+  ["Options Alerts", true, true, true],
+  ["Futures Coverage", false, true, true],
+  ["AI Confidence Scores", true, true, true],
+  ["Trade Thesis", true, true, true],
+  ["Recent Alert Activity", true, true, true],
+  ["Historical Performance Tracking", true, true, true],
+  ["Priority Updates", false, true, true],
+  ["Lifetime Access", false, false, true],
+] as const
+
+const pricingPageFaqs = [
+  ["Is SignalFlo financial advice?", "No. SignalFlo provides educational and informational market intelligence, alerts, and dashboard tools only. It does not provide personalized investment advice."],
+  ["Can I cancel anytime?", "Monthly and annual subscriptions can be canceled according to the billing terms shown at checkout. Canceling stops future renewals but does not guarantee a refund for prior payments."],
+  ["What markets does SignalFlo cover?", "SignalFlo focuses on stocks, options, futures coverage, watchlists, and structured alert workflows. Available coverage may evolve as the platform expands."],
+  ["Are results guaranteed?", "No. Trading involves risk and past performance does not guarantee future results. Users are responsible for their own trading decisions."],
+  ["What is included with Founder Lifetime?", "Founder Lifetime includes one-time founding-member access during the life of the SignalFlo platform, future premium categories, and priority onboarding."],
+  ["How are alerts delivered?", "Alerts and tracking are presented through the SignalFlo dashboard and may also be supported through community or notification channels such as Discord, Telegram, or email depending on plan availability."],
+] as const
+
 const dashboardTabs = ["Overview", "Active Alerts", "Closed Trades"]
 
 const dashboardAlerts = [
@@ -372,8 +429,6 @@ const recentAlertActivity = [
   ["AAPL", "Breakout Alert Published", "", "42m ago", "published"],
   ["TSLA", "Target Hit", "+15.1%", "1h ago", "closed"],
   ["MSFT", "Risk Level Updated", "", "1h ago", "published"],
-  ["COIN", "Breakout Closed", "+9.4%", "2h ago", "closed"],
-  ["AMD", "Watchlist Alert Published", "", "2h ago", "published"],
   ["QQQ", "Target Hit", "+7.6%", "3h ago", "closed"],
 ] as const
 
@@ -381,10 +436,21 @@ void steps
 void engineCopyBlocks
 void Features
 void PricingTrustSections
+void Pricing
 
 function App() {
-  if (window.location.pathname === LEGAL_URL) {
+  const pathname = window.location.pathname
+
+  if (pathname === LEGAL_URL) {
     return <LegalPage />
+  }
+
+  if (pathname === TERMS_URL) {
+    return <TermsPage />
+  }
+
+  if (pathname === PRICING_URL) {
+    return <DedicatedPricingPage />
   }
 
   return (
@@ -393,10 +459,28 @@ function App() {
       <Hero />
       <Process />
       <SignalFloEngine />
-      <Pricing />
       <Faq />
       <Footer />
     </main>
+  )
+}
+
+function getSectionId(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+}
+
+function boldSignalFlo(text: string) {
+  return text.split(/(SignalFlo)/g).map((part, index) =>
+    part === "SignalFlo" ? (
+      <strong key={`${part}-${index}`} className="font-semibold text-inherit">
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
   )
 }
 
@@ -408,7 +492,7 @@ function LegalPage() {
         <div className="relative z-10 mx-auto max-w-4xl">
           <a href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-cyan-300 transition-colors hover:text-cyan-200">
             <ArrowRight className="size-4 rotate-180" />
-            Back to SignalFlo
+            Back to <strong className="font-semibold">SignalFlo</strong>
           </a>
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             Legal
@@ -417,7 +501,7 @@ function LegalPage() {
             Terms, Risk Disclosure & Refund Policy
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
-            Please review these terms carefully before using SignalFlo AI,
+            Please review these terms carefully before using <strong className="font-semibold">SignalFlo</strong> AI,
             purchasing a plan, subscribing, or upgrading your account.
           </p>
         </div>
@@ -466,7 +550,7 @@ function LegalPage() {
             <Card key={title} className="border-white/[0.07] bg-[#081225]/82">
               <CardHeader className="p-5">
                 <CardTitle className="text-lg">{title}</CardTitle>
-                <CardDescription className="text-sm leading-7 text-slate-400">{copy}</CardDescription>
+                <CardDescription className="text-sm leading-7 text-slate-400">{boldSignalFlo(copy)}</CardDescription>
               </CardHeader>
             </Card>
           ))}
@@ -476,29 +560,136 @@ function LegalPage() {
   )
 }
 
+function TermsPage() {
+  return (
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <Navbar />
+      <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_82%_16%,rgba(124,58,237,0.13),transparent_28%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <a href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-cyan-300 transition-colors hover:text-cyan-200">
+            <ArrowRight className="size-4 rotate-180" />
+            Back to <strong className="font-semibold">SignalFlo</strong>
+          </a>
+          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+            Legal
+          </Badge>
+          <div className="mt-5 max-w-4xl">
+            <h1 className="font-display text-4xl font-bold tracking-[-0.025em] text-slate-50 sm:text-6xl">
+              Terms & Conditions
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-400">
+              Please read these terms carefully before using <strong className="font-semibold">SignalFlo</strong>.
+            </p>
+            <p className="mt-3 text-xs font-medium uppercase tracking-[0.18em] text-slate-600">
+              Last updated: June 5, 2026
+            </p>
+          </div>
+
+          <div className="mt-8 max-w-4xl rounded-2xl border border-cyan-300/14 bg-cyan-300/[0.035] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_80px_rgba(14,165,233,0.08)]">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-cyan-300/18 bg-cyan-300/10 text-cyan-200">
+                <ShieldCheck className="size-5" />
+              </span>
+              <p className="text-sm leading-7 text-slate-300">
+                <strong className="font-semibold">SignalFlo</strong> is an educational and informational platform only.
+                Nothing on this website or inside the platform should be
+                interpreted as financial, investment, legal, tax, or trading
+                advice.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_1fr] lg:gap-8">
+          <aside className="lg:sticky lg:top-20 lg:self-start">
+            <Card className="border-white/[0.07] bg-[#081225]/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <CardHeader className="p-5">
+                <CardTitle className="text-sm">Table of Contents</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-2 px-5 pb-5">
+                {termsSections.map(([title], index) => (
+                  <a
+                    key={title}
+                    href={`#${getSectionId(title)}`}
+                    className="rounded-lg px-3 py-2 text-xs leading-5 text-slate-500 transition-colors hover:bg-white/[0.04] hover:text-cyan-300"
+                  >
+                    {String(index + 1).padStart(2, "0")} / {title}
+                  </a>
+                ))}
+              </CardContent>
+            </Card>
+          </aside>
+
+          <Card className="overflow-hidden border-white/[0.07] bg-[#081225]/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(2,8,23,0.35)]">
+            <CardContent className="p-5 sm:p-8 lg:p-10">
+              <div className="space-y-8">
+                {termsSections.map(([title, copy], index) => (
+                  <section key={title} id={getSectionId(title)} className="scroll-mt-24 border-b border-white/[0.06] pb-8 last:border-b-0 last:pb-0">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300/80">
+                      Section {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <h2 className="mt-3 font-display text-2xl font-bold tracking-[-0.015em] text-slate-100">
+                      {title}
+                    </h2>
+                    <p className="mt-4 text-sm leading-7 text-slate-400 sm:text-[15px]">
+                      {boldSignalFlo(copy)}
+                    </p>
+                  </section>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#081225]/82 p-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_26px_110px_rgba(14,165,233,0.11)] sm:p-10">
+          <p className="font-display text-3xl font-bold tracking-[-0.02em] text-slate-50">
+            Ready to use <strong className="font-semibold">SignalFlo</strong>?
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+            Review plan options and choose the access level that fits how you
+            want to monitor alerts.
+          </p>
+          <Button asChild className="mt-6 bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.28)] hover:bg-blue-400">
+            <a href={PRICING_URL}>
+              View Pricing
+              <ArrowRight className="size-4" />
+            </a>
+          </Button>
+        </div>
+      </section>
+      <Footer />
+    </main>
+  )
+}
+
 function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.07] bg-[#050a14]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#" className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.01em]">
+        <a href="/" className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.01em]">
           <span className="flex size-8 items-center justify-center rounded-md bg-cyan-400 text-slate-950 shadow-[0_0_26px_rgba(34,211,238,0.35)]">
             <Activity className="size-4" />
           </span>
           SignalFlo AI
         </a>
         <nav className="hidden items-center gap-8 text-xs text-slate-400 lg:flex">
-          <a href="#features" className="transition-colors hover:text-white">Features</a>
-          <a href="#dashboard" className="transition-colors hover:text-white">Dashboard</a>
-          <a href="#alerts" className="transition-colors hover:text-white">Trade Alerts</a>
-          <a href="#pricing" className="transition-colors hover:text-white">Pricing</a>
-          <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
+          <a href="/#features" className="transition-colors hover:text-white">Features</a>
+          <a href="/#dashboard" className="transition-colors hover:text-white">Dashboard</a>
+          <a href="/#alerts" className="transition-colors hover:text-white">Trade Alerts</a>
+          <a href={PRICING_URL} className="transition-colors hover:text-white">Pricing</a>
+          <a href="/#faq" className="transition-colors hover:text-white">FAQ</a>
         </nav>
         <div className="hidden items-center gap-2 sm:flex">
           <Button asChild variant="ghost" size="sm" className="h-8 text-xs transition-all hover:bg-white/[0.06]">
             <a href={APP_URL}>Login</a>
           </Button>
           <Button asChild size="sm" className="h-8 bg-blue-500 text-xs text-white shadow-[0_0_20px_rgba(59,130,246,0.28)] transition-all hover:-translate-y-0.5 hover:bg-blue-400">
-            <a href={APP_URL}>Start Free Trial</a>
+            <a href={APP_URL}>Get Started</a>
           </Button>
         </div>
         <Button asChild className="sm:hidden" variant="outline" size="icon" aria-label="Open dashboard">
@@ -534,7 +725,7 @@ function Hero() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-400 sm:text-[15px]">
             Harness the power of AI trading. Get real-time stock, options, and
-            futures signals generated by SignalFlo AI, built to help you win
+            futures signals generated by <strong className="font-semibold">SignalFlo</strong> AI, built to help you win
             more trades, more often.
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
@@ -609,7 +800,7 @@ function HeroDashboardCard() {
               </span>
               <span className="text-slate-400">Updated {updatedLabels[updatedIndex]} ago</span>
               <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-2 py-1 text-cyan-200">US cash session open</span>
-              <span className="text-cyan-300">SignalFlo Command Center</span>
+              <span className="text-cyan-300"><strong className="font-semibold">SignalFlo</strong> Command Center</span>
             </div>
           </div>
 
@@ -1013,7 +1204,7 @@ function Features() {
                     <Icon className="size-4" />
                   </span>
                   <CardTitle className="mt-4 text-base font-semibold tracking-[-0.01em] text-slate-100">{title}</CardTitle>
-                  <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{copy}</CardDescription>
+                  <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{boldSignalFlo(copy)}</CardDescription>
                 </CardHeader>
               </Card>
             </MotionCard>
@@ -1050,7 +1241,7 @@ function WhySignalFlo() {
                     <Icon className="size-4" />
                   </span>
                   <CardTitle className="mt-4 text-base font-semibold tracking-[-0.01em] text-slate-100">{title}</CardTitle>
-                  <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{copy}</CardDescription>
+                  <CardDescription className="mt-2 text-sm leading-6 text-slate-500">{boldSignalFlo(copy)}</CardDescription>
                 </CardHeader>
               </Card>
             </MotionCard>
@@ -1091,7 +1282,7 @@ function FeatureCard({
           <Icon className="size-4" />
         </span>
         <CardTitle className="mt-4 text-sm font-semibold tracking-[-0.005em] text-slate-100">{feature.title}</CardTitle>
-        <CardDescription className="mt-1 text-xs leading-5 text-slate-500">{feature.copy}</CardDescription>
+        <CardDescription className="mt-1 text-xs leading-5 text-slate-500">{boldSignalFlo(feature.copy)}</CardDescription>
         <div className="mt-auto flex items-center gap-2 pt-5 text-[10px] font-medium uppercase tracking-[0.16em] text-slate-600">
           <span className="size-1 rounded-full bg-cyan-300/80" />
           {detailLabels[index]}
@@ -1264,7 +1455,7 @@ function DashboardCommandCenter() {
                 </span>
                 <span className="text-slate-500">Updated {updatedLabels[updatedIndex]} ago</span>
                 <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-2 py-1 text-cyan-200">US cash session open</span>
-                <span className="text-cyan-300">SignalFlo Command Center</span>
+                <span className="text-cyan-300"><strong className="font-semibold">SignalFlo</strong> Command Center</span>
               </div>
             </div>
 
@@ -1609,7 +1800,7 @@ function AnimatedDashboardChart({ className }: { className?: string }) {
         Entry / TP / SL mapped
       </div>
       <div className="absolute bottom-3 left-3 rounded-md border border-white/[0.07] bg-black/20 px-2 py-1 text-[10px] text-slate-500">
-        SignalFlo tracking live
+        <strong className="font-semibold">SignalFlo</strong> tracking live
       </div>
     </div>
   )
@@ -1679,20 +1870,12 @@ function SignalFloEngine() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="mx-auto max-w-4xl text-center">
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            <Cpu className="text-cyan-300" />
-            Market intelligence layer
-          </Badge>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-[-0.03em] text-slate-50 sm:text-5xl lg:text-6xl">
-            THE SIGNALFLO <AnimatedGradientText>AI ENGINE</AnimatedGradientText>
-          </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
-            Built to filter market noise, identify institutional-grade
-            confluence, and surface high-conviction trade opportunities in
-            real time.
-          </p>
-        </div>
+        <SectionHeading
+          kicker="Market Intelligence Layer"
+          title="The SignalFlo AI Engine"
+          highlight="AI Engine"
+          description="Built to filter market noise, identify institutional-grade confluence, and surface high-conviction trade opportunities in real time."
+        />
 
         <EngineMetricStrip />
 
@@ -1752,7 +1935,7 @@ function EngineParagraphCard({
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">{label}</span>
         </div>
-        <p className="relative z-10 text-sm leading-7 text-slate-400 sm:leading-8">{copy}</p>
+        <p className="relative z-10 text-sm leading-7 text-slate-400 sm:leading-8">{boldSignalFlo(copy)}</p>
       </div>
     </MotionCard>
   )
@@ -1801,7 +1984,7 @@ function EngineWorkflowStage({
             </span>
           )}
         </div>
-        <p className="relative z-10 mt-4 text-sm leading-6 text-slate-400">{stage.copy}</p>
+        <p className="relative z-10 mt-4 text-sm leading-6 text-slate-400">{boldSignalFlo(stage.copy)}</p>
         <div className="relative z-10 mt-5 flex flex-wrap gap-2">
           {stage.chips.map((chip, chipIndex) => (
             <motion.span
@@ -2005,12 +2188,12 @@ function DecisionEngineVisual() {
 function MarketIntelligenceStack() {
   return (
     <div className="mt-14">
-      <div className="mx-auto max-w-3xl text-center">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Architecture</p>
-        <h3 className="mt-3 text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
-          MARKET INTELLIGENCE <AnimatedGradientText>STACK</AnimatedGradientText>
-        </h3>
-      </div>
+      <SectionHeading
+        kicker="Architecture"
+        title="Market Intelligence Stack"
+        highlight="Intelligence Stack"
+        description="A layered scoring architecture that evaluates structure, flow, liquidity, catalysts, and risk before an alert reaches members."
+      />
       <div className="relative mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#050b16]/86 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_140px_rgba(14,165,233,0.16),0_0_80px_rgba(124,58,237,0.08)] sm:p-6 lg:p-8">
         <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.2),transparent_38%),radial-gradient(circle_at_12%_20%,rgba(37,99,235,0.16),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(124,58,237,0.14),transparent_28%)]" />
         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-50" />
@@ -2087,7 +2270,7 @@ function EngineLayerModule({
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">Layer 0{index + 1}</p>
           <h4 className="mt-1 text-base font-semibold tracking-[-0.01em] text-slate-100">{feature.title}</h4>
-          <p className="mt-2 text-xs leading-5 text-slate-500">{feature.copy}</p>
+          <p className="mt-2 text-xs leading-5 text-slate-500">{boldSignalFlo(feature.copy)}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {engineLayerChips[index].map((chip) => (
               <span key={chip} className="rounded-full border border-white/[0.07] bg-white/[0.035] px-2 py-0.5 text-[10px] text-slate-500">
@@ -2103,13 +2286,18 @@ function EngineLayerModule({
 }
 
 function EngineClosingStatement() {
-  const scrollToPricing = () => {
-    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })
-  }
+  const intelligenceWorkflow = [
+    "Market Structure Analysis",
+    "Liquidity Validation",
+    "Risk Modeling",
+    "Context Confirmation",
+    "AI Confidence Ranking",
+    "Trade Published",
+  ]
 
   return (
     <motion.div
-      className="relative mt-24 overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-8 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_150px_rgba(14,165,233,0.18)] sm:p-14 lg:p-20"
+      className="relative mt-20 overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-8 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_150px_rgba(14,165,233,0.18)] sm:p-11 lg:p-14"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -2123,47 +2311,64 @@ function EngineClosingStatement() {
         transition={{ duration: 5.5, repeat: Infinity, ease: "linear" }}
       />
       <span className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
-      <div className="relative z-10 mx-auto max-w-4xl">
-        <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-          <Sparkles className="text-cyan-300" />
-          SignalFlo Advantage
-        </Badge>
+      <div className="relative z-10 mx-auto max-w-5xl">
+        <div className="text-center">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400"><strong>SignalFlo</strong> Advantage</p>
         <div className="mx-auto mt-7 grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3 text-[10px] uppercase tracking-[0.18em] text-slate-600">
           <span className="h-px bg-gradient-to-r from-transparent to-cyan-300/24" />
           <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-3 py-1 text-cyan-200">Alert filtered through intelligence layers</span>
           <span className="h-px bg-gradient-to-l from-transparent to-cyan-300/24" />
         </div>
-        <h3 className="mt-9 text-5xl font-extrabold tracking-[-0.04em] text-slate-50 sm:text-7xl">
-          NOT MORE ALERTS. <AnimatedGradientText>BETTER INTELLIGENCE.</AnimatedGradientText>
+        <h3 className="mt-8 text-5xl font-semibold tracking-[-0.04em] text-slate-50 sm:text-7xl">
+          Not More Alerts. <AnimatedGradientText>Better Intelligence.</AnimatedGradientText>
         </h3>
-        <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
-          SignalFlo does not generate alerts because a single indicator crossed
-          a line.
-        </p>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
-          Every opportunity must pass through multiple layers of market
-          intelligence, confluence analysis, liquidity validation, risk
-          modeling, and contextual confirmation before it reaches the platform.
-        </p>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-          The result is fewer alerts, higher conviction, and a more disciplined
-          approach to identifying opportunities in today's markets.
-        </p>
-        <Button
-          type="button"
-          onClick={scrollToPricing}
-          className="group mt-12 h-16 border border-cyan-300/24 bg-cyan-300/10 px-10 text-base text-cyan-100 shadow-[0_0_44px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-cyan-300/14 hover:shadow-[0_0_58px_rgba(34,211,238,0.28)]"
-          variant="outline"
-        >
-          JOIN NOW
-          <motion.span
-            className="ml-1 inline-block"
-            animate={{ y: [0, 4, 0] }}
-            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            ↓
-          </motion.span>
-        </Button>
+        </div>
+        <div className="mx-auto mt-7 flex max-w-5xl flex-col items-stretch justify-center gap-3 lg:flex-row lg:items-center lg:gap-2">
+          {intelligenceWorkflow.map((step, index) => (
+            <Fragment key={step}>
+              <motion.div
+                className="group relative flex min-h-16 flex-1 items-center justify-center overflow-hidden rounded-2xl border border-cyan-300/12 bg-[#081225]/82 px-3 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_16px_48px_rgba(14,165,233,0.08)] transition-all duration-300 hover:border-cyan-300/32 hover:bg-[#0a1428]/92 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_18px_56px_rgba(14,165,233,0.16),0_0_24px_rgba(34,211,238,0.08)]"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: index * 0.04 }}
+              >
+                <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.12),transparent_42%)] opacity-80" />
+                <span className="relative z-10">{step}</span>
+              </motion.div>
+              {index < intelligenceWorkflow.length - 1 && (
+                <span className="hidden text-cyan-300/50 lg:block">→</span>
+              )}
+            </Fragment>
+          ))}
+        </div>
+        <div className="mx-auto mt-7 max-w-5xl">
+          <div className="w-full px-5 py-2 text-center sm:px-6">
+            <p className="mx-auto max-w-[690px] text-center text-base leading-[1.75] text-slate-400 sm:text-[17px]">
+              <strong className="font-semibold text-slate-300">SignalFlo</strong> does not generate alerts because a single indicator crossed a line. Every opportunity must pass through multiple layers of market intelligence, confluence analysis, liquidity validation, risk modeling, and contextual confirmation before it reaches the platform. The result is <span className="font-medium text-slate-200">fewer alerts</span>, <span className="font-medium text-slate-200">higher conviction</span>, and a <span className="font-medium text-slate-200">disciplined approach</span> to identifying opportunities in today's markets.
+            </p>
+          </div>
+          <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button
+              type="button"
+              onClick={() => {
+                window.location.href = PRICING_URL
+              }}
+              className="group h-14 w-full justify-center gap-2 border border-cyan-300/24 bg-cyan-300/10 px-8 text-base font-bold text-cyan-100 shadow-[0_0_44px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-cyan-300/14 hover:shadow-[0_0_58px_rgba(34,211,238,0.28)] sm:w-auto"
+              variant="outline"
+            >
+              <ArrowRight className="size-4" />
+              START TRADING SMARTER
+            </Button>
+            <Button
+              asChild
+              className="h-14 w-full justify-center border border-white/10 bg-white/[0.03] px-8 text-base font-semibold text-slate-200 transition-all hover:-translate-y-1 hover:border-cyan-300/24 hover:bg-white/[0.06] sm:w-auto"
+              variant="outline"
+            >
+              <a href="#demo">Schedule A Live Demo</a>
+            </Button>
+          </div>
+        </div>
       </div>
     </motion.div>
   )
@@ -2257,27 +2462,27 @@ function PricingTrustSections() {
 
 function RecentAlertActivityPanel() {
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-blue-300/10 bg-[#071326]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_90px_rgba(37,99,235,0.1)] sm:p-5">
+    <div className="relative flex flex-col overflow-hidden rounded-3xl border border-blue-300/10 bg-[#071326]/78 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_90px_rgba(37,99,235,0.1)] sm:p-5 lg:h-full">
       <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(59,130,246,0.12),transparent_36%)]" />
-      <div className="relative z-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-sm font-semibold text-slate-100">Recent Alert Activity</p>
           <p className="mt-1 text-xs text-slate-500">Live-style product activity examples from the alert workflow.</p>
         </div>
-        <span className="flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[11px] text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.12)]">
+        <span className="flex shrink-0 items-center gap-2 pt-0.5 text-[11px] font-medium text-cyan-200 sm:self-center">
           <motion.span
             className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.85)]"
             animate={{ scale: [1, 1.9, 1], opacity: [0.55, 1, 0.55] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          Monitoring live
+          Monitoring live.
         </span>
       </div>
-      <div className="relative z-10 mt-3 grid gap-1.5">
+      <div className="relative z-10 mt-5 flex flex-1 flex-col gap-3 lg:justify-between">
         {recentAlertActivity.map(([ticker, action, outcome, time, state], index) => (
           <motion.div
             key={`${ticker}-${action}`}
-            className="group flex flex-col gap-1.5 rounded-lg border border-white/[0.07] bg-white/[0.025] px-3 py-2 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-cyan-300/[0.035] hover:shadow-[0_14px_42px_rgba(14,165,233,0.08)] sm:flex-row sm:items-center sm:justify-between"
+            className="group flex min-h-[4.15rem] flex-col gap-2 rounded-xl border border-white/[0.07] bg-white/[0.025] px-4 py-3.5 text-xs transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/22 hover:bg-cyan-300/[0.035] hover:shadow-[0_14px_42px_rgba(14,165,233,0.08)] sm:flex-row sm:items-center sm:justify-between lg:min-h-[4.45rem]"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -2339,7 +2544,7 @@ function Process() {
                       <Icon className="size-6" />
                     </span>
                     <CardTitle className="mt-5 text-lg">{title}</CardTitle>
-                    <CardDescription className="mt-2 leading-6">{copy}</CardDescription>
+                    <CardDescription className="mt-2 leading-6">{boldSignalFlo(copy)}</CardDescription>
                   </CardHeader>
                 </Card>
               </MotionCard>
@@ -2347,14 +2552,14 @@ function Process() {
           })}
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-7xl gap-5 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)]">
-        <div className="group overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
-          <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5">
+        <div className="mx-auto mt-12 grid max-w-7xl items-start gap-5 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)] lg:items-stretch">
+        <div className="group flex h-full items-center overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
+          <div className="relative w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5">
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(34,211,238,0.16),transparent_36%)]" />
             <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-45" />
             <div className="relative z-10 grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
-              <div className="flex h-full flex-col justify-between rounded-2xl border border-cyan-300/12 bg-cyan-300/[0.045] p-5 transition-all duration-300 group-hover:border-cyan-300/26 group-hover:bg-cyan-300/[0.06]">
-                <div>
+              <div className="flex h-full items-center justify-center rounded-2xl border border-cyan-300/12 bg-cyan-300/[0.045] p-5 transition-all duration-300 group-hover:border-cyan-300/26 group-hover:bg-cyan-300/[0.06]">
+                <div className="w-full">
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge className="bg-blue-500 text-white">NVDA CALL</Badge>
                     <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/8 text-cyan-200">Option</Badge>
@@ -2381,20 +2586,20 @@ function Process() {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="mt-4 rounded-xl border border-white/[0.07] bg-black/20 p-4">
-                  <div className="flex items-center justify-between">
+                <div className="mt-3 rounded-xl border border-white/[0.07] bg-black/20 p-4">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Status</p>
-                    <p className="mt-1 text-sm font-semibold text-cyan-300">Active</p>
+                    <div className="flex items-start justify-between gap-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Alert Lifecycle</p>
+                      <span className="rounded-full border border-emerald-300/15 bg-emerald-300/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-200">
+                        Target Hit
+                      </span>
+                    </div>
+                    <p className="mt-0.5 text-xs leading-5 text-slate-500">
+                      Published alert is actively<br />
+                      monitored through outcome review.
+                    </p>
                   </div>
-                  <motion.span
-                    className="size-2 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.9)]"
-                    animate={{ scale: [1, 1.8, 1], opacity: [0.65, 1, 0.65] }}
-                    transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  </div>
-                  <div className="mt-4">
+                  <div className="mt-3">
                     <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                       {["Published", "Monitoring", "Target Hit"].map((step, index) => (
                         <Fragment key={step}>
@@ -2416,6 +2621,7 @@ function Process() {
                       ))}
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
 
@@ -2521,7 +2727,7 @@ function Process() {
                     <Icon className="size-4" />
                   </span>
                   <p className="relative z-10 mt-4 text-sm font-semibold text-slate-100">{feature.title}</p>
-                  <p className="relative z-10 mt-2 text-xs leading-5 text-slate-500">{feature.copy}</p>
+                  <p className="relative z-10 mt-2 text-xs leading-5 text-slate-500">{boldSignalFlo(feature.copy)}</p>
                 </div>
               </MotionCard>
             )
@@ -2643,7 +2849,7 @@ function PricingCheckoutModal({
             Before You Continue
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Before joining SignalFlo, please review and acknowledge the following:
+            Before joining <strong className="font-semibold">SignalFlo</strong>, please review and acknowledge the following:
           </p>
           <div className="mt-5 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4">
             <p className="text-sm font-medium text-slate-200">{plan.name}</p>
@@ -2670,7 +2876,7 @@ function PricingCheckoutModal({
                 Terms, Risk Disclosure & Refund Policy
               </a>
               , including the no-refund policy, risk disclosure, automatic
-              renewal terms, and the fact that SignalFlo provides AI-generated
+              renewal terms, and the fact that <strong className="font-semibold">SignalFlo</strong> provides AI-generated
               market insights, alerts, and educational content only, not
               personalized investment advice.
             </span>
@@ -2705,6 +2911,254 @@ function PricingCheckoutModal({
         </div>
       </motion.div>
     </div>
+  )
+}
+
+function DedicatedPricingPage() {
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null)
+
+  return (
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <Navbar />
+      <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_34%),radial-gradient(circle_at_80%_18%,rgba(124,58,237,0.14),transparent_30%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+        <div className="relative z-10 mx-auto max-w-7xl text-center">
+          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+            Pricing
+          </Badge>
+          <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold tracking-[-0.03em] text-slate-50 sm:text-6xl">
+            Choose Your <strong className="font-semibold">SignalFlo</strong> Plan
+          </h1>
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-400">
+            Get access to AI-powered trading alerts, confidence scoring,
+            performance tracking, and real-time dashboard intelligence.
+          </p>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <Card className="relative overflow-hidden border-cyan-300/12 bg-[#081225]/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(14,165,233,0.1)]">
+            <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(34,211,238,0.12),transparent_32%),radial-gradient(circle_at_90%_15%,rgba(124,58,237,0.1),transparent_30%)]" />
+            <CardContent className="relative z-10 p-5 sm:p-7">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <p className="font-display text-2xl font-bold tracking-[-0.02em] text-slate-50">
+                    Everything Included
+                  </p>
+                  <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+                    <strong className="font-semibold">SignalFlo</strong> plans include the core alert workflow, dashboard
+                    intelligence, and tracking tools traders need to stay
+                    organized.
+                  </p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[560px]">
+                  {pricingIncludedItems.map((item) => (
+                    <div key={item} className="flex items-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2 text-sm text-slate-300">
+                      <Check className="size-4 shrink-0 text-cyan-300" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="relative overflow-visible px-4 pb-12 pt-4 sm:px-6 sm:pb-16 sm:pt-5 lg:px-8 lg:pt-8">
+        <div className="pointer-events-none absolute left-1/2 top-[44%] h-[620px] w-[1100px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.12),rgba(37,99,235,0.08),rgba(124,58,237,0.08),transparent_64%)] blur-2xl" />
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <div className="grid items-stretch gap-5 lg:grid-cols-3">
+            {pricingPlans.map((plan, index) => {
+              const meta = pricingPlanMeta[plan.name]
+
+              return (
+                <MotionCard key={plan.name} delay={index * 0.06}>
+                  <Card
+                    className={cn(
+                      "group relative flex h-full min-h-[650px] flex-col overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_60px_rgba(2,8,23,0.38)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/34 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_24px_80px_rgba(14,165,233,0.15),0_0_34px_rgba(124,58,237,0.08)]",
+                      plan.name === "Annual" && "border-cyan-300/70 bg-[#0a1428] shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_0_130px_rgba(34,211,238,0.36),0_0_86px_rgba(124,58,237,0.2)] lg:-translate-y-3 lg:scale-[1.035]",
+                      plan.name === "Founder Lifetime" && "border-amber-300/24 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_72px_rgba(245,158,11,0.12),0_0_42px_rgba(34,211,238,0.06)]",
+                    )}
+                  >
+                    <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.14),transparent_34%),radial-gradient(circle_at_85%_12%,rgba(124,58,237,0.1),transparent_32%)] opacity-90" />
+                    <span className={cn("pointer-events-none absolute inset-x-5 top-0 h-px bg-blue-300/34", plan.name === "Annual" && "inset-x-0 h-1 bg-blue-400/80", plan.name === "Founder Lifetime" && "bg-amber-300/55")} />
+                    <span className="pointer-events-none absolute -left-8 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[26rem] group-hover:opacity-100" />
+
+                    <CardHeader className="relative z-10 p-5 pb-3 text-center sm:p-6 sm:pb-4">
+                      <div className="flex flex-col items-center gap-2">
+                        <CardTitle className="font-display text-2xl font-bold">{plan.name}</CardTitle>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          <span className="inline-flex rounded-full border border-cyan-300/12 bg-cyan-300/8 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-cyan-200">
+                            {meta.chip}
+                          </span>
+                          {plan.name === "Annual" && (
+                            <Badge className="border border-blue-300/20 bg-blue-500 text-white shadow-[0_0_26px_rgba(59,130,246,0.24)]">
+                              Most Popular
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="relative z-10 flex flex-1 flex-col px-5 pb-5 sm:px-6 sm:pb-6">
+                      <div className="border-b border-white/[0.07] pb-5 text-center">
+                        <div className="flex flex-wrap items-end justify-center gap-x-2 gap-y-1">
+                          <p className="text-[2.85rem] font-extrabold leading-none tracking-[-0.04em] text-cyan-300 sm:text-[3.45rem]">
+                            {meta.priceMain}
+                          </p>
+                          <p className="pb-2 text-sm font-medium text-slate-500">
+                            {meta.unit}
+                          </p>
+                        </div>
+                        <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-slate-400">
+                          {boldSignalFlo(plan.copy)}
+                        </p>
+                        <p className="mt-2 text-xs text-slate-600">{meta.support}</p>
+                      </div>
+
+                      <div className="grid gap-2 border-b border-white/[0.07] py-4">
+                        {meta.benefits.map((benefit) => (
+                          <div key={benefit} className="flex items-start gap-2 text-sm leading-5 text-slate-400">
+                            <Check className="mt-0.5 size-4 shrink-0 text-cyan-300" />
+                            <span>{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="grid gap-2 py-4 text-sm">
+                        {plan.features.map((feature) => (
+                          <div key={feature} className="flex items-start gap-2 leading-5 text-slate-400">
+                            <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-cyan-300/15 bg-cyan-300/8">
+                              <Check className="size-2.5 text-cyan-300" />
+                            </span>
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Button
+                        type="button"
+                        onClick={() => setSelectedPlan(plan)}
+                        className={cn(
+                          "mt-auto h-12 w-full transition-all hover:-translate-y-0.5",
+                          plan.name === "Annual"
+                            ? "bg-blue-500 text-white shadow-[0_0_34px_rgba(59,130,246,0.28)] hover:bg-blue-400"
+                            : "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]",
+                        )}
+                        variant={plan.name === "Annual" ? "default" : "outline"}
+                      >
+                        {plan.cta}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </MotionCard>
+              )
+            })}
+          </div>
+
+          <p className="mx-auto mt-7 max-w-3xl text-center text-xs leading-5 text-slate-500">
+            <strong className="font-semibold">SignalFlo</strong> is for educational and informational purposes only.
+            Trading involves risk and past performance does not guarantee future
+            results.
+          </p>
+        </div>
+      </section>
+
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Compare</p>
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
+              Plan Comparison
+            </h2>
+          </div>
+          <div className="mt-8 overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#081225]/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <table className="w-full min-w-[720px] text-left text-sm">
+              <thead className="border-b border-white/[0.07] text-xs uppercase tracking-[0.16em] text-slate-500">
+                <tr>
+                  <th className="px-5 py-4 font-medium">Feature</th>
+                  <th className="px-5 py-4 text-center font-medium">Monthly</th>
+                  <th className="px-5 py-4 text-center font-medium text-cyan-300">Annual</th>
+                  <th className="px-5 py-4 text-center font-medium">Founder Lifetime</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pricingComparisonRows.map(([feature, monthly, annual, lifetime]) => (
+                  <tr key={feature} className="border-b border-white/[0.05] last:border-b-0">
+                    <td className="px-5 py-4 text-slate-300">{feature}</td>
+                    {[monthly, annual, lifetime].map((included, index) => (
+                      <td key={`${feature}-${index}`} className="px-5 py-4 text-center">
+                        {included ? (
+                          <span className="inline-flex size-7 items-center justify-center rounded-full border border-cyan-300/16 bg-cyan-300/8 text-cyan-300">
+                            <Check className="size-4" />
+                          </span>
+                        ) : (
+                          <span className="text-slate-700">-</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/[0.06] bg-[#07101f] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-3xl">
+          <SectionHeading
+            kicker="Pricing FAQ"
+            title="Pricing Questions"
+            highlight="Questions"
+            description="A quick look at plan access, market coverage, and important risk context."
+          />
+          <Accordion type="single" collapsible className="mt-10 space-y-3">
+            {pricingPageFaqs.map(([question, answer], index) => (
+              <AccordionItem key={question} value={`pricing-faq-${index}`} className="rounded-lg border border-white/[0.07] bg-[#081225]/82 px-4">
+                <AccordionTrigger className="text-left text-sm hover:text-cyan-300 hover:no-underline">
+                  {question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm leading-6 text-slate-400">
+                  {boldSignalFlo(answer)}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#081225]/82 p-7 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_26px_110px_rgba(14,165,233,0.11)] sm:p-10">
+          <p className="font-display text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
+            Start Trading Smarter With <strong className="font-semibold">SignalFlo</strong>
+          </p>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+            Access AI-powered alerts, structured trade plans, and real-time
+            market intelligence.
+          </p>
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.28)] hover:bg-blue-400">
+              <a href={APP_URL}>
+                Get Started
+                <ArrowRight className="size-4" />
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="border-white/10 bg-white/[0.03] hover:bg-white/[0.06]">
+              <a href={TERMS_URL}>Read Terms</a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+      <PricingCheckoutModal
+        plan={selectedPlan}
+        onClose={() => setSelectedPlan(null)}
+      />
+    </main>
   )
 }
 
@@ -2762,7 +3216,7 @@ function Pricing() {
                       <p className="text-[2.6rem] font-extrabold leading-none tracking-[-0.04em] text-cyan-300 sm:text-[3.25rem]">{meta.priceMain}</p>
                       <p className="pb-2 text-sm font-medium text-slate-500">{meta.unit}</p>
                     </div>
-                    <p className="mx-auto mt-1.5 max-w-xs text-sm leading-5 text-slate-500">{plan.copy}</p>
+                    <p className="mx-auto mt-1.5 max-w-xs text-sm leading-5 text-slate-500">{boldSignalFlo(plan.copy)}</p>
                     <p className="mt-2 text-xs text-slate-600">{meta.support}</p>
                   </div>
 
@@ -2802,7 +3256,7 @@ function Pricing() {
         Annual savings are calculated against the $295 monthly plan billed for 12 months.
       </p>
       <p className="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-slate-500">
-        Trading involves substantial risk. SignalFlo provides AI-generated market
+        Trading involves substantial risk. <strong className="font-semibold">SignalFlo</strong> provides AI-generated market
         insights, alerts, and educational content only. Past performance does
         not guarantee future results.
       </p>
@@ -2832,7 +3286,7 @@ function Faq() {
                 {question}
               </AccordionTrigger>
               <AccordionContent className="text-sm leading-6 text-slate-400">
-                {answer}
+                {boldSignalFlo(answer)}
               </AccordionContent>
             </AccordionItem>
           ))}
@@ -2861,7 +3315,7 @@ function Footer() {
           <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-xl font-bold tracking-[-0.01em] text-slate-100">Stay Updated With SignalFlo</p>
+              <p className="text-xl font-bold tracking-[-0.01em] text-slate-100">Stay Updated With <strong className="font-semibold">SignalFlo</strong></p>
               <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
                 Get launch updates, new features, and alert platform news.
               </p>
@@ -2889,11 +3343,11 @@ function Footer() {
                 <p className="text-sm font-semibold text-slate-200">Trading Risk Disclosure</p>
               </div>
               <p className="text-xs leading-6 text-slate-500">
-                SignalFlo provides market alerts, trade ideas, research tools,
+                <strong className="font-semibold">SignalFlo</strong> provides market alerts, trade ideas, research tools,
                 and educational content. Trading involves risk, including
                 possible loss of capital. Past performance does not guarantee
                 future results. Users are responsible for their own trading
-                decisions. SignalFlo does not execute trades or provide
+                decisions. <strong className="font-semibold">SignalFlo</strong> does not execute trades or provide
                 individualized financial advice.
               </p>
             </div>
@@ -2924,9 +3378,21 @@ function Footer() {
                       href={
                         link === "Login"
                           ? APP_URL
-                          : ["Terms & Conditions", "Risk Disclosure", "Refund Policy", "Privacy Policy"].includes(link)
-                            ? LEGAL_URL
-                            : "#"
+                          : link === "Pricing"
+                            ? PRICING_URL
+                            : link === "Terms & Conditions"
+                              ? TERMS_URL
+                              : ["Risk Disclosure", "Refund Policy", "Privacy Policy"].includes(link)
+                                ? LEGAL_URL
+                                : link === "Features"
+                                  ? "/#features"
+                                  : link === "Dashboard"
+                                    ? "/#dashboard"
+                                    : link === "Trade Alerts"
+                                      ? "/#alerts"
+                                      : link === "FAQ"
+                                        ? "/#faq"
+                                        : "#"
                       }
                       className="block text-xs text-slate-500 transition-colors hover:text-cyan-300"
                     >
@@ -2939,7 +3405,7 @@ function Footer() {
           </div>
         </div>
         <div className="mt-10 border-t border-white/[0.06] pt-6 text-center">
-          <p className="text-xs text-slate-600">© 2026 SignalFlo AI. All rights reserved.</p>
+          <p className="text-xs text-slate-600">© 2026 <strong className="font-semibold">SignalFlo</strong> AI. All rights reserved.</p>
           <p className="mt-1 text-xs text-slate-700">Built for structured trade alerts, tracking, and market monitoring.</p>
         </div>
       </div>
@@ -2963,12 +3429,12 @@ function SectionHeading({
   return (
     <div className="mx-auto max-w-3xl text-center">
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">{kicker}</p>
-      <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
-        {parts[0]}
+      <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
+        {boldSignalFlo(parts[0])}
         <span className="text-cyan-300">{highlight}</span>
-        {parts[1]}
+        {boldSignalFlo(parts[1] ?? "")}
       </h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">{description}</p>
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">{boldSignalFlo(description)}</p>
     </div>
   )
 }
@@ -3022,3 +3488,4 @@ function MotionCard({
 }
 
 export default App
+
