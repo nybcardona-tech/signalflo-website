@@ -1183,7 +1183,7 @@ function AIEngineTeaser() {
   ]
 
   return (
-    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[120px] sm:px-6 lg:min-h-[85vh] lg:px-8">
+    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_48%,rgba(0,212,255,0.08),transparent_30%),radial-gradient(circle_at_78%_50%,rgba(139,92,246,0.11),transparent_32%),radial-gradient(circle_at_88%_64%,rgba(236,72,153,0.045),transparent_25%)]" />
       <div className="relative z-10 mx-auto grid max-w-[1280px] gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
         <div className="max-w-xl">
@@ -1229,7 +1229,7 @@ function AIEngineTeaser() {
         </div>
 
         <motion.div
-          className="relative min-h-[560px] overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/92 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_140px_rgba(59,130,246,0.16),0_0_90px_rgba(139,92,246,0.08)] sm:p-7 lg:min-h-[620px] lg:p-8"
+          className="relative overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/92 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_140px_rgba(59,130,246,0.16),0_0_90px_rgba(139,92,246,0.08)] sm:p-7 lg:p-8"
           initial={{ opacity: 0, x: 26 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.25 }}
@@ -1408,14 +1408,14 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="dashboard" className="relative z-10 mb-[-2.5rem] min-h-[100svh] overflow-visible sm:mb-[-3rem] lg:min-h-screen">
+    <section id="dashboard" className="relative z-10 mb-[-2.5rem] overflow-visible sm:mb-[-3rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(0,212,255,0.2),transparent_28%),radial-gradient(circle_at_82%_35%,rgba(139,92,246,0.15),transparent_25%),radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_72%_14%,rgba(236,72,153,0.07),transparent_22%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col px-4 pb-0 pt-[calc(3.5rem+clamp(1rem,2.4vh,1.75rem))] sm:px-6 lg:min-h-screen lg:px-8">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-4 pb-[clamp(3.5rem,7vw,7.5rem)] pt-[calc(3.5rem+clamp(1rem,2.4vh,1.75rem))] sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65 }}
-          className="mx-auto mt-[clamp(1.5rem,5vh,4rem)] max-w-4xl text-center"
+          className="mx-auto mt-[clamp(1.5rem,4vw,3rem)] max-w-4xl text-center"
         >
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             <Sparkles className="text-cyan-300" />
@@ -1472,7 +1472,7 @@ function HeroDashboardCard() {
       initial={{ opacity: 0, scale: 0.97, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.12 }}
-      className="relative mx-auto mt-[clamp(2rem,4vh,3rem)] -mb-[clamp(1.25rem,4vh,3rem)] w-full max-w-[78rem] overflow-visible rounded-t-[2rem]"
+      className="relative mx-auto mt-[clamp(2rem,4vw,3rem)] -mb-[clamp(1.25rem,3vw,2.5rem)] w-full max-w-[78rem] overflow-visible rounded-t-[2rem]"
     >
       <motion.div
         className="absolute inset-0 scale-[1.04] rounded-[2rem] bg-[radial-gradient(circle_at_50%_18%,rgba(34,211,238,0.18),rgba(124,58,237,0.12),transparent_68%)] blur-3xl"
@@ -3264,7 +3264,7 @@ function HowItWorks() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden bg-[#050914] px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28 lg:pt-24">
+    <FadeUp as="section" className="relative overflow-hidden bg-[#050914] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#050914_0%,#050914_12%,transparent_35%),radial-gradient(circle_at_20%_28%,rgba(0,212,255,0.09),transparent_30%),radial-gradient(circle_at_82%_68%,rgba(139,92,246,0.08),transparent_30%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-4xl text-center">
@@ -3314,7 +3314,7 @@ function RealPerformance() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden bg-[#07101f] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+    <FadeUp as="section" className="relative overflow-hidden bg-[#07101f] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(59,130,246,0.09),transparent_34%),radial-gradient(circle_at_76%_70%,rgba(236,72,153,0.04),transparent_25%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-4xl text-center">
@@ -3365,7 +3365,7 @@ function Process() {
   ]
 
   return (
-    <FadeUp as="section" id="features" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
+    <FadeUp as="section" id="features" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
         kicker="Live Trade Example"
@@ -4135,7 +4135,7 @@ function RoadMap() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(0,212,255,0.1),transparent_34%),radial-gradient(circle_at_78%_58%,rgba(139,92,246,0.09),transparent_28%),radial-gradient(circle_at_25%_68%,rgba(236,72,153,0.04),transparent_24%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
@@ -4214,7 +4214,7 @@ function RoadMap() {
 
 function Faq() {
   return (
-    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
+    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-3xl">
         <SectionHeading
           kicker="FAQ"
