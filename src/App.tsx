@@ -44,6 +44,7 @@ const APP_URL = "https://signal-flo-ai.vercel.app"
 const LEGAL_URL = "/legal"
 const TERMS_URL = "/terms"
 const PRICING_URL = "/pricing"
+const AI_ENGINE_URL = "/ai-engine"
 const LEGAL_VERSION = "v1.0"
 const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
 const LEGAL_ACKNOWLEDGMENT =
@@ -453,13 +454,20 @@ function App() {
     return <DedicatedPricingPage />
   }
 
+  if (pathname === AI_ENGINE_URL) {
+    return <AIEnginePage />
+  }
+
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <Navbar />
       <Hero />
+      <HowItWorks />
       <Process />
-      <SignalFloEngine />
+      <AIEngineTeaser />
+      <RealPerformance />
       <Faq />
+      <RoadMap />
       <Footer />
     </main>
   )
@@ -667,6 +675,703 @@ function TermsPage() {
   )
 }
 
+function AIEnginePage() {
+  return (
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <Navbar />
+      <AIEnginePageHero />
+      <SignalFloEngine />
+      <Footer />
+    </main>
+  )
+}
+
+function AIEnginePageHero() {
+  return (
+    <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-24 pt-32 sm:px-6 sm:pb-28 sm:pt-36 lg:px-8 lg:pb-32 lg:pt-40">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(0,212,255,0.18),transparent_30%),radial-gradient(circle_at_76%_28%,rgba(139,92,246,0.16),transparent_30%),radial-gradient(circle_at_28%_52%,rgba(59,130,246,0.13),transparent_28%),radial-gradient(circle_at_66%_64%,rgba(236,72,153,0.08),transparent_24%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-70"
+        animate={{ opacity: [0.35, 0.8, 0.35] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+        className="relative z-10 mx-auto max-w-5xl text-center"
+      >
+        <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.06] text-cyan-200 shadow-[0_0_28px_rgba(0,212,255,0.08)]">
+          <motion.span
+            className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(0,212,255,0.9)]"
+            animate={{ scale: [1, 1.55, 1], opacity: [0.65, 1, 0.65] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          LIVE MARKET INTELLIGENCE
+        </Badge>
+        <h1 className="mx-auto mt-6 max-w-4xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] text-slate-50 sm:text-6xl lg:text-7xl">
+          The Intelligence Behind{" "}
+          <span className="heading-accent">
+            Every Alert
+          </span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
+          <strong className="font-semibold text-slate-300">SignalFlo</strong> combines AI analysis, market structure,
+          options flow, technical validation, and risk management into a single decision engine designed to identify
+          high-probability trading opportunities.
+        </p>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <Button asChild className="border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] text-white shadow-[0_0_34px_rgba(59,130,246,0.25)] transition-all hover:-translate-y-0.5 hover:brightness-110">
+            <a href="#ai-engine-details">
+              View Performance
+              <ArrowRight className="size-4" />
+            </a>
+          </Button>
+          <Button asChild variant="outline" className="border-white/10 bg-white/[0.035] transition-all hover:-translate-y-0.5 hover:border-purple-300/25 hover:bg-white/[0.06]">
+            <a href={APP_URL}>Get Started</a>
+          </Button>
+        </div>
+      </motion.div>
+    </section>
+  )
+}
+
+function AIEngineTeaserLegacy() {
+  const marketInputs = [
+    ["Options Flow", Activity],
+    ["Market Structure", Workflow],
+    ["Price Action", TrendingUp],
+    ["Technical Indicators", Target],
+    ["Market Sentiment", RadioTower],
+    ["Institutional Activity", CircleDollarSign],
+  ] as const
+  const analysisChecks = [
+    "Market Structure Validation",
+    "Options Flow Analysis",
+    "Technical Confirmation",
+    "Risk Assessment",
+    "Confidence Scoring",
+  ]
+
+  return (
+    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_52%,rgba(59,130,246,0.12),transparent_31%),radial-gradient(circle_at_72%_58%,rgba(139,92,246,0.09),transparent_30%),radial-gradient(circle_at_28%_58%,rgba(0,212,255,0.08),transparent_28%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.06] text-cyan-200">
+            <Sparkles className="size-3.5" />
+            LIVE MARKET INTELLIGENCE
+          </Badge>
+          <h2 className="mt-5 font-display text-3xl font-bold tracking-[-0.025em] text-slate-50 sm:text-4xl">
+            Inside the <span className="heading-accent">SignalFlo AI Engine</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+            See how <strong className="font-semibold text-slate-300">SignalFlo</strong> validates trade opportunities,
+            analyzes market conditions, and delivers high-confidence trading alerts.
+          </p>
+          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-500">
+            <strong className="font-semibold text-slate-300">SignalFlo</strong> continuously processes market data, validates trade opportunities, and scores each setup before generating an alert.
+          </p>
+        </div>
+
+        <div className="relative mt-12 overflow-hidden rounded-3xl border border-white/[0.07] bg-[#07111f]/74 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_34px_140px_rgba(2,8,23,0.38)] sm:p-6 lg:p-8">
+          <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(0,212,255,0.16),transparent_29%),radial-gradient(circle_at_50%_48%,rgba(139,92,246,0.1),transparent_40%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.05),transparent_28%)]" />
+          <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:42px_42px] opacity-45" />
+
+          <div className="relative z-10 grid gap-4 lg:grid-cols-[minmax(0,1fr)_3rem_minmax(0,2fr)_3rem_minmax(0,1fr)] lg:items-center">
+            <motion.div
+              className="group relative overflow-hidden rounded-2xl border border-cyan-300/14 bg-[#081225]/88 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_70px_rgba(2,8,23,0.34)] sm:p-6"
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+            >
+              <CardEffects />
+              <div className="relative z-10">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-300">Step 01</p>
+                <h3 className="mt-2 text-xl font-semibold text-slate-100">Raw Market Data</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-500"><strong className="font-semibold">SignalFlo</strong> continuously monitors multiple intelligence sources.</p>
+                <div className="mt-6 grid gap-2">
+                  {marketInputs.map(([label, Icon], index) => (
+                    <motion.div
+                      key={label}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2.5"
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: 0.12 + index * 0.06 }}
+                    >
+                      <span className="flex items-center gap-2.5 text-xs text-slate-300">
+                        <Icon className="size-3.5 text-cyan-300" />
+                        {label}
+                      </span>
+                      <motion.span
+                        className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,212,255,0.75)]"
+                        animate={{ opacity: [0.45, 1, 0.45] }}
+                        transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.16 }}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <FlowConnector delay={0.25} />
+
+            <motion.div
+              className="group relative overflow-hidden rounded-3xl border border-purple-300/28 bg-[#091429]/94 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_120px_rgba(59,130,246,0.18),0_0_90px_rgba(139,92,246,0.15)] sm:p-8 lg:-my-5 lg:min-h-[620px]"
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.6, delay: 0.18, ease: "easeOut" }}
+            >
+              <CardEffects />
+              <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(0,212,255,0.14),transparent_36%),radial-gradient(circle_at_80%_80%,rgba(139,92,246,0.12),transparent_34%)]" />
+              <div className="relative z-10">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-purple-300">Step 02 · Analysis</p>
+                <h3 className="mt-2 text-2xl font-semibold text-slate-50">SignalFlo AI Engine</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400">Multiple intelligence layers are analyzed, scored, and validated before an alert is generated.</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {["6 Intelligence Layers", "24/7 Monitoring", "AI Confidence Scoring"].map((badge) => (
+                    <span key={badge} className="rounded-full border border-purple-300/15 bg-white/[0.035] px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.14em] text-slate-400 shadow-[0_0_18px_rgba(139,92,246,0.06)]">
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-7 grid gap-2.5">
+                  {analysisChecks.map((check, index) => (
+                    <motion.div
+                      key={check}
+                      className="flex items-center gap-3 rounded-xl border border-white/[0.065] bg-white/[0.03] px-3.5 py-3 text-xs text-slate-300"
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.34 + index * 0.1 }}
+                    >
+                      <motion.span
+                        className="flex size-6 shrink-0 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/8 shadow-[0_0_18px_rgba(0,212,255,0.1)]"
+                        animate={{ boxShadow: ["0 0 8px rgba(0,212,255,0.06)", "0 0 22px rgba(139,92,246,0.18)", "0 0 8px rgba(0,212,255,0.06)"] }}
+                        transition={{ duration: 2.6, repeat: Infinity, delay: index * 0.18 }}
+                      >
+                        <Check className="size-3.5 text-cyan-300" />
+                      </motion.span>
+                      <span className="min-w-0 flex-1">{check.replace("Market Structure Validation", "Analyzing Market Structure...").replace("Options Flow Analysis", "Analyzing Options Flow...").replace("Technical Confirmation", "Confirming Technicals...").replace("Risk Assessment", "Validating Risk...").replace("Confidence Scoring", "Calculating AI Confidence...")}</span>
+                      <span className="shrink-0 text-[9px] font-semibold uppercase tracking-[0.14em] text-cyan-300">Complete</span>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="mt-7 overflow-hidden rounded-2xl border border-cyan-300/14 bg-cyan-300/[0.045] p-5 text-center">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">AI Confidence Score</p>
+                  <motion.p
+                    className="mt-2 bg-[linear-gradient(135deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] bg-clip-text text-6xl font-bold tracking-[-0.05em] text-transparent"
+                    animate={{ opacity: [0.75, 1, 0.75] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    94
+                  </motion.p>
+                  <motion.div className="mx-auto mt-3 h-1.5 max-w-xs overflow-hidden rounded-full bg-slate-800/80">
+                    <motion.div
+                      className="h-full rounded-full bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)]"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "94%" }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, delay: 0.65, ease: "easeOut" }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+
+            <FlowConnector delay={0.65} />
+
+            <motion.div
+              className="group relative overflow-hidden rounded-2xl border border-cyan-300/16 bg-[#081225]/92 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_70px_rgba(2,8,23,0.34)] sm:p-6"
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.55, delay: 0.52, ease: "easeOut" }}
+            >
+              <CardEffects />
+              <div className="relative z-10">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-purple-300">Step 03</p>
+                    <h3 className="mt-2 text-xl font-semibold text-slate-100">Trade Alert Generated</h3>
+                  </div>
+                  <motion.span
+                    className="size-2 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(0,212,255,0.8)]"
+                    animate={{ scale: [1, 1.45, 1], opacity: [0.6, 1, 0.6] }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
+                  />
+                </div>
+                <div className="mt-6 rounded-xl border border-cyan-300/12 bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_0_32px_rgba(59,130,246,0.06)]">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-lg font-semibold text-slate-50">NVDA CALL</p>
+                        <span className="rounded-full border border-purple-300/16 bg-purple-300/8 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-purple-200">Call</span>
+                      </div>
+                      <p className="mt-2 inline-flex rounded-full border border-cyan-300/14 bg-cyan-300/8 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-cyan-300">Ready For Review</p>
+                    </div>
+                    <div className="rounded-lg border border-cyan-300/14 bg-cyan-300/8 px-3 py-2 text-center">
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-slate-500">AI Score</p>
+                      <p className="text-2xl font-bold text-cyan-200">94</p>
+                    </div>
+                  </div>
+                  <div className="mt-5 grid gap-2">
+                    {[["Entry", "$924.20"], ["Take Profit", "$952.80"], ["Stop Loss", "$908.40"], ["Confidence", "High"]].map(([label, value], index) => (
+                      <motion.div
+                        key={label}
+                        className="flex items-center justify-between rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2.5 text-xs"
+                        initial={{ opacity: 0, y: 8 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.35, delay: 0.72 + index * 0.08 }}
+                      >
+                        <span className="text-slate-500">{label}</span>
+                        <span className={label === "Take Profit" || label === "Confidence" ? "font-semibold text-cyan-300" : "font-semibold text-slate-200"}>{value}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-slate-800/80">
+                    <motion.div
+                      className="h-full rounded-full bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)]"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: "94%" }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.1, delay: 0.9, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
+                <div className="mt-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-slate-500">
+                  <Check className="size-3.5 text-cyan-300" />
+                  Validated and structured
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="relative mt-9 text-center">
+          <motion.span
+            className="pointer-events-none absolute left-1/2 -top-9 h-8 w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(236,72,153,0.08),rgba(139,92,246,0.7),rgba(0,212,255,0.1))]"
+            animate={{ opacity: [0.3, 1, 0.3], scaleY: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <span className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.2),rgba(59,130,246,0.1),transparent_68%)] blur-xl" />
+          <Button asChild size="lg" className="relative border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] px-7 text-white shadow-[0_0_42px_rgba(59,130,246,0.28),0_0_34px_rgba(139,92,246,0.16)] transition-all hover:-translate-y-1 hover:brightness-110">
+            <a href={AI_ENGINE_URL}>
+              Explore the AI Engine
+              <ArrowRight className="size-4" />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </FadeUp>
+  )
+}
+
+function FlowConnector({ delay }: { delay: number }) {
+  return (
+    <div className="relative flex min-h-12 items-center justify-center lg:min-h-0">
+      <div className="absolute h-full w-px bg-[linear-gradient(180deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] opacity-45 lg:h-px lg:w-full lg:bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)]" />
+      <motion.span
+        className="absolute size-2 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(0,212,255,0.85)]"
+        animate={{ y: ["-160%", "160%"], opacity: [0, 1, 0] }}
+        transition={{ duration: 2.1, repeat: Infinity, delay, ease: "easeInOut" }}
+      />
+      <motion.span
+        className="absolute hidden size-2 rounded-full bg-purple-300 shadow-[0_0_16px_rgba(139,92,246,0.85)] lg:block"
+        animate={{ x: ["-160%", "160%"], opacity: [0, 1, 0] }}
+        transition={{ duration: 2.1, repeat: Infinity, delay, ease: "easeInOut" }}
+      />
+      <ArrowRight className="relative z-10 hidden size-4 text-purple-300/65 lg:block" />
+    </div>
+  )
+}
+
+void AIEngineTeaserLegacy
+
+function AIEngineTeaserCompact() {
+  const dataInputs = [
+    ["Options Flow", Activity],
+    ["Market Structure", Workflow],
+    ["Price Action", TrendingUp],
+    ["Risk Context", ShieldCheck],
+  ] as const
+  const analysisRows = [
+    "Market structure validated",
+    "Options flow analyzed",
+    "Risk profile confirmed",
+  ]
+
+  return (
+    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_50%,rgba(59,130,246,0.13),transparent_34%),radial-gradient(circle_at_84%_62%,rgba(139,92,246,0.09),transparent_28%),radial-gradient(circle_at_60%_35%,rgba(0,212,255,0.07),transparent_28%)]" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
+        <div className="max-w-xl">
+          <p className="heading-accent text-[11px] font-semibold uppercase tracking-[0.24em]">
+            Inside the SignalFlo AI Engine
+          </p>
+          <h2 className="mt-5 font-display text-4xl font-bold leading-[1.06] tracking-[-0.035em] text-slate-50 sm:text-5xl">
+            How SignalFlo Turns Market Noise Into{" "}
+            <span className="heading-accent">
+              Trade Alerts
+            </span>
+          </h2>
+          <p className="mt-5 max-w-lg text-sm leading-7 text-slate-400">
+            SignalFlo continuously processes market data, validates trade opportunities, and scores each setup before
+            delivering a structured alert for review.
+          </p>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            {["Raw Market Data", "Multi-Layer AI Analysis", "AI Confidence Scoring", "Structured Trade Alerts"].map((feature) => (
+              <div key={feature} className="flex items-center gap-2.5 text-sm text-slate-300">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/8">
+                  <Check className="size-3 text-cyan-300" />
+                </span>
+                {feature}
+              </div>
+            ))}
+          </div>
+          <Button asChild size="lg" className="mt-8 border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] px-7 text-white shadow-[0_0_38px_rgba(59,130,246,0.24),0_0_28px_rgba(139,92,246,0.12)] transition-all hover:-translate-y-1 hover:brightness-110">
+            <a href={AI_ENGINE_URL}>
+              Explore the AI Engine
+              <ArrowRight className="size-4" />
+            </a>
+          </Button>
+        </div>
+
+        <motion.div
+          className="relative overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/90 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_120px_rgba(59,130,246,0.14)] sm:p-5"
+          initial={{ opacity: 0, x: 24 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <CardEffects />
+          <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(0,212,255,0.11),transparent_32%),radial-gradient(circle_at_82%_72%,rgba(139,92,246,0.09),transparent_28%)]" />
+          <div className="relative z-10 flex items-center justify-between gap-3 border-b border-white/[0.07] pb-3">
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-purple-300">Live intelligence flow</p>
+              <p className="mt-1 text-xs text-slate-500">Data → Analysis → Alert</p>
+            </div>
+            <span className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.15em] text-cyan-300">
+              <motion.span
+                className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,212,255,0.8)]"
+                animate={{ scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55] }}
+                transition={{ duration: 1.8, repeat: Infinity }}
+              />
+              Processing
+            </span>
+          </div>
+
+          <div className="relative z-10 mt-4 grid gap-3 lg:grid-cols-[0.78fr_1.1fr_0.78fr] lg:items-stretch">
+            <div className="rounded-2xl border border-cyan-300/12 bg-[#081225]/88 p-3.5">
+              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-300">Raw Market Data</p>
+              <div className="mt-3 grid gap-2">
+                {dataInputs.map(([label, Icon], index) => (
+                  <motion.div
+                    key={label}
+                    className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.025] px-2.5 py-2"
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.07 }}
+                  >
+                    <span className="flex items-center gap-2 text-[10px] text-slate-300">
+                      <Icon className="size-3 text-cyan-300" />
+                      {label}
+                    </span>
+                    <span className="size-1 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(0,212,255,0.75)]" />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border border-purple-300/22 bg-[#091429]/94 p-4 shadow-[0_0_54px_rgba(59,130,246,0.1),0_0_38px_rgba(139,92,246,0.08)]">
+              <span className="pointer-events-none absolute inset-x-4 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-75" />
+              <div className="relative z-10 flex items-center justify-between">
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">SignalFlo AI Engine</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-100">Multi-layer validation</p>
+                </div>
+                <Bot className="size-5 text-cyan-200" />
+              </div>
+              <div className="relative z-10 mt-4 grid gap-2">
+                {analysisRows.map((row, index) => (
+                  <motion.div
+                    key={row}
+                    className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.025] px-2.5 py-2 text-[10px] text-slate-300"
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: 0.18 + index * 0.1 }}
+                  >
+                    <Check className="size-3 text-cyan-300" />
+                    {row}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="relative z-10 mt-4 flex items-end justify-between rounded-xl border border-cyan-300/12 bg-cyan-300/[0.045] px-3 py-2.5">
+                <div>
+                  <p className="text-[8px] uppercase tracking-[0.15em] text-slate-500">AI Confidence</p>
+                  <p className="mt-1 text-[10px] text-cyan-300">High conviction</p>
+                </div>
+                <p className="text-3xl font-bold text-cyan-200">94</p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-cyan-300/14 bg-[#081225]/92 p-3.5">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">Alert Generated</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-100">NVDA CALL</p>
+                </div>
+                <div className="rounded-lg border border-cyan-300/14 bg-cyan-300/8 px-2 py-1 text-center">
+                  <p className="text-[7px] uppercase tracking-[0.12em] text-slate-500">Score</p>
+                  <p className="text-lg font-bold text-cyan-200">94</p>
+                </div>
+              </div>
+              <span className="mt-3 inline-flex rounded-full border border-cyan-300/14 bg-cyan-300/8 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-cyan-300">
+                Ready For Review
+              </span>
+              <div className="mt-3 grid gap-1.5">
+                {[["Entry", "$924.20"], ["TP", "$952.80"], ["SL", "$908.40"]].map(([label, value]) => (
+                  <div key={label} className="flex items-center justify-between rounded-md border border-white/[0.05] bg-white/[0.02] px-2 py-1.5 text-[9px]">
+                    <span className="text-slate-500">{label}</span>
+                    <span className={label === "TP" ? "font-semibold text-cyan-300" : "font-semibold text-slate-200"}>{value}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-800/80">
+                <motion.div
+                  className="h-full rounded-full bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)]"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "94%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: 0.55 }}
+                />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </FadeUp>
+  )
+}
+
+void AIEngineTeaserCompact
+
+function AIEngineTeaser() {
+  const benefits = [
+    ["AI Signal Detection", "SignalFlo scans market structure, price action, options flow, and risk conditions to surface higher-quality setups.", RadioTower],
+    ["Multi-Layer AI Analysis", "Each setup is analyzed across multiple intelligence layers before being scored.", Bot],
+    ["AI Confidence Scoring", "Every alert includes a confidence score so traders can quickly understand signal quality.", Target],
+    ["Structured Trade Alerts", "Alerts include entry, target, stop loss, status, and key context in one clean format.", Workflow],
+  ] as const
+  const dataInputs = [
+    ["Options Flow", Activity],
+    ["Market Structure", Workflow],
+    ["Price Action", TrendingUp],
+    ["Risk Context", ShieldCheck],
+  ] as const
+  const analysisRows = [
+    "Market structure validated",
+    "Options flow analyzed",
+    "Risk profile confirmed",
+    "Confidence calculated",
+  ]
+
+  return (
+    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[120px] sm:px-6 lg:min-h-[85vh] lg:px-8">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_48%,rgba(0,212,255,0.08),transparent_30%),radial-gradient(circle_at_78%_50%,rgba(139,92,246,0.11),transparent_32%),radial-gradient(circle_at_88%_64%,rgba(236,72,153,0.045),transparent_25%)]" />
+      <div className="relative z-10 mx-auto grid max-w-[1280px] gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
+        <div className="max-w-xl">
+          <p className="section-eyebrow heading-accent">
+            Under the Hood
+          </p>
+          <h2 className="section-title font-display">
+            The{" "}
+            <span className="heading-accent">SignalFlo AI Engine</span>
+          </h2>
+          <p className="section-subtitle mt-6 max-w-[520px]">
+            <strong className="font-semibold text-slate-300">SignalFlo</strong> continuously processes market data,
+            validates trade opportunities, and scores each setup before delivering a structured alert for review.
+          </p>
+
+          <div className="mt-9 grid gap-7">
+            {benefits.map(([title, copy, Icon], index) => (
+              <motion.div
+                key={title}
+                className="flex items-start gap-4"
+                initial={{ opacity: 0, x: -14 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.07 }}
+              >
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-[#081225]/88 text-cyan-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_24px_rgba(59,130,246,0.08)]">
+                  <Icon className="size-5" />
+                </span>
+                <div>
+                  <h3 className="text-base font-semibold text-slate-100">{title}</h3>
+                  <p className="mt-1.5 text-sm leading-6 text-slate-500">{boldSignalFlo(copy)}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <Button asChild size="lg" className="mt-10 h-14 rounded-xl border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] px-7 text-white shadow-[0_0_42px_rgba(59,130,246,0.28),0_0_30px_rgba(139,92,246,0.14)] transition-all hover:-translate-y-1 hover:brightness-110">
+            <a href={AI_ENGINE_URL}>
+              Explore the AI Engine
+              <ArrowRight className="size-4" />
+            </a>
+          </Button>
+        </div>
+
+        <motion.div
+          className="relative min-h-[560px] overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#07111f]/92 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_34px_140px_rgba(59,130,246,0.16),0_0_90px_rgba(139,92,246,0.08)] sm:p-7 lg:min-h-[620px] lg:p-8"
+          initial={{ opacity: 0, x: 26 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+        >
+          <CardEffects />
+          <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.03)_1px,transparent_1px)] bg-[size:36px_36px] opacity-40" />
+          <motion.span
+            className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cyan-300/10 to-transparent"
+            animate={{ y: ["-40%", "700%"], opacity: [0, 0.65, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          <div className="relative z-10 flex items-center justify-between gap-4 border-b border-white/[0.07] pb-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-300">Live Intelligence Flow</p>
+              <p className="mt-1 text-xs text-slate-500">Data → Analysis → Alert</p>
+            </div>
+            <span className="flex items-center gap-2 rounded-full border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-cyan-300">
+              <motion.span
+                className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,212,255,0.8)]"
+                animate={{ scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55] }}
+                transition={{ duration: 1.8, repeat: Infinity }}
+              />
+              Processing
+            </span>
+          </div>
+
+          <div className="relative z-10 mt-5 grid gap-3">
+            <motion.div
+              className="rounded-2xl border border-cyan-300/12 bg-[#081225]/88 p-4"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-300">01 · Raw Market Data</p>
+                  <p className="mt-1 text-xs text-slate-500">Continuous market intelligence intake</p>
+                </div>
+                <RadioTower className="size-4 text-cyan-200" />
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {dataInputs.map(([label, Icon], index) => (
+                  <motion.div
+                    key={label}
+                    className="flex items-center justify-between rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2"
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.06 }}
+                  >
+                    <span className="flex items-center gap-2 text-[10px] text-slate-300">
+                      <Icon className="size-3 text-cyan-300" />
+                      {label}
+                    </span>
+                    <span className="size-1 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(0,212,255,0.75)]" />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="relative overflow-hidden rounded-2xl border border-purple-300/22 bg-[#091429]/94 p-5 shadow-[0_0_58px_rgba(59,130,246,0.1),0_0_42px_rgba(139,92,246,0.08)]"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.18 }}
+            >
+              <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-75" />
+              <div className="relative z-10 flex items-center justify-between">
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">02 · SignalFlo AI Engine</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-100">Multi-layer validation and scoring</p>
+                </div>
+                <Bot className="size-5 text-cyan-200" />
+              </div>
+              <div className="relative z-10 mt-4 grid gap-2 sm:grid-cols-2">
+                {analysisRows.map((row, index) => (
+                  <motion.div
+                    key={row}
+                    className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.025] px-3 py-2 text-[10px] text-slate-300"
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: 0.3 + index * 0.08 }}
+                  >
+                    <Check className="size-3 text-cyan-300" />
+                    {row}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="relative z-10 mt-4 flex items-center justify-between rounded-xl border border-cyan-300/12 bg-cyan-300/[0.045] px-4 py-3">
+                <div>
+                  <p className="text-[8px] uppercase tracking-[0.15em] text-slate-500">AI Confidence</p>
+                  <p className="mt-1 text-[10px] text-cyan-300">High conviction setup</p>
+                </div>
+                <p className="text-3xl font-bold text-cyan-200">94</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="rounded-2xl border border-cyan-300/14 bg-[#081225]/92 p-4"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.42 }}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">03 · Alert Generated</p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <p className="text-sm font-semibold text-slate-100">NVDA CALL</p>
+                    <span className="rounded-full border border-purple-300/14 bg-purple-300/8 px-2 py-0.5 text-[8px] uppercase tracking-[0.12em] text-purple-200">Call</span>
+                  </div>
+                </div>
+                <div className="rounded-lg border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 text-center">
+                  <p className="text-[7px] uppercase tracking-[0.12em] text-slate-500">AI Score</p>
+                  <p className="text-xl font-bold text-cyan-200">94</p>
+                </div>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                {[["Entry", "$924.20"], ["TP", "$952.80"], ["SL", "$908.40"]].map(([label, value]) => (
+                  <div key={label} className="rounded-lg border border-white/[0.055] bg-white/[0.025] px-3 py-2">
+                    <p className="text-[8px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
+                    <p className={cn("mt-1 text-xs font-semibold", label === "TP" ? "text-cyan-300" : "text-slate-200")}>{value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center justify-between">
+                <span className="rounded-full border border-cyan-300/14 bg-cyan-300/8 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.13em] text-cyan-300">Ready For Review</span>
+                <span className="text-[9px] uppercase tracking-[0.13em] text-slate-600">Structured alert</span>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </FadeUp>
+  )
+}
+
 function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.07] bg-[#050a14]/90 backdrop-blur-xl">
@@ -679,8 +1384,7 @@ function Navbar() {
         </a>
         <nav className="hidden items-center gap-8 text-xs text-slate-400 lg:flex">
           <a href="/#features" className="transition-colors hover:text-white">Features</a>
-          <a href="/#dashboard" className="transition-colors hover:text-white">Dashboard</a>
-          <a href="/#alerts" className="transition-colors hover:text-white">Trade Alerts</a>
+          <a href={AI_ENGINE_URL} className="transition-colors hover:text-white">AI Engine</a>
           <a href={PRICING_URL} className="transition-colors hover:text-white">Pricing</a>
           <a href="/#faq" className="transition-colors hover:text-white">FAQ</a>
         </nav>
@@ -704,8 +1408,8 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="dashboard" className="relative z-10 mb-[-2.5rem] min-h-[100svh] overflow-visible border-b border-white/[0.06] sm:mb-[-3rem] lg:min-h-screen">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(56,189,248,0.2),transparent_28%),radial-gradient(circle_at_82%_35%,rgba(124,58,237,0.14),transparent_25%),radial-gradient(circle_at_18%_20%,rgba(37,99,235,0.16),transparent_24%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+    <section id="dashboard" className="relative z-10 mb-[-2.5rem] min-h-[100svh] overflow-visible sm:mb-[-3rem] lg:min-h-screen">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(0,212,255,0.2),transparent_28%),radial-gradient(circle_at_82%_35%,rgba(139,92,246,0.15),transparent_25%),radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_72%_14%,rgba(236,72,153,0.07),transparent_22%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl flex-col px-4 pb-0 pt-[calc(3.5rem+clamp(1rem,2.4vh,1.75rem))] sm:px-6 lg:min-h-screen lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -729,7 +1433,7 @@ function Hero() {
             more trades, more often.
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-blue-400">
+            <Button asChild className="border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:brightness-110">
               <a href={APP_URL}>
                 Start Receiving Alerts
                 <ArrowRight />
@@ -1257,9 +1961,8 @@ void WhySignalFlo
 function CardEffects() {
   return (
     <>
-      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(59,130,246,0.11),transparent_34%),radial-gradient(circle_at_88%_12%,rgba(124,58,237,0.08),transparent_32%)] opacity-75" />
       <span className="pointer-events-none absolute -left-2 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[28rem] group-hover:opacity-100" />
-      <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px origin-left scale-x-0 rounded-full bg-blue-300/45 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px origin-left scale-x-0 rounded-full bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] opacity-60 transition-transform duration-500 group-hover:scale-x-100" />
     </>
   )
 }
@@ -1860,8 +2563,8 @@ function CountUp({ to }: { to: number }) {
 
 function SignalFloEngine() {
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 pb-20 pt-14 sm:px-6 sm:pb-24 sm:pt-16 lg:px-8 lg:pb-28 lg:pt-20">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(34,211,238,0.18),transparent_28%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
+    <FadeUp as="section" id="ai-engine-details" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 pb-24 pt-20 sm:px-6 sm:pb-28 sm:pt-24 lg:px-8 lg:pb-32 lg:pt-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(59,130,246,0.2),transparent_34%),radial-gradient(circle_at_78%_28%,rgba(0,212,255,0.17),transparent_28%),radial-gradient(circle_at_76%_62%,rgba(139,92,246,0.1),transparent_28%),radial-gradient(circle_at_26%_72%,rgba(236,72,153,0.045),transparent_24%),linear-gradient(180deg,#050914_0%,#07101f_48%,#050914_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:56px_56px] opacity-45" />
       <motion.div
         className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-cyan-300/8 to-transparent"
@@ -2194,8 +2897,8 @@ function MarketIntelligenceStack() {
         highlight="Intelligence Stack"
         description="A layered scoring architecture that evaluates structure, flow, liquidity, catalysts, and risk before an alert reaches members."
       />
-      <div className="relative mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#050b16]/86 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_140px_rgba(14,165,233,0.16),0_0_80px_rgba(124,58,237,0.08)] sm:p-6 lg:p-8">
-        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.2),transparent_38%),radial-gradient(circle_at_12%_20%,rgba(37,99,235,0.16),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(124,58,237,0.14),transparent_28%)]" />
+      <div className="relative mx-auto mt-10 max-w-6xl overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#050b16]/86 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_32px_140px_rgba(14,165,233,0.16),0_0_80px_rgba(124,58,237,0.08),0_0_70px_rgba(236,72,153,0.035)] sm:p-6 lg:p-8">
+        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(0,212,255,0.19),transparent_38%),radial-gradient(circle_at_12%_20%,rgba(59,130,246,0.15),transparent_28%),radial-gradient(circle_at_86%_72%,rgba(139,92,246,0.14),transparent_28%),radial-gradient(circle_at_70%_18%,rgba(236,72,153,0.055),transparent_24%)]" />
         <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-50" />
         <motion.span
           className="pointer-events-none absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent"
@@ -2510,12 +3213,150 @@ function RecentAlertActivityPanel() {
   )
 }
 
-function Process() {
-  const workflowSteps = [
-    ["AI scans market conditions", Cpu, "SignalFlo monitors momentum, levels, volatility, and market context."],
-    ["SignalFlo creates structured alerts", LockKeyhole, "Each alert is organized with entry, target, stop loss, score, and notes."],
-    ["Members track alerts in real time", MonitorSmartphone, "Traders follow active alerts, updates, and outcomes from the dashboard."],
+void RecentAlertActivityPanel
+
+function AlertReadingGuide() {
+  const guideItems = [
+    ["Entry Price", "The ideal area to enter the trade.", Target],
+    ["Take Profit", "The target level where gains may be taken.", TrendingUp],
+    ["Stop Loss", "The level used to define risk.", ShieldCheck],
+    ["AI Confidence Score", "SignalFlo's assessment of setup quality based on multiple intelligence layers.", Bot],
   ] as const
+
+  return (
+    <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-400/15 bg-[rgba(8,13,28,0.72)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-[18px] sm:p-6">
+      <div>
+        <p className="section-eyebrow text-cyan-300">Alert Guide</p>
+        <h3 className="text-xl font-bold text-slate-100">How To Read This Alert</h3>
+        <p className="mt-3 text-sm leading-6 text-slate-500">
+          Each level gives traders the context needed to evaluate and manage a setup.
+        </p>
+      </div>
+      <div className="mt-6 grid flex-1 gap-3">
+        {guideItems.map(([title, copy, Icon], index) => (
+          <motion.div
+            key={title}
+            className="group flex items-start gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-4 transition-colors hover:border-cyan-300/22"
+            initial={{ opacity: 0, x: 14 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: index * 0.06 }}
+          >
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-cyan-300/14 bg-cyan-300/8 text-cyan-200">
+              <Icon className="size-4" />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-slate-100">{title}</p>
+              <p className="mt-1 text-xs leading-5 text-slate-500">{boldSignalFlo(copy)}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function HowItWorks() {
+  const workflow = [
+    ["STEP 01", "AI scans market conditions", "SignalFlo monitors momentum, key levels, volatility, market structure, and broader context to identify potential opportunities.", Cpu],
+    ["STEP 02", "SignalFlo monitors the setup", "Each alert is organized with entry, target, stop loss, confidence score, market context, and trade status.", RadioTower],
+    ["STEP 03", "Act with clear levels", "When a setup is posted, you get the key levels and trade details needed to evaluate the opportunity fast.", Target],
+  ] as const
+
+  return (
+    <FadeUp as="section" className="relative overflow-hidden bg-[#050914] px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28 lg:pt-24">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#050914_0%,#050914_12%,transparent_35%),radial-gradient(circle_at_20%_28%,rgba(0,212,255,0.09),transparent_30%),radial-gradient(circle_at_82%_68%,rgba(139,92,246,0.08),transparent_30%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="section-eyebrow heading-accent">
+            How It Works
+          </p>
+          <h2 className="section-title mx-auto max-w-4xl font-display">
+            SignalFlo Intelligence{" "}
+            <span className="heading-accent">Network</span>
+          </h2>
+        </div>
+
+        <div className="mt-10 grid overflow-hidden rounded-3xl border border-white/[0.08] bg-[#081225]/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_30px_110px_rgba(2,8,23,0.36)] backdrop-blur lg:grid-cols-3">
+          {workflow.map(([step, title, copy, Icon], index) => (
+            <motion.div
+              key={step}
+              className={cn(
+                "group relative overflow-hidden p-7 transition-colors duration-300 hover:bg-white/[0.025] sm:p-8 lg:p-9",
+                index > 0 && "border-t border-white/[0.07] lg:border-l lg:border-t-0",
+              )}
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <CardEffects />
+              <div className="relative z-10 flex items-center justify-between gap-4">
+                <span className="flex size-12 items-center justify-center rounded-xl border border-cyan-300/12 bg-[linear-gradient(135deg,rgba(0,212,255,0.14),rgba(59,130,246,0.11),rgba(139,92,246,0.12))] text-cyan-200 shadow-[0_0_28px_rgba(59,130,246,0.1)]">
+                  <Icon className="size-5" />
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-purple-300">{step}</span>
+              </div>
+              <h3 className="relative z-10 mt-7 text-xl font-semibold tracking-[-0.02em] text-slate-100">{boldSignalFlo(title)}</h3>
+              <p className="relative z-10 mt-3 text-sm leading-7 text-slate-500">{boldSignalFlo(copy)}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </FadeUp>
+  )
+}
+
+function RealPerformance() {
+  const stats = [
+    ["Live Alerts", "Tracked in real time"],
+    ["Stocks + Options", "Market coverage"],
+    ["Entry / TP / SL", "Clear trade levels"],
+    ["AI + Human", "Curated intelligence"],
+  ] as const
+
+  return (
+    <FadeUp as="section" className="relative overflow-hidden bg-[#07101f] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(59,130,246,0.09),transparent_34%),radial-gradient(circle_at_76%_70%,rgba(236,72,153,0.04),transparent_25%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="section-eyebrow heading-accent">
+            By The Numbers
+          </p>
+          <h2 className="section-title font-display">
+            Built on real performance.
+          </h2>
+          <p className="section-subtitle mx-auto mt-4">
+            No hype. No fabricated metrics. <strong className="font-semibold text-slate-400">SignalFlo</strong> is built around live alerts, tracked outcomes, and transparent trade history.
+          </p>
+        </div>
+
+        <div className="mt-10 grid overflow-hidden rounded-3xl border border-white/[0.08] bg-[#081225]/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_30px_110px_rgba(2,8,23,0.36)] backdrop-blur sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(([value, label], index) => (
+            <motion.div
+              key={value}
+              className={cn(
+                "group relative overflow-hidden px-5 py-8 text-center transition-colors duration-300 hover:bg-white/[0.025] sm:px-6 sm:py-10",
+                index > 0 && "border-t border-white/[0.07] sm:border-t-0",
+                index % 2 === 1 && "sm:border-l",
+                index > 1 && "sm:border-t lg:border-t-0",
+                index > 0 && "lg:border-l",
+              )}
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <CardEffects />
+              <p className="relative z-10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_72%,#EC4899_100%)] bg-clip-text font-display text-2xl font-bold tracking-[-0.025em] text-transparent sm:text-3xl">
+                {value}
+              </p>
+              <p className="relative z-10 mt-3 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">{label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </FadeUp>
+  )
+}
+
+function Process() {
   const alertLevels = [
     ["Entry Zone", "$924.20", "Review before trigger"],
     ["Take Profit", "$952.80", "Target level"],
@@ -2524,35 +3365,15 @@ function Process() {
   ]
 
   return (
-    <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
+    <FadeUp as="section" id="features" className="border-y border-white/[0.06] bg-[#07101f] px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8 lg:pb-24 lg:pt-32">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
-        kicker="How our system works"
-        title="SignalFlo Intelligence Network"
-        highlight="Intelligence Network"
-        description="See how SignalFlo moves from AI research to reviewed alerts, then presents a clear trade plan traders can track."
+        kicker="Live Trade Example"
+        title="What a SignalFlo Alert Looks Like"
+        highlight="Alert Looks Like"
+        description="Every SignalFlo alert includes structured entries, targets, stop losses, confidence scoring, and trade context."
       />
-        <div className="mt-10 grid gap-6 lg:mt-12 lg:grid-cols-3">
-          {workflowSteps.map(([title, Icon, copy], index) => {
-
-            return (
-              <MotionCard key={title} delay={index * 0.06}>
-                <Card className="relative h-full overflow-hidden bg-[#081225]/82 transition hover:border-cyan-300/25">
-                  <CardHeader className="p-6">
-                    <span className="absolute right-5 top-4 text-4xl font-semibold text-white/[0.03]">0{index + 1}</span>
-                    <span className="flex size-12 items-center justify-center rounded-xl border border-cyan-300/12 bg-cyan-400/12 text-cyan-300 shadow-[0_0_26px_rgba(34,211,238,0.1)]">
-                      <Icon className="size-6" />
-                    </span>
-                    <CardTitle className="mt-5 text-lg">{title}</CardTitle>
-                    <CardDescription className="mt-2 leading-6">{boldSignalFlo(copy)}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </MotionCard>
-            )
-          })}
-        </div>
-
-        <div className="mx-auto mt-12 grid max-w-7xl items-start gap-5 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,0.38fr)] lg:items-stretch">
+        <div className="mx-auto mt-10 grid max-w-7xl items-start gap-5 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] lg:items-stretch">
         <div className="group flex h-full items-center overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
           <div className="relative w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5">
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(34,211,238,0.16),transparent_36%)]" />
@@ -2671,8 +3492,8 @@ function Process() {
                   <div className="relative z-10 mt-3">
                     <div>
                       <p className="text-sm leading-7 text-slate-300">
-                        Momentum continuation setup with price holding above key
-                        support and volume confirming the move.
+                        Momentum breakout above resistance with strong volume
+                        confirmation and favorable risk/reward.
                       </p>
                       <div className="mt-4 grid gap-2 sm:grid-cols-2">
                         {["Price holding above support", "Volume confirming move", "Bullish momentum trend", "AI validation passed"].map((factor) => (
@@ -2703,14 +3524,14 @@ function Process() {
             </div>
           </div>
         </div>
-        <RecentAlertActivityPanel />
+        <AlertReadingGuide />
         </div>
 
         <div className="mx-auto mt-16 max-w-3xl text-center">
-          <h3 className="text-3xl font-semibold tracking-[-0.025em] text-slate-50 sm:text-4xl">
+          <h3 className="section-title font-display">
             Everything you need to <AnimatedGradientText>trade smarter</AnimatedGradientText>
           </h3>
-          <p className="mt-3 text-sm leading-6 text-slate-500">
+          <p className="section-subtitle mx-auto mt-4">
             Institutional-grade tools to drive your trading journey.
           </p>
         </div>
@@ -3069,8 +3890,8 @@ function DedicatedPricingPage() {
       <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Compare</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
+            <p className="section-eyebrow text-blue-400">Compare</p>
+            <h2 className="section-title font-display">
               Plan Comparison
             </h2>
           </div>
@@ -3170,11 +3991,11 @@ function Pricing() {
       <div className="pointer-events-none absolute left-1/2 top-[58%] h-[560px] w-[980px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.14),rgba(37,99,235,0.09),rgba(124,58,237,0.08),transparent_64%)] blur-2xl" />
       <div className="relative z-10 mx-auto max-w-7xl">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">Pricing</p>
-        <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">
+        <p className="section-eyebrow text-blue-400">Pricing</p>
+        <h2 className="section-title font-display">
           Choose <span className="text-cyan-300">Your Plan</span>
         </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+        <p className="section-subtitle mx-auto mt-4">
           Choose the plan that fits your goals. Whether you're just starting out
           or ready to trade with serious edge.
         </p>
@@ -3265,6 +4086,128 @@ function Pricing() {
         plan={selectedPlan}
         onClose={() => setSelectedPlan(null)}
       />
+    </FadeUp>
+  )
+}
+
+function RoadMap() {
+  const roadmapItems = [
+    {
+      phase: "Phase 01",
+      title: "AI Alert Optimization",
+      description: "Improved alert scoring, cleaner trade logic, and stronger filtering for higher-quality setups.",
+      status: "In Progress",
+      icon: Bot,
+      active: true,
+    },
+    {
+      phase: "Phase 02",
+      title: "Performance Analytics",
+      description: "Deeper win-rate tracking, trade history insights, strategy breakdowns, and user-facing performance data.",
+      status: "Coming Soon",
+      icon: TrendingUp,
+      active: true,
+    },
+    {
+      phase: "Phase 03",
+      title: "Futures Intelligence",
+      description: "Dedicated futures tools including institutional scalping signals, ORB logic, and key level tracking.",
+      status: "Planned",
+      icon: Activity,
+      active: false,
+    },
+    {
+      phase: "Phase 04",
+      title: "Personalized Watchlists",
+      description: "User-specific watchlists, alert preferences, and cleaner notification controls.",
+      status: "Planned",
+      icon: Target,
+      active: false,
+    },
+    {
+      phase: "Phase 05",
+      title: "Mobile Experience",
+      description: "A faster mobile-first dashboard experience for monitoring alerts on the go.",
+      status: "Planned",
+      icon: Smartphone,
+      active: false,
+    },
+  ] as const
+
+  return (
+    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(0,212,255,0.1),transparent_34%),radial-gradient(circle_at_78%_58%,rgba(139,92,246,0.09),transparent_28%),radial-gradient(circle_at_25%_68%,rgba(236,72,153,0.04),transparent_24%)]" />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="section-eyebrow text-purple-300">COMING NEXT</p>
+          <h2 className="section-title font-display">
+            SignalFlo <span className="heading-accent">Road Map</span>
+          </h2>
+          <p className="section-subtitle mx-auto mt-4">
+            A preview of upcoming features, platform upgrades, and intelligence layers being built into <strong className="font-semibold">SignalFlo</strong>.
+          </p>
+        </div>
+
+        <div className="relative mt-12 lg:mt-16">
+          <div className="pointer-events-none absolute bottom-0 left-2 top-0 w-px bg-[linear-gradient(180deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] opacity-25 lg:bottom-auto lg:left-[8%] lg:right-[8%] lg:top-7 lg:h-px lg:w-auto" />
+          <div className="grid gap-5 pl-8 lg:grid-cols-5 lg:gap-4 lg:pl-0">
+            {roadmapItems.map((item, index) => {
+              const Icon = item.icon
+
+              return (
+                <motion.div
+                  key={item.phase}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.45, delay: index * 0.07, ease: "easeOut" }}
+                >
+                  <motion.div
+                    className={cn(
+                      "absolute -left-[2rem] top-6 z-20 grid size-4 place-items-center rounded-full border bg-[#07111f] lg:left-1/2 lg:-translate-x-1/2",
+                      item.active
+                        ? "border-cyan-300/50 shadow-[0_0_22px_rgba(0,212,255,0.35)]"
+                        : "border-purple-300/25 shadow-[0_0_18px_rgba(139,92,246,0.14)]",
+                    )}
+                    animate={item.active ? { boxShadow: ["0 0 10px rgba(0,212,255,0.18)", "0 0 26px rgba(139,92,246,0.34)", "0 0 10px rgba(0,212,255,0.18)"] } : {}}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+                  >
+                    <span className={cn("absolute inset-1 rounded-full", item.active ? "bg-cyan-300" : "bg-purple-300/55")} />
+                  </motion.div>
+
+                  <motion.div
+                    className="relative h-full overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045),0_18px_65px_rgba(2,8,23,0.34)] transition-colors duration-300 hover:border-purple-300/30 lg:mt-14"
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  >
+                    <CardEffects />
+                    <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-55" />
+                    <div className="relative z-10 flex items-start justify-between gap-3">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-[linear-gradient(135deg,rgba(0,212,255,0.13),rgba(59,130,246,0.1),rgba(139,92,246,0.12))] text-cyan-200 shadow-[0_0_26px_rgba(59,130,246,0.08)]">
+                        <Icon className="size-4" />
+                      </span>
+                      <span className={cn(
+                        "rounded-full border px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em]",
+                        item.status === "In Progress"
+                          ? "border-cyan-300/20 bg-cyan-300/8 text-cyan-200"
+                          : item.status === "Coming Soon"
+                            ? "border-purple-300/20 bg-purple-300/8 text-purple-200"
+                            : "border-white/[0.08] bg-white/[0.035] text-slate-500",
+                      )}>
+                        {item.status}
+                      </span>
+                    </div>
+                    <p className="relative z-10 mt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">{item.phase}</p>
+                    <h3 className="relative z-10 mt-2 text-base font-semibold tracking-[-0.01em] text-slate-100">{item.title}</h3>
+                    <p className="relative z-10 mt-3 text-xs leading-5 text-slate-500">{item.description}</p>
+                  </motion.div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
     </FadeUp>
   )
 }
@@ -3428,13 +4371,13 @@ function SectionHeading({
 
   return (
     <div className="mx-auto max-w-3xl text-center">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400">{kicker}</p>
-      <h2 className="mt-3 font-display text-3xl font-bold tracking-[-0.02em] text-slate-50 sm:text-4xl">
+      <p className="section-eyebrow text-blue-400">{kicker}</p>
+      <h2 className="section-title font-display">
         {boldSignalFlo(parts[0])}
-        <span className="text-cyan-300">{highlight}</span>
+        <span className="heading-accent">{highlight}</span>
         {boldSignalFlo(parts[1] ?? "")}
       </h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">{boldSignalFlo(description)}</p>
+      <p className="section-subtitle mx-auto mt-4">{boldSignalFlo(description)}</p>
     </div>
   )
 }
