@@ -11,7 +11,7 @@ export function AnimatedGradientText({
   return (
     <span
       className={cn(
-        "heading-accent animate-gradient bg-[length:300%_100%]",
+        "heading-accent",
         className,
       )}
     >

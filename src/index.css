@@ -13,20 +13,15 @@
   color-scheme: dark;
   --radius:
     0.5rem;
-  --background:
-    oklch(0.115 0.025 250);
-  --foreground:
-    oklch(0.978 0.008 97);
-  --card:
-    oklch(0.16 0.03 250);
-  --card-foreground:
-    oklch(0.978 0.008 97);
+  --background: #050814;
+  --foreground: #f8fafc;
+  --card: rgb(8 13 28 / 72%);
+  --card-foreground: #f8fafc;
   --popover:
     oklch(0.16 0.03 250);
   --popover-foreground:
     oklch(0.978 0.008 97);
-  --primary:
-    oklch(0.7 0.17 235);
+  --primary: #3b82f6;
   --primary-foreground:
     oklch(0.11 0.02 250);
   --secondary:
@@ -35,20 +30,15 @@
     oklch(0.94 0.01 97);
   --muted:
     oklch(0.23 0.03 250);
-  --muted-foreground:
-    oklch(0.72 0.035 250);
-  --accent:
-    oklch(0.78 0.14 205);
+  --muted-foreground: rgb(203 213 225 / 72%);
+  --accent: #7dd3fc;
   --accent-foreground:
     oklch(0.11 0.02 250);
-  --destructive:
-    oklch(0.64 0.23 25);
-  --border:
-    oklch(1 0 0 / 11%);
+  --destructive: #ef4444;
+  --border: rgb(148 163 184 / 14%);
   --input:
     oklch(1 0 0 / 14%);
-  --ring:
-    oklch(0.7 0.17 235);
+  --ring: #60a5fa;
   --chart-1:
     oklch(0.7 0.17 235);
   --chart-2:
@@ -75,6 +65,16 @@
     oklch(1 0 0 / 11%);
   --sidebar-ring:
     oklch(0.7 0.17 235);
+  --signalflo-background: #050814;
+  --signalflo-panel: rgb(8 13 28 / 72%);
+  --signalflo-border: rgb(148 163 184 / 14%);
+  --signalflo-cyan: #7dd3fc;
+  --signalflo-blue: #60a5fa;
+  --signalflo-deep-blue: #3b82f6;
+  --signalflo-muted: rgb(203 213 225 / 72%);
+  --signalflo-white: #f8fafc;
+  --signalflo-success: #22c55e;
+  --signalflo-negative: #ef4444;
 }
 
 @theme inline {
@@ -188,8 +188,20 @@
     background-image: none !important;
   }
 
-  [data-slot="button"] {
-    background-image: none !important;
+  [data-slot="button"][data-variant="default"] {
+    background-color: var(--signalflo-deep-blue) !important;
+    background-image: linear-gradient(
+      135deg,
+      var(--signalflo-cyan) 0%,
+      var(--signalflo-blue) 45%,
+      var(--signalflo-deep-blue) 100%
+    ) !important;
+    color: #fff;
+    box-shadow: 0 10px 30px rgb(59 130 246 / 20%);
+  }
+
+  [data-slot="button"][data-variant="default"]:hover {
+    box-shadow: 0 14px 36px rgb(59 130 246 / 28%);
   }
 
   button,
@@ -241,7 +253,7 @@
     letter-spacing: -0.04em;
     line-height: 1.05;
     color: #f8fafc;
-    white-space: nowrap;
+    text-wrap: balance;
   }
 
   .section-subtitle {
@@ -254,15 +266,11 @@
   }
 
   .heading-accent {
-    background-image: linear-gradient(110deg, #7dd3fc 0%, #60a5fa 52%, #3b82f6 100%);
+    background-image: linear-gradient(90deg, #7dd3fc 0%, #60a5fa 55%, #3b82f6 100%);
     background-clip: text;
     color: transparent;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-
-  .animate-gradient {
-    animation: gradient-slide 8s linear infinite;
   }
 
   .animate-beam {
@@ -283,12 +291,6 @@
 
   .ticker-mask {
     mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-}
-
-@keyframes gradient-slide {
-  to {
-    background-position: 300% center;
   }
 }
 
@@ -326,7 +328,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-gradient,
   .animate-beam,
   .animate-ticker {
     animation: none;

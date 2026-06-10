@@ -465,9 +465,10 @@ function App() {
       <HowItWorks />
       <Process />
       <AIEngineTeaser />
+      <AIEngineCTA />
       <RealPerformance />
-      <Faq />
       <RoadMap />
+      <Faq />
       <Footer />
     </main>
   )
@@ -863,7 +864,7 @@ function AIEngineTeaserLegacy() {
                 <div className="mt-7 overflow-hidden rounded-2xl border border-cyan-300/14 bg-cyan-300/[0.045] p-5 text-center">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">AI Confidence Score</p>
                   <motion.p
-                    className="mt-2 bg-[linear-gradient(135deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] bg-clip-text text-6xl font-bold tracking-[-0.05em] text-transparent"
+                    className="heading-accent mt-2 text-6xl font-bold tracking-[-0.05em]"
                     animate={{ opacity: [0.75, 1, 0.75] }}
                     transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
                   >
@@ -1191,8 +1192,8 @@ function AIEngineTeaser() {
             Under the Hood
           </p>
           <h2 className="section-title font-display">
-            The{" "}
-            <span className="heading-accent">SignalFlo AI Engine</span>
+            The SignalFlo{" "}
+            <span className="heading-accent">AI Engine</span>
           </h2>
           <p className="section-subtitle mt-6 max-w-[520px]">
             <strong className="font-semibold text-slate-300">SignalFlo</strong> continuously processes market data,
@@ -1294,16 +1295,16 @@ function AIEngineTeaser() {
             </motion.div>
 
             <motion.div
-              className="relative overflow-hidden rounded-2xl border border-purple-300/22 bg-[#091429]/94 p-5 shadow-[0_0_58px_rgba(59,130,246,0.1),0_0_42px_rgba(139,92,246,0.08)]"
+              className="relative overflow-hidden rounded-2xl border border-blue-300/18 bg-[rgba(8,13,28,0.72)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-[18px]"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18 }}
             >
-              <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-75" />
+              <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,#7DD3FC,#60A5FA,#3B82F6,transparent)] opacity-75" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">02 · SignalFlo AI Engine</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-blue-300">02 · SignalFlo AI Engine</p>
                   <p className="mt-1 text-sm font-semibold text-slate-100">Multi-layer validation and scoring</p>
                 </div>
                 <Bot className="size-5 text-cyan-200" />
@@ -1341,10 +1342,10 @@ function AIEngineTeaser() {
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-purple-300">03 · Alert Generated</p>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-blue-300">03 · Alert Generated</p>
                   <div className="mt-1 flex items-center gap-2">
                     <p className="text-sm font-semibold text-slate-100">NVDA CALL</p>
-                    <span className="rounded-full border border-purple-300/14 bg-purple-300/8 px-2 py-0.5 text-[8px] uppercase tracking-[0.12em] text-purple-200">Call</span>
+                    <span className="rounded-full border border-blue-300/14 bg-blue-300/8 px-2 py-0.5 text-[8px] uppercase tracking-[0.12em] text-blue-200">Call</span>
                   </div>
                 </div>
                 <div className="rounded-lg border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 text-center">
@@ -1410,7 +1411,7 @@ function Hero() {
   return (
     <section id="dashboard" className="relative z-10 mb-[-2.5rem] overflow-visible sm:mb-[-3rem]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_22%,rgba(0,212,255,0.2),transparent_28%),radial-gradient(circle_at_82%_35%,rgba(139,92,246,0.15),transparent_25%),radial-gradient(circle_at_18%_20%,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_72%_14%,rgba(236,72,153,0.07),transparent_22%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-4 pb-[clamp(3.5rem,7vw,7.5rem)] pt-[calc(3.5rem+clamp(1rem,2.4vh,1.75rem))] sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-4 pb-[clamp(3.5rem,6vw,6rem)] pt-[calc(3.5rem+clamp(1rem,2.4vh,1.75rem))] sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1962,7 +1963,7 @@ function CardEffects() {
   return (
     <>
       <span className="pointer-events-none absolute -left-2 top-0 h-full w-16 -translate-x-24 rotate-12 bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:translate-x-[28rem] group-hover:opacity-100" />
-      <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px origin-left scale-x-0 rounded-full bg-[linear-gradient(90deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] opacity-60 transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="pointer-events-none absolute inset-x-4 bottom-0 h-px origin-left scale-x-0 rounded-full bg-[linear-gradient(90deg,#7DD3FC,#60A5FA,#3B82F6)] opacity-60 transition-transform duration-500 group-hover:scale-x-100" />
     </>
   )
 }
@@ -3290,10 +3291,10 @@ function HowItWorks() {
             >
               <CardEffects />
               <div className="relative z-10 flex items-center justify-between gap-4">
-                <span className="flex size-12 items-center justify-center rounded-xl border border-cyan-300/12 bg-[linear-gradient(135deg,rgba(0,212,255,0.14),rgba(59,130,246,0.11),rgba(139,92,246,0.12))] text-cyan-200 shadow-[0_0_28px_rgba(59,130,246,0.1)]">
+                <span className="flex size-12 items-center justify-center rounded-xl border border-blue-300/14 bg-[rgba(8,13,28,0.72)] text-blue-200 shadow-[0_0_28px_rgba(59,130,246,0.1)]">
                   <Icon className="size-5" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-purple-300">{step}</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-300">{step}</span>
               </div>
               <h3 className="relative z-10 mt-7 text-xl font-semibold tracking-[-0.02em] text-slate-100">{boldSignalFlo(title)}</h3>
               <p className="relative z-10 mt-3 text-sm leading-7 text-slate-500">{boldSignalFlo(copy)}</p>
@@ -3305,12 +3306,31 @@ function HowItWorks() {
   )
 }
 
+function AIEngineCTA() {
+  return (
+    <FadeUp as="section" className="bg-[#050814] px-4 py-[clamp(2rem,4vw,3.5rem)] sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-5 rounded-2xl border border-slate-400/15 bg-[rgba(8,13,28,0.72)] px-5 py-5 shadow-[0_18px_60px_rgba(0,0,0,0.28),0_0_38px_rgba(59,130,246,0.08)] backdrop-blur-[18px] sm:flex-row sm:px-7">
+        <div>
+          <p className="text-lg font-semibold text-slate-50">Ready to see <strong>SignalFlo</strong> in action?</p>
+          <p className="mt-1 text-sm text-slate-400">Open the platform and explore structured alerts in one clean dashboard.</p>
+        </div>
+        <Button asChild className="w-full shrink-0 transition-transform hover:-translate-y-0.5 sm:w-auto">
+          <a href={APP_URL}>
+            Get Started
+            <ArrowRight className="size-4" />
+          </a>
+        </Button>
+      </div>
+    </FadeUp>
+  )
+}
+
 function RealPerformance() {
   const stats = [
-    ["Live Alerts", "Tracked in real time"],
-    ["Stocks + Options", "Market coverage"],
-    ["Entry / TP / SL", "Clear trade levels"],
-    ["AI + Human", "Curated intelligence"],
+    ["Live Alerts", "Tracked outcomes"],
+    ["Stocks + Options", "Multi-market coverage"],
+    ["Entry / TP / SL", "Structured trade plans"],
+    ["AI + Human", "Curated review process"],
   ] as const
 
   return (
@@ -3344,7 +3364,7 @@ function RealPerformance() {
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
               <CardEffects />
-              <p className="relative z-10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_72%,#EC4899_100%)] bg-clip-text font-display text-2xl font-bold tracking-[-0.025em] text-transparent sm:text-3xl">
+              <p className="heading-accent relative z-10 font-display text-2xl font-bold tracking-[-0.025em] sm:text-3xl">
                 {value}
               </p>
               <p className="relative z-10 mt-3 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">{label}</p>
@@ -3365,7 +3385,7 @@ function Process() {
   ]
 
   return (
-    <FadeUp as="section" id="features" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="features" className="overflow-hidden border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
         kicker="Live Trade Example"
@@ -3373,12 +3393,12 @@ function Process() {
         highlight="Alert Looks Like"
         description="Every SignalFlo alert includes structured entries, targets, stop losses, confidence scoring, and trade context."
       />
-        <div className="mx-auto mt-10 grid max-w-7xl items-start gap-5 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] lg:items-stretch">
-        <div className="group flex h-full items-center overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
+        <div className="mx-auto mt-10 grid min-w-0 max-w-7xl items-start gap-5 lg:mt-12 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,0.38fr)] xl:items-stretch">
+        <div className="group flex min-w-0 h-full items-center overflow-hidden rounded-3xl border border-cyan-300/14 bg-[#071121]/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_28px_110px_rgba(14,165,233,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/28 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_34px_130px_rgba(14,165,233,0.18)] sm:p-5">
           <div className="relative w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050b16]/88 p-4 sm:p-5">
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_0%,rgba(34,211,238,0.16),transparent_36%)]" />
             <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(148,163,184,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.035)_1px,transparent_1px)] bg-[size:34px_34px] opacity-45" />
-            <div className="relative z-10 grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
+            <div className="relative z-10 grid min-w-0 gap-6 xl:grid-cols-[0.92fr_1.08fr] xl:items-stretch">
               <div className="flex h-full items-center justify-center rounded-2xl border border-cyan-300/12 bg-cyan-300/[0.045] p-5 transition-all duration-300 group-hover:border-cyan-300/26 group-hover:bg-cyan-300/[0.06]">
                 <div className="w-full">
                   <div className="flex flex-wrap items-center gap-2">
@@ -4139,7 +4159,7 @@ function RoadMap() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(0,212,255,0.1),transparent_34%),radial-gradient(circle_at_78%_58%,rgba(139,92,246,0.09),transparent_28%),radial-gradient(circle_at_25%_68%,rgba(236,72,153,0.04),transparent_24%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="section-eyebrow text-purple-300">COMING NEXT</p>
+          <p className="section-eyebrow text-blue-300">COMING NEXT</p>
           <h2 className="section-title font-display">
             SignalFlo <span className="heading-accent">Road Map</span>
           </h2>
@@ -4149,7 +4169,7 @@ function RoadMap() {
         </div>
 
         <div className="relative mt-12 lg:mt-16">
-          <div className="pointer-events-none absolute bottom-0 left-2 top-0 w-px bg-[linear-gradient(180deg,#00D4FF,#3B82F6,#8B5CF6,#EC4899)] opacity-25 lg:bottom-auto lg:left-[8%] lg:right-[8%] lg:top-7 lg:h-px lg:w-auto" />
+          <div className="pointer-events-none absolute bottom-0 left-2 top-0 w-px bg-[linear-gradient(180deg,#7DD3FC,#60A5FA,#3B82F6)] opacity-25 lg:bottom-auto lg:left-[8%] lg:right-[8%] lg:top-7 lg:h-px lg:w-auto" />
           <div className="grid gap-5 pl-8 lg:grid-cols-5 lg:gap-4 lg:pl-0">
             {roadmapItems.map((item, index) => {
               const Icon = item.icon
@@ -4167,24 +4187,24 @@ function RoadMap() {
                     className={cn(
                       "absolute -left-[2rem] top-6 z-20 grid size-4 place-items-center rounded-full border bg-[#07111f] lg:left-1/2 lg:-translate-x-1/2",
                       item.active
-                        ? "border-cyan-300/50 shadow-[0_0_22px_rgba(0,212,255,0.35)]"
-                        : "border-purple-300/25 shadow-[0_0_18px_rgba(139,92,246,0.14)]",
+                        ? "border-cyan-300/50 shadow-[0_0_22px_rgba(96,165,250,0.35)]"
+                        : "border-blue-300/25 shadow-[0_0_18px_rgba(59,130,246,0.14)]",
                     )}
-                    animate={item.active ? { boxShadow: ["0 0 10px rgba(0,212,255,0.18)", "0 0 26px rgba(139,92,246,0.34)", "0 0 10px rgba(0,212,255,0.18)"] } : {}}
+                    animate={item.active ? { boxShadow: ["0 0 10px rgba(125,211,252,0.18)", "0 0 26px rgba(59,130,246,0.34)", "0 0 10px rgba(125,211,252,0.18)"] } : {}}
                     transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
                   >
-                    <span className={cn("absolute inset-1 rounded-full", item.active ? "bg-cyan-300" : "bg-purple-300/55")} />
+                    <span className={cn("absolute inset-1 rounded-full", item.active ? "bg-cyan-300" : "bg-blue-300/55")} />
                   </motion.div>
 
                   <motion.div
-                    className="relative h-full overflow-hidden rounded-2xl border border-blue-300/12 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045),0_18px_65px_rgba(2,8,23,0.34)] transition-colors duration-300 hover:border-purple-300/30 lg:mt-14"
+                    className="relative h-full overflow-hidden rounded-2xl border border-blue-300/12 bg-[rgba(8,13,28,0.72)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-[18px] transition-colors duration-300 hover:border-blue-300/30 lg:mt-14"
                     whileHover={{ y: -5 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
                   >
                     <CardEffects />
-                    <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-[linear-gradient(90deg,transparent,#00D4FF,#8B5CF6,#EC4899,transparent)] opacity-55" />
+                    <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-[linear-gradient(90deg,transparent,#7DD3FC,#60A5FA,#3B82F6,transparent)] opacity-55" />
                     <div className="relative z-10 flex items-start justify-between gap-3">
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-cyan-300/12 bg-[linear-gradient(135deg,rgba(0,212,255,0.13),rgba(59,130,246,0.1),rgba(139,92,246,0.12))] text-cyan-200 shadow-[0_0_26px_rgba(59,130,246,0.08)]">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-blue-300/12 bg-[rgba(8,13,28,0.72)] text-blue-200 shadow-[0_0_26px_rgba(59,130,246,0.08)]">
                         <Icon className="size-4" />
                       </span>
                       <span className={cn(
@@ -4192,7 +4212,7 @@ function RoadMap() {
                         item.status === "In Progress"
                           ? "border-cyan-300/20 bg-cyan-300/8 text-cyan-200"
                           : item.status === "Coming Soon"
-                            ? "border-purple-300/20 bg-purple-300/8 text-purple-200"
+                            ? "border-blue-300/20 bg-blue-300/8 text-blue-200"
                             : "border-white/[0.08] bg-white/[0.035] text-slate-500",
                       )}>
                         {item.status}
