@@ -151,6 +151,18 @@
     scroll-behavior: smooth;
   }
 
+  #dashboard,
+  #how-it-works,
+  #features,
+  #ai-engine,
+  #alert-example,
+  #performance,
+  #roadmap,
+  #faq,
+  #cta {
+    scroll-margin-top: 6rem;
+  }
+
   h1,
   h2,
   h3,

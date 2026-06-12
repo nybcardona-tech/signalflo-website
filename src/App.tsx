@@ -216,13 +216,12 @@ const pricingPlanMeta: Record<PricingPlanName, {
   },
 }
 
-const faqs = [
-  ["How often are alerts sent?", "Alert frequency depends on market conditions and setup quality. SignalFlo prioritizes clear trade ideas over constant noise."],
-  ["Do I need trading experience?", "Some trading familiarity helps. SignalFlo makes alerts easier to review, but users should manage their own risk."],
-  ["Are results guaranteed?", "No. SignalFlo provides trade alerts, market research, and educational tools. Trading involves risk, and users are responsible for their own decisions."],
-  ["What markets do you cover?", "SignalFlo focuses on stocks and options, with support for ETFs and short-term market opportunities."],
-  ["Is this financial advice?", "No. SignalFlo is software for alerts, research, and education. It does not provide individualized financial advice."],
-]
+const homepageFaqs = [
+  ["Do I need trading experience?", "No. SignalFlo is designed to present structured alerts with clear entry, target, stop loss, and confidence scoring so traders can evaluate opportunities more efficiently."],
+  ["What markets do you cover?", "SignalFlo currently focuses on stocks and options, with additional intelligence layers and market coverage planned in future releases."],
+  ["Are results guaranteed?", "No. Trading involves risk and no system can guarantee profits. SignalFlo provides research, analysis, and structured trade ideas for educational purposes only."],
+  ["Is this financial advice?", "No. SignalFlo does not provide individualized financial advice or investment recommendations. Users remain responsible for their own trading decisions."],
+] as const
 
 const termsSections = [
   ["Acceptance of Terms", "By accessing or using SignalFlo, you agree to these Terms & Conditions and any policies referenced here. If you do not agree, do not access the website, dashboard, alerts, community channels, or related services."],
@@ -442,6 +441,28 @@ void Pricing
 function App() {
   const pathname = window.location.pathname
 
+  useEffect(() => {
+    const scrollToHash = () => {
+      const targetId = decodeURIComponent(window.location.hash.slice(1))
+
+      if (!targetId) {
+        return
+      }
+
+      window.requestAnimationFrame(() => {
+        document.getElementById(targetId)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        })
+      })
+    }
+
+    scrollToHash()
+    window.addEventListener("hashchange", scrollToHash)
+
+    return () => window.removeEventListener("hashchange", scrollToHash)
+  }, [pathname])
+
   if (pathname === LEGAL_URL) {
     return <LegalPage />
   }
@@ -465,10 +486,10 @@ function App() {
       <HowItWorks />
       <Process />
       <AIEngineTeaser />
-      <AIEngineCTA />
       <RealPerformance />
       <RoadMap />
       <Faq />
+      <AIEngineCTA />
       <Footer />
     </main>
   )
@@ -729,7 +750,7 @@ function AIEnginePageHero() {
             </a>
           </Button>
           <Button asChild variant="outline" className="border-white/10 bg-white/[0.035] transition-all hover:-translate-y-0.5 hover:border-purple-300/25 hover:bg-white/[0.06]">
-            <a href={APP_URL}>Get Started</a>
+            <a href={PRICING_URL}>Get Started</a>
           </Button>
         </div>
       </motion.div>
@@ -1184,7 +1205,7 @@ function AIEngineTeaser() {
   ]
 
   return (
-    <FadeUp as="section" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="ai-engine" className="relative z-20 overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_48%,rgba(0,212,255,0.08),transparent_30%),radial-gradient(circle_at_78%_50%,rgba(139,92,246,0.11),transparent_32%),radial-gradient(circle_at_88%_64%,rgba(236,72,153,0.045),transparent_25%)]" />
       <div className="relative z-10 mx-auto grid max-w-[1280px] gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
         <div className="max-w-xl">
@@ -1374,6 +1395,16 @@ function AIEngineTeaser() {
 }
 
 function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navLinks = [
+    ["How It Works", "/#how-it-works"],
+    ["Live Trade Example", "/#alert-example"],
+    ["Features", "/#features"],
+    ["AI Engine", "/#ai-engine"],
+    ["FAQ", "/#faq"],
+    ["Get Started", PRICING_URL],
+  ] as const
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.07] bg-[#050a14]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -1383,26 +1414,63 @@ function Navbar() {
           </span>
           SignalFlo AI
         </a>
-        <nav className="hidden items-center gap-8 text-xs text-slate-400 lg:flex">
-          <a href="/#features" className="transition-colors hover:text-white">Features</a>
-          <a href={AI_ENGINE_URL} className="transition-colors hover:text-white">AI Engine</a>
-          <a href={PRICING_URL} className="transition-colors hover:text-white">Pricing</a>
-          <a href="/#faq" className="transition-colors hover:text-white">FAQ</a>
+        <nav className="hidden items-center gap-6 text-xs text-slate-400 lg:flex">
+          {navLinks.map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              className={cn(
+                "transition-all hover:text-white",
+                label === "Get Started" &&
+                  "rounded-md border border-blue-300/20 bg-gradient-to-r from-blue-500 to-cyan-400 px-3.5 py-2 font-semibold text-white shadow-[0_0_22px_rgba(59,130,246,0.24)] hover:-translate-y-0.5 hover:brightness-110",
+              )}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
-        <div className="hidden items-center gap-2 sm:flex">
+        <div className="hidden items-center sm:flex">
           <Button asChild variant="ghost" size="sm" className="h-8 text-xs transition-all hover:bg-white/[0.06]">
             <a href={APP_URL}>Login</a>
           </Button>
-          <Button asChild size="sm" className="h-8 bg-blue-500 text-xs text-white shadow-[0_0_20px_rgba(59,130,246,0.28)] transition-all hover:-translate-y-0.5 hover:bg-blue-400">
-            <a href={APP_URL}>Get Started</a>
-          </Button>
         </div>
-        <Button asChild className="sm:hidden" variant="outline" size="icon" aria-label="Open dashboard">
-          <a href={APP_URL}>
-            <Menu />
-          </a>
+        <Button
+          className="sm:hidden"
+          variant="outline"
+          size="icon"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          <Menu />
         </Button>
       </div>
+      {mobileMenuOpen && (
+        <nav className="border-t border-white/[0.07] bg-[#050a14]/96 px-4 py-3 backdrop-blur-xl sm:hidden">
+          <div className="mx-auto grid max-w-7xl gap-1">
+            {navLinks.map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                className={cn(
+                  "rounded-md px-3 py-2.5 text-sm text-slate-300 transition-all hover:bg-white/[0.05] hover:text-white",
+                  label === "Get Started" &&
+                    "mt-1 bg-gradient-to-r from-blue-500 to-cyan-400 text-center font-semibold text-white shadow-[0_0_22px_rgba(59,130,246,0.22)] hover:brightness-110",
+                )}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {label}
+              </a>
+            ))}
+            <a
+              href={APP_URL}
+              className="mt-1 rounded-md border-t border-white/[0.07] px-3 py-3 text-sm font-medium text-slate-100"
+            >
+              Login
+            </a>
+          </div>
+        </nav>
+      )}
     </header>
   )
 }
@@ -1435,7 +1503,7 @@ function Hero() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:brightness-110">
-              <a href={APP_URL}>
+              <a href={PRICING_URL}>
                 Start Receiving Alerts
                 <ArrowRight />
               </a>
@@ -3265,7 +3333,7 @@ function HowItWorks() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden bg-[#050914] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="how-it-works" className="relative overflow-hidden bg-[#050914] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#050914_0%,#050914_12%,transparent_35%),radial-gradient(circle_at_20%_28%,rgba(0,212,255,0.09),transparent_30%),radial-gradient(circle_at_82%_68%,rgba(139,92,246,0.08),transparent_30%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-4xl text-center">
@@ -3308,18 +3376,42 @@ function HowItWorks() {
 
 function AIEngineCTA() {
   return (
-    <FadeUp as="section" className="bg-[#050814] px-4 py-[clamp(2rem,4vw,3.5rem)] sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-5 rounded-2xl border border-slate-400/15 bg-[rgba(8,13,28,0.72)] px-5 py-5 shadow-[0_18px_60px_rgba(0,0,0,0.28),0_0_38px_rgba(59,130,246,0.08)] backdrop-blur-[18px] sm:flex-row sm:px-7">
-        <div>
-          <p className="text-lg font-semibold text-slate-50">Ready to see <strong>SignalFlo</strong> in action?</p>
-          <p className="mt-1 text-sm text-slate-400">Open the platform and explore structured alerts in one clean dashboard.</p>
+    <FadeUp as="section" id="cta" className="relative overflow-hidden bg-[#050814] px-4 pb-[clamp(6rem,10vw,10rem)] pt-[clamp(3.5rem,6vw,6rem)] sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-[1100px] px-6 py-[clamp(4rem,8vw,7rem)] text-center sm:px-10 lg:px-16">
+        <motion.span
+          className="pointer-events-none absolute left-[12%] top-[24%] size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(125,211,252,0.6)]"
+          animate={{ opacity: [0.35, 0.9, 0.35] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.span
+          className="pointer-events-none absolute bottom-[22%] right-[14%] size-1 rounded-full bg-blue-400 shadow-[0_0_12px_rgba(96,165,250,0.55)]"
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+        />
+        <div className="relative z-10 mx-auto max-w-[780px]">
+          <p className="section-eyebrow heading-accent">Get Started</p>
+          <h2 className="font-display text-[clamp(2.35rem,5.5vw,4.5rem)] font-bold leading-[1.02] tracking-[-0.045em] text-slate-50">
+            Ready to see{" "}
+            <span className="heading-accent">SignalFlo in action?</span>
+          </h2>
+          <p className="section-subtitle mx-auto mt-5">
+            Built for traders who want structured alerts, AI confidence scoring, and transparent trade tracking in one clean platform.
+          </p>
+          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" className="h-13 px-8 transition-transform hover:-translate-y-0.5">
+              <a href={PRICING_URL}>
+                Get Started
+                <ArrowRight className="size-4" />
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-13 border-white/10 bg-white/[0.035] px-8 text-white transition-all hover:-translate-y-0.5 hover:border-blue-300/30 hover:bg-white/[0.06] hover:shadow-[0_0_26px_rgba(59,130,246,0.12)]">
+              <a href={AI_ENGINE_URL}>Explore the AI Engine</a>
+            </Button>
+          </div>
+          <p className="mt-5 text-xs leading-5 text-slate-500">
+            No hype. No fabricated results. Just structured trading intelligence.
+          </p>
         </div>
-        <Button asChild className="w-full shrink-0 transition-transform hover:-translate-y-0.5 sm:w-auto">
-          <a href={APP_URL}>
-            Get Started
-            <ArrowRight className="size-4" />
-          </a>
-        </Button>
       </div>
     </FadeUp>
   )
@@ -3334,7 +3426,7 @@ function RealPerformance() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden bg-[#07101f] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="performance" className="relative overflow-hidden bg-[#07101f] px-4 py-[clamp(3rem,6vw,6rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(59,130,246,0.09),transparent_34%),radial-gradient(circle_at_76%_70%,rgba(236,72,153,0.04),transparent_25%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-4xl text-center">
@@ -3342,7 +3434,8 @@ function RealPerformance() {
             By The Numbers
           </p>
           <h2 className="section-title font-display">
-            Built on real performance.
+            <span className="block">Built on real</span>
+            <span className="heading-accent block">performance</span>
           </h2>
           <p className="section-subtitle mx-auto mt-4">
             No hype. No fabricated metrics. <strong className="font-semibold text-slate-400">SignalFlo</strong> is built around live alerts, tracked outcomes, and transparent trade history.
@@ -3385,7 +3478,7 @@ function Process() {
   ]
 
   return (
-    <FadeUp as="section" id="features" className="overflow-hidden border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="alert-example" className="overflow-hidden border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
       <SectionHeading
         kicker="Live Trade Example"
@@ -3547,7 +3640,8 @@ function Process() {
         <AlertReadingGuide />
         </div>
 
-        <div className="mx-auto mt-16 max-w-3xl text-center">
+        <div id="features" className="mx-auto mt-16 max-w-3xl text-center">
+          <p className="section-eyebrow text-blue-400">Features</p>
           <h3 className="section-title font-display">
             Everything you need to <AnimatedGradientText>trade smarter</AnimatedGradientText>
           </h3>
@@ -3767,8 +3861,9 @@ function DedicatedPricingPage() {
           <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
             Pricing
           </Badge>
-          <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold tracking-[-0.03em] text-slate-50 sm:text-6xl">
-            Choose Your <strong className="font-semibold">SignalFlo</strong> Plan
+          <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.05] tracking-[-0.03em] text-slate-50 sm:text-6xl">
+            <span className="block">Choose your</span>
+            <span className="heading-accent block">SignalFlo plan</span>
           </h1>
           <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-400">
             Get access to AI-powered trading alerts, confidence scoring,
@@ -3912,7 +4007,7 @@ function DedicatedPricingPage() {
           <div className="mx-auto max-w-3xl text-center">
             <p className="section-eyebrow text-blue-400">Compare</p>
             <h2 className="section-title font-display">
-              Plan Comparison
+              Plan <span className="heading-accent">Comparison</span>
             </h2>
           </div>
           <div className="mt-8 overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#081225]/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
@@ -3982,7 +4077,7 @@ function DedicatedPricingPage() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.28)] hover:bg-blue-400">
-              <a href={APP_URL}>
+              <a href={PRICING_URL}>
                 Get Started
                 <ArrowRight className="size-4" />
               </a>
@@ -4013,7 +4108,7 @@ function Pricing() {
       <div className="mx-auto max-w-3xl text-center">
         <p className="section-eyebrow text-blue-400">Pricing</p>
         <h2 className="section-title font-display">
-          Choose <span className="text-cyan-300">Your Plan</span>
+          Choose <span className="heading-accent">Your Plan</span>
         </h2>
         <p className="section-subtitle mx-auto mt-4">
           Choose the plan that fits your goals. Whether you're just starting out
@@ -4155,7 +4250,7 @@ function RoadMap() {
   ] as const
 
   return (
-    <FadeUp as="section" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
+    <FadeUp as="section" id="roadmap" className="relative overflow-hidden border-y border-white/[0.06] bg-[#050914] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(0,212,255,0.1),transparent_34%),radial-gradient(circle_at_78%_58%,rgba(139,92,246,0.09),transparent_28%),radial-gradient(circle_at_25%_68%,rgba(236,72,153,0.04),transparent_24%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
@@ -4234,21 +4329,21 @@ function RoadMap() {
 
 function Faq() {
   return (
-    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(4.5rem,8vw,8rem)] sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl">
+    <FadeUp as="section" id="faq" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(3.5rem,6vw,6rem)] sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[850px]">
         <SectionHeading
           kicker="FAQ"
-          title="Frequently Asked Questions"
-          highlight="Questions"
-          description="Everything you need to know before getting started."
+          title="Still Have Questions?"
+          highlight="Questions?"
+          description="Quick answers to common questions before getting started."
         />
-        <Accordion type="single" collapsible className="mt-10 space-y-3">
-          {faqs.map(([question, answer], index) => (
-            <AccordionItem key={question} value={`faq-${index}`} className="rounded-lg border border-white/[0.07] bg-[#081225]/82 px-4">
-              <AccordionTrigger className="text-left text-sm hover:text-cyan-300 hover:no-underline">
+        <Accordion type="single" collapsible className="mt-8 space-y-2.5">
+          {homepageFaqs.map(([question, answer], index) => (
+            <AccordionItem key={question} value={`faq-${index}`} className="rounded-xl border border-slate-400/15 bg-[rgba(8,13,28,0.72)] px-5 shadow-[0_12px_36px_rgba(0,0,0,0.16)] backdrop-blur-[18px] transition-all duration-300 hover:border-blue-300/25 hover:bg-[#0a1428]/78">
+              <AccordionTrigger className="min-h-14 py-4 text-left text-[15px] text-slate-200 hover:text-cyan-200 hover:no-underline sm:min-h-16 sm:py-5">
                 {question}
               </AccordionTrigger>
-              <AccordionContent className="text-sm leading-6 text-slate-400">
+              <AccordionContent className="pb-5 text-sm leading-7 text-slate-400">
                 {boldSignalFlo(answer)}
               </AccordionContent>
             </AccordionItem>
@@ -4268,55 +4363,8 @@ function Footer() {
   ]
 
   return (
-    <footer className="border-t border-white/[0.06] bg-[#050914] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <footer className="border-t border-white/[0.06] bg-[#050914] px-4 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-18 lg:px-8 lg:pb-20 lg:pt-18">
       <div className="mx-auto max-w-7xl">
-        <form
-          className="relative mb-12 overflow-hidden rounded-3xl border border-cyan-300/12 bg-[#081225]/82 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(14,165,233,0.12)] sm:p-7"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(34,211,238,0.15),transparent_34%),radial-gradient(circle_at_88%_10%,rgba(37,99,235,0.12),transparent_30%)]" />
-          <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent" />
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xl font-bold tracking-[-0.01em] text-slate-100">Stay Updated With <strong className="font-semibold">SignalFlo</strong></p>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-                Get launch updates, new features, and alert platform news.
-              </p>
-              <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.16em] text-cyan-300/80">
-                No spam. Product updates only.
-              </p>
-            </div>
-            <div className="flex w-full flex-col gap-2 sm:flex-row lg:max-w-md">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="min-h-11 flex-1 rounded-md border border-white/[0.08] bg-black/20 px-3 text-sm text-slate-200 outline-none transition-colors placeholder:text-slate-600 focus:border-cyan-300/35"
-              />
-              <Button type="submit" className="min-h-11 bg-blue-500 px-5 text-white hover:bg-blue-400">
-                Join List
-              </Button>
-            </div>
-          </div>
-          <div className="relative z-10 mt-5 border-t border-white/[0.07] pt-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:gap-5">
-              <div className="flex min-w-fit items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-md border border-cyan-300/12 bg-cyan-300/8 text-cyan-200">
-                  <ShieldCheck className="size-3.5" />
-                </span>
-                <p className="text-sm font-semibold text-slate-200">Trading Risk Disclosure</p>
-              </div>
-              <p className="text-xs leading-6 text-slate-500">
-                <strong className="font-semibold">SignalFlo</strong> provides market alerts, trade ideas, research tools,
-                and educational content. Trading involves risk, including
-                possible loss of capital. Past performance does not guarantee
-                future results. Users are responsible for their own trading
-                decisions. <strong className="font-semibold">SignalFlo</strong> does not execute trades or provide
-                individualized financial advice.
-              </p>
-            </div>
-          </div>
-        </form>
-
         <div className="grid gap-12 md:grid-cols-[1.2fr_2fr]">
           <div>
             <div className="flex items-center gap-3 text-base font-bold tracking-[-0.01em] text-slate-100">
@@ -4352,7 +4400,7 @@ function Footer() {
                                   : link === "Dashboard"
                                     ? "/#dashboard"
                                     : link === "Trade Alerts"
-                                      ? "/#alerts"
+                                      ? "/#alert-example"
                                       : link === "FAQ"
                                         ? "/#faq"
                                         : "#"
@@ -4366,6 +4414,17 @@ function Footer() {
               </div>
             ))}
           </div>
+        </div>
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.06] pt-6 lg:flex-row lg:items-start lg:gap-5">
+          <div className="flex min-w-fit items-center gap-2">
+            <ShieldCheck className="size-3.5 text-cyan-300" />
+            <p className="text-xs font-semibold text-slate-300">Trading Risk Disclosure</p>
+          </div>
+          <p className="max-w-5xl text-xs leading-6 text-slate-600">
+            <strong className="font-semibold">SignalFlo</strong> provides market alerts, trade ideas, research tools,
+            and educational content. Trading involves risk, including possible loss of capital. Past performance does
+            not guarantee future results. Users are responsible for their own trading decisions. <strong className="font-semibold">SignalFlo</strong> does not execute trades or provide individualized financial advice.
+          </p>
         </div>
         <div className="mt-10 border-t border-white/[0.06] pt-6 text-center">
           <p className="text-xs text-slate-600">© 2026 <strong className="font-semibold">SignalFlo</strong> AI. All rights reserved.</p>
