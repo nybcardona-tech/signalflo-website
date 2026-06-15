@@ -4,11 +4,15 @@ import {
   Bot,
   Check,
   CircleDollarSign,
+  ClipboardCheck,
   Cpu,
+  CreditCard,
   FileClock,
   Loader2,
   LockKeyhole,
+  Mail,
   Menu,
+  MessageCircle,
   MonitorSmartphone,
   RadioTower,
   ShieldCheck,
@@ -19,7 +23,7 @@ import {
   Workflow,
 } from "lucide-react"
 import { Fragment, useEffect, useState } from "react"
-import type { ComponentType, ReactNode } from "react"
+import type { ComponentType, FormEvent, ReactNode } from "react"
 import { motion } from "motion/react"
 import { AnimatedGradientText } from "@/components/magic/animated-gradient-text"
 import { BorderBeam } from "@/components/magic/border-beam"
@@ -45,6 +49,7 @@ const LEGAL_URL = "/legal"
 const TERMS_URL = "/terms"
 const PRICING_URL = "/pricing"
 const AI_ENGINE_URL = "/ai-engine"
+const WELCOME_URL = "/welcome"
 const LEGAL_VERSION = "v1.0"
 const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
 const LEGAL_ACKNOWLEDGMENT =
@@ -278,6 +283,13 @@ const pricingPageFaqs = [
   ["How are alerts delivered?", "Alerts and tracking are presented through the SignalFlo dashboard and may also be supported through community or notification channels such as Discord, Telegram, or email depending on plan availability."],
 ] as const
 
+const memberAccessSteps = [
+  ["Step 01", "Complete Member Setup", "Submit the onboarding form with the email used at checkout, your preferred login email, and your Discord or Telegram details.", ClipboardCheck],
+  ["Step 02", "Payment Verification", "Our team verifies your payment and membership plan before activating account access.", CreditCard],
+  ["Step 03", "Dashboard Access", "Once approved, you'll receive your SignalFlo login or password setup email for the member dashboard.", MonitorSmartphone],
+  ["Step 04", "Community & Alert Access", "You'll receive access instructions for Discord and Telegram so you can follow alerts, updates, and member announcements.", MessageCircle],
+] as const
+
 const dashboardTabs = ["Overview", "Active Alerts", "Closed Trades"]
 
 const dashboardAlerts = [
@@ -479,6 +491,10 @@ function App() {
     return <AIEnginePage />
   }
 
+  if (pathname === WELCOME_URL) {
+    return <WelcomePage />
+  }
+
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <Navbar />
@@ -511,6 +527,16 @@ function boldSignalFlo(text: string) {
     ) : (
       part
     ),
+  )
+}
+
+function BrandLogo({ className }: { className?: string }) {
+  return (
+    <img
+      src="/signalflo-logo.png"
+      alt="SignalFlo"
+      className={cn("block h-auto w-auto object-contain", className)}
+    />
   )
 }
 
@@ -692,6 +718,357 @@ function TermsPage() {
           </Button>
         </div>
       </section>
+      <Footer />
+    </main>
+  )
+}
+
+async function submitOnboardingForm(payload: Record<string, string | boolean>) {
+  const { url, anonKey } = supabaseConfig
+
+  if (!url || !anonKey) {
+    throw new Error("Member setup is temporarily unavailable. Please contact support@signalflo.ai.")
+  }
+
+  const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/onboarding_submissions`, {
+    method: "POST",
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${anonKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Onboarding submission failed: ${response.status} ${errorText}`)
+  }
+}
+
+function MemberAccessTimeline() {
+  return (
+    <FadeUp as="section" className="px-4 py-[clamp(4rem,7vw,7rem)] sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeading
+          kicker="Activation Process"
+          title="Your Path to Member Access"
+          highlight="Member Access"
+          description="A clear four-step review process connects your purchase to the SignalFlo dashboard and member channels."
+        />
+        <div className="relative mt-12 grid gap-4 lg:grid-cols-4">
+          <div className="pointer-events-none absolute left-[10%] right-[10%] top-7 hidden h-px bg-blue-300/15 lg:block" />
+          {memberAccessSteps.map(([step, title, copy, Icon], index) => (
+            <motion.div
+              key={step}
+              className="group relative overflow-hidden rounded-2xl border border-slate-400/15 bg-[rgba(8,13,28,0.72)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-[18px] transition-colors hover:border-blue-300/28"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -4 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.45, delay: index * 0.07 }}
+            >
+              <div className="relative z-10 flex items-center justify-between gap-3">
+                <span className="flex size-11 items-center justify-center rounded-xl border border-blue-300/15 bg-blue-300/8 text-blue-200">
+                  <Icon className="size-5" />
+                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">{step}</span>
+              </div>
+              <h2 className="relative z-10 mt-6 text-lg font-semibold text-slate-100">{boldSignalFlo(title)}</h2>
+              <p className="relative z-10 mt-3 text-sm leading-7 text-slate-500">{boldSignalFlo(copy)}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </FadeUp>
+  )
+}
+
+function WelcomePage() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [formError, setFormError] = useState("")
+  const expectations = [
+    "Most accounts are reviewed manually before access is activated.",
+    "Use the same email you used at checkout whenever possible.",
+    "Discord and Telegram access may require username verification.",
+    "SignalFlo alerts are educational trade ideas, not financial advice.",
+    "Never risk more than you can afford to lose.",
+    "Support will contact you if any account details are missing.",
+  ]
+  const fieldClass =
+    "min-h-12 w-full rounded-xl border border-white/[0.09] bg-[#050b16]/80 px-4 text-sm text-slate-200 outline-none transition-all placeholder:text-slate-600 focus:border-cyan-300/35 focus:shadow-[0_0_0_3px_rgba(34,211,238,0.07)]"
+  const labelClass = "mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400"
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setIsSubmitting(true)
+    setFormError("")
+
+    const form = event.currentTarget
+    const data = new FormData(form)
+    const payload = {
+      full_name: String(data.get("full_name") ?? ""),
+      checkout_email: String(data.get("checkout_email") ?? ""),
+      dashboard_email: String(data.get("dashboard_email") ?? ""),
+      phone: String(data.get("phone") ?? ""),
+      discord_username: String(data.get("discord_username") ?? ""),
+      telegram_contact: String(data.get("telegram_contact") ?? ""),
+      membership_plan: String(data.get("membership_plan") ?? ""),
+      markets_traded: String(data.get("markets_traded") ?? ""),
+      experience_level: String(data.get("experience_level") ?? ""),
+      referral_source: String(data.get("referral_source") ?? ""),
+      notes: String(data.get("notes") ?? ""),
+      risk_acknowledged: data.get("risk_acknowledged") === "on",
+    }
+
+    try {
+      await submitOnboardingForm(payload)
+      setIsSubmitted(true)
+      form.reset()
+    } catch (error) {
+      console.error("SignalFlo onboarding submission failed.", error)
+      setFormError(
+        error instanceof Error
+          ? error.message
+          : "We could not submit your setup details. Please contact support@signalflo.ai.",
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <Navbar />
+
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden border-b border-white/[0.06] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_14%,rgba(34,211,238,0.15),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(59,130,246,0.11),transparent_26%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="relative z-10 mx-auto max-w-5xl text-center"
+        >
+          <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.055] text-cyan-200">
+            <motion.span
+              className="size-1.5 rounded-full bg-cyan-300"
+              animate={{ opacity: [0.45, 1, 0.45] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            Payment received · Setup pending
+          </Badge>
+          <h1 className="mx-auto mt-6 max-w-4xl font-display text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-slate-50 sm:text-6xl lg:text-7xl">
+            Welcome to <span className="heading-accent">SignalFlo</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-slate-400">
+            Your membership has been received. Complete the steps below so we can activate your dashboard access,
+            Discord community access, and Telegram alert delivery.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" className="h-13 px-7 shadow-[0_0_30px_rgba(59,130,246,0.22)]">
+              <a href="#member-setup">
+                Complete Member Setup
+                <ArrowRight className="size-4" />
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-13 border-white/10 bg-white/[0.03] px-7 hover:bg-white/[0.06]">
+              <a href="mailto:support@signalflo.ai">
+                <Mail className="size-4" />
+                Contact Support
+              </a>
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
+      <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(3.5rem,6vw,6rem)] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+            <div>
+              <p className="section-eyebrow text-blue-400">Before Activation</p>
+              <h2 className="section-title font-display">What Happens Next</h2>
+              <p className="section-subtitle mt-5 max-w-xl">
+                Our team reviews each membership carefully so your account, plan, and community access are connected correctly.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {expectations.map((item) => (
+                <div key={item} className="flex gap-3 rounded-xl border border-white/[0.07] bg-[#081225]/72 p-4">
+                  <Check className="mt-0.5 size-4 shrink-0 text-cyan-300" />
+                  <p className="text-sm leading-6 text-slate-400">{boldSignalFlo(item)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </FadeUp>
+
+      <FadeUp as="section" id="member-setup" className="scroll-mt-24 px-4 py-[clamp(4rem,7vw,7rem)] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <SectionHeading
+            kicker="Member Onboarding"
+            title="Complete Your Member Setup"
+            highlight="Member Setup"
+            description="Submit the details below so the SignalFlo team can verify your membership and activate access."
+          />
+
+          {isSubmitted ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto mt-10 max-w-3xl rounded-3xl border border-cyan-300/18 bg-[#081225]/82 p-7 text-center shadow-[0_24px_100px_rgba(14,165,233,0.12)] sm:p-10"
+            >
+              <span className="mx-auto flex size-14 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                <Check className="size-7" />
+              </span>
+              <h2 className="mt-6 text-2xl font-bold text-slate-100">Setup submitted successfully.</h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-400">
+                Our team will verify your membership and send your dashboard access details shortly.
+              </p>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-500">
+                Check your inbox for your SignalFlo access email. If you do not receive anything, contact{" "}
+                <a href="mailto:support@signalflo.ai" className="text-cyan-300 hover:text-cyan-200">support@signalflo.ai</a>.
+              </p>
+            </motion.div>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="relative mt-10 overflow-hidden rounded-3xl border border-slate-400/15 bg-[rgba(8,13,28,0.78)] p-5 shadow-[0_24px_100px_rgba(0,0,0,0.32)] backdrop-blur-[18px] sm:p-8 lg:p-10"
+            >
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label>
+                  <span className={labelClass}>Full Name *</span>
+                  <input className={fieldClass} name="full_name" autoComplete="name" required />
+                </label>
+                <label>
+                  <span className={labelClass}>Email Used at Checkout *</span>
+                  <input className={fieldClass} name="checkout_email" type="email" autoComplete="email" required />
+                </label>
+                <label>
+                  <span className={labelClass}>Preferred Dashboard Login Email *</span>
+                  <input className={fieldClass} name="dashboard_email" type="email" autoComplete="email" required />
+                </label>
+                <label>
+                  <span className={labelClass}>Phone Number</span>
+                  <input className={fieldClass} name="phone" type="tel" autoComplete="tel" />
+                </label>
+                <label>
+                  <span className={labelClass}>Discord Username</span>
+                  <input className={fieldClass} name="discord_username" placeholder="@username" />
+                </label>
+                <label>
+                  <span className={labelClass}>Telegram Username or Phone Number</span>
+                  <input className={fieldClass} name="telegram_contact" placeholder="@username or phone" />
+                </label>
+                <label>
+                  <span className={labelClass}>Membership Plan Purchased *</span>
+                  <select className={fieldClass} name="membership_plan" defaultValue="" required>
+                    <option value="" disabled>Select your plan</option>
+                    <option>Monthly</option>
+                    <option>Yearly</option>
+                    <option>Lifetime</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  <span className={labelClass}>Primary Markets Traded</span>
+                  <select className={fieldClass} name="markets_traded" defaultValue="">
+                    <option value="" disabled>Select a market</option>
+                    <option>Stocks</option>
+                    <option>Options</option>
+                    <option>Futures</option>
+                    <option>Crypto</option>
+                    <option>Forex</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  <span className={labelClass}>Trading Experience Level</span>
+                  <select className={fieldClass} name="experience_level" defaultValue="">
+                    <option value="" disabled>Select your experience</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                  </select>
+                </label>
+                <label>
+                  <span className={labelClass}>How Did You Hear About SignalFlo?</span>
+                  <input className={fieldClass} name="referral_source" />
+                </label>
+                <label className="sm:col-span-2">
+                  <span className={labelClass}>Notes / Questions</span>
+                  <textarea className={`${fieldClass} min-h-32 resize-y py-3`} name="notes" />
+                </label>
+              </div>
+
+              <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-cyan-300/12 bg-cyan-300/[0.035] p-4">
+                <input
+                  type="checkbox"
+                  name="risk_acknowledged"
+                  required
+                  className="mt-1 size-4 shrink-0 accent-cyan-400"
+                />
+                <span className="text-sm leading-7 text-slate-400">
+                  I understand that SignalFlo provides educational market alerts and trade ideas only. SignalFlo does not
+                  provide personalized financial advice, and all trading decisions are my responsibility.
+                </span>
+              </label>
+
+              {formError && (
+                <p role="alert" className="mt-5 rounded-xl border border-red-300/15 bg-red-300/[0.045] px-4 py-3 text-sm leading-6 text-red-200/80">
+                  {formError}
+                </p>
+              )}
+
+              <Button type="submit" size="lg" disabled={isSubmitting} className="mt-6 h-13 w-full sm:w-auto">
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Submitting Setup
+                  </>
+                ) : (
+                  <>
+                    Complete Member Setup
+                    <ArrowRight className="size-4" />
+                  </>
+                )}
+              </Button>
+            </form>
+          )}
+        </div>
+      </FadeUp>
+
+      <FadeUp as="section" className="border-y border-white/[0.06] bg-[#07101f] px-4 py-[clamp(3.5rem,6vw,5.5rem)] sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 rounded-2xl border border-white/[0.08] bg-[#081225]/72 p-6 text-center sm:p-8 lg:flex-row lg:text-left">
+          <div>
+            <p className="section-eyebrow text-blue-400">Member Support</p>
+            <h2 className="text-2xl font-bold text-slate-100">Need Help?</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500">
+              If you completed checkout but cannot access your dashboard, Discord, or Telegram, contact support with the email used at checkout.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="lg" className="shrink-0 border-white/10 bg-white/[0.035]">
+            <a href="mailto:support@signalflo.ai">
+              <Mail className="size-4" />
+              Email Support
+            </a>
+          </Button>
+        </div>
+      </FadeUp>
+
+      <section className="px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-5xl gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-slate-500" />
+          <p className="text-xs leading-6 text-slate-600">
+            SignalFlo provides educational market alerts, analytics, and trade ideas. Nothing on this page or inside the
+            member dashboard should be considered personalized financial, investment, tax, or legal advice. Trading
+            involves substantial risk, including the possible loss of principal.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </main>
   )
@@ -1402,17 +1779,15 @@ function Navbar() {
     ["Features", "/#features"],
     ["AI Engine", "/#ai-engine"],
     ["FAQ", "/#faq"],
+    ["Welcome", WELCOME_URL],
     ["Get Started", PRICING_URL],
   ] as const
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.07] bg-[#050a14]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="/" className="flex items-center gap-2.5 text-sm font-semibold tracking-[0.01em]">
-          <span className="flex size-8 items-center justify-center rounded-md bg-cyan-400 text-slate-950 shadow-[0_0_26px_rgba(34,211,238,0.35)]">
-            <Activity className="size-4" />
-          </span>
-          SignalFlo AI
+        <a href="/" className="flex h-12 items-center py-1 pr-3" aria-label="SignalFlo home">
+          <BrandLogo className="h-8 max-w-[132px] sm:h-10 sm:max-w-[158px] lg:h-11 lg:max-w-[174px]" />
         </a>
         <nav className="hidden items-center gap-6 text-xs text-slate-400 lg:flex">
           {navLinks.map(([label, href]) => (
@@ -3716,9 +4091,6 @@ function PricingCheckoutModal({
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
-    setAccepted(false)
-    setIsProcessing(false)
-
     if (!plan) {
       document.body.style.overflow = ""
       return
@@ -4002,6 +4374,8 @@ function DedicatedPricingPage() {
         </div>
       </section>
 
+      <MemberAccessTimeline />
+
       <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -4091,6 +4465,7 @@ function DedicatedPricingPage() {
 
       <Footer />
       <PricingCheckoutModal
+        key={selectedPlan?.name ?? "closed"}
         plan={selectedPlan}
         onClose={() => setSelectedPlan(null)}
       />
@@ -4198,6 +4573,7 @@ function Pricing() {
       </p>
       </div>
       <PricingCheckoutModal
+        key={selectedPlan?.name ?? "closed"}
         plan={selectedPlan}
         onClose={() => setSelectedPlan(null)}
       />
@@ -4367,12 +4743,9 @@ function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 md:grid-cols-[1.2fr_2fr]">
           <div>
-            <div className="flex items-center gap-3 text-base font-bold tracking-[-0.01em] text-slate-100">
-              <span className="flex size-10 items-center justify-center rounded-xl bg-cyan-400 text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.18)]">
-                <Activity className="size-5" />
-              </span>
-              SignalFlo AI
-            </div>
+            <a href="/" className="inline-flex items-center" aria-label="SignalFlo home">
+              <BrandLogo className="h-14 max-w-[252px]" />
+            </a>
             <p className="mt-5 max-w-sm text-sm leading-6 text-slate-500">
               AI-powered stock and options trade alerts with entry levels,
               targets, stop loss, confidence scoring, and real-time tracking.
