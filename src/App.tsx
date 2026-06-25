@@ -42,14 +42,25 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  AI_ENGINE_PATH,
+  APP_URL,
+  LEGAL_PATH,
+  LOGIN_URL,
+  PRICING_PATH,
+  SIGNUP_URL,
+  SUPPORT_EMAIL,
+  SUPPORT_URL,
+  TERMS_PATH,
+  WELCOME_PATH,
+} from "@/config/urls"
 import { cn } from "@/lib/utils"
 
-const APP_URL = "https://signal-flo-ai.vercel.app"
-const LEGAL_URL = "/legal"
-const TERMS_URL = "/terms"
-const PRICING_URL = "/pricing"
-const AI_ENGINE_URL = "/ai-engine"
-const WELCOME_URL = "/welcome"
+const LEGAL_URL = LEGAL_PATH
+const TERMS_URL = TERMS_PATH
+const PRICING_URL = PRICING_PATH
+const AI_ENGINE_URL = AI_ENGINE_PATH
+const WELCOME_URL = WELCOME_PATH
 const LEGAL_VERSION = "v1.0"
 const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
 const LEGAL_ACKNOWLEDGMENT =
@@ -727,7 +738,7 @@ async function submitOnboardingForm(payload: Record<string, string | boolean>) {
   const { url, anonKey } = supabaseConfig
 
   if (!url || !anonKey) {
-    throw new Error("Member setup is temporarily unavailable. Please contact support@signalflo.ai.")
+    throw new Error(`Member setup is temporarily unavailable. Please contact ${SUPPORT_EMAIL}.`)
   }
 
   const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/onboarding_submissions`, {
@@ -832,7 +843,7 @@ function WelcomePage() {
       setFormError(
         error instanceof Error
           ? error.message
-          : "We could not submit your setup details. Please contact support@signalflo.ai.",
+          : `We could not submit your setup details. Please contact ${SUPPORT_EMAIL}.`,
       )
     } finally {
       setIsSubmitting(false)
@@ -874,7 +885,7 @@ function WelcomePage() {
               </a>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-13 border-white/10 bg-white/[0.03] px-7 hover:bg-white/[0.06]">
-              <a href="mailto:support@signalflo.ai">
+              <a href={SUPPORT_URL}>
                 <Mail className="size-4" />
                 Contact Support
               </a>
@@ -929,7 +940,7 @@ function WelcomePage() {
               </p>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-500">
                 Check your inbox for your SignalFlo access email. If you do not receive anything, contact{" "}
-                <a href="mailto:support@signalflo.ai" className="text-cyan-300 hover:text-cyan-200">support@signalflo.ai</a>.
+                <a href={SUPPORT_URL} className="text-cyan-300 hover:text-cyan-200">{SUPPORT_EMAIL}</a>.
               </p>
             </motion.div>
           ) : (
@@ -1050,7 +1061,7 @@ function WelcomePage() {
             </p>
           </div>
           <Button asChild variant="outline" size="lg" className="shrink-0 border-white/10 bg-white/[0.035]">
-            <a href="mailto:support@signalflo.ai">
+            <a href={SUPPORT_URL}>
               <Mail className="size-4" />
               Email Support
             </a>
@@ -1127,7 +1138,7 @@ function AIEnginePageHero() {
             </a>
           </Button>
           <Button asChild variant="outline" className="border-white/10 bg-white/[0.035] transition-all hover:-translate-y-0.5 hover:border-purple-300/25 hover:bg-white/[0.06]">
-            <a href={PRICING_URL}>Get Started</a>
+            <a href={SIGNUP_URL}>Get Started</a>
           </Button>
         </div>
       </motion.div>
@@ -1780,7 +1791,7 @@ function Navbar() {
     ["AI Engine", "/#ai-engine"],
     ["FAQ", "/#faq"],
     ["Welcome", WELCOME_URL],
-    ["Get Started", PRICING_URL],
+    ["Get Started", SIGNUP_URL],
   ] as const
 
   return (
@@ -1806,7 +1817,7 @@ function Navbar() {
         </nav>
         <div className="hidden items-center sm:flex">
           <Button asChild variant="ghost" size="sm" className="h-8 text-xs transition-all hover:bg-white/[0.06]">
-            <a href={APP_URL}>Login</a>
+            <a href={LOGIN_URL}>Login</a>
           </Button>
         </div>
         <Button
@@ -1838,7 +1849,7 @@ function Navbar() {
               </a>
             ))}
             <a
-              href={APP_URL}
+              href={LOGIN_URL}
               className="mt-1 rounded-md border-t border-white/[0.07] px-3 py-3 text-sm font-medium text-slate-100"
             >
               Login
@@ -1878,7 +1889,7 @@ function Hero() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:brightness-110">
-              <a href={PRICING_URL}>
+              <a href={SIGNUP_URL}>
                 Start Receiving Alerts
                 <ArrowRight />
               </a>
@@ -3499,7 +3510,7 @@ function EngineClosingStatement() {
             <Button
               type="button"
               onClick={() => {
-                window.location.href = PRICING_URL
+                window.location.href = SIGNUP_URL
               }}
               className="group h-14 w-full justify-center gap-2 border border-cyan-300/24 bg-cyan-300/10 px-8 text-base font-bold text-cyan-100 shadow-[0_0_44px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-cyan-300/14 hover:shadow-[0_0_58px_rgba(34,211,238,0.28)] sm:w-auto"
               variant="outline"
@@ -3512,7 +3523,7 @@ function EngineClosingStatement() {
               className="h-14 w-full justify-center border border-white/10 bg-white/[0.03] px-8 text-base font-semibold text-slate-200 transition-all hover:-translate-y-1 hover:border-cyan-300/24 hover:bg-white/[0.06] sm:w-auto"
               variant="outline"
             >
-              <a href="#demo">Schedule A Live Demo</a>
+              <a href={SUPPORT_URL}>Schedule A Live Demo</a>
             </Button>
           </div>
         </div>
@@ -3774,7 +3785,7 @@ function AIEngineCTA() {
           </p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" className="h-13 px-8 transition-transform hover:-translate-y-0.5">
-              <a href={PRICING_URL}>
+              <a href={SIGNUP_URL}>
                 Get Started
                 <ArrowRight className="size-4" />
               </a>
@@ -4451,7 +4462,7 @@ function DedicatedPricingPage() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.28)] hover:bg-blue-400">
-              <a href={PRICING_URL}>
+              <a href={SIGNUP_URL}>
                 Get Started
                 <ArrowRight className="size-4" />
               </a>
@@ -4761,7 +4772,7 @@ function Footer() {
                       key={link}
                       href={
                         link === "Login"
-                          ? APP_URL
+                          ? LOGIN_URL
                           : link === "Pricing"
                             ? PRICING_URL
                             : link === "Terms & Conditions"
@@ -4771,12 +4782,16 @@ function Footer() {
                                 : link === "Features"
                                   ? "/#features"
                                   : link === "Dashboard"
-                                    ? "/#dashboard"
+                                    ? APP_URL
                                     : link === "Trade Alerts"
                                       ? "/#alert-example"
                                       : link === "FAQ"
                                         ? "/#faq"
-                                        : "#"
+                                        : link === "Alert Tracking"
+                                          ? "/#dashboard"
+                                          : link === "Risk Plans" || link === "Market Coverage"
+                                            ? "/#features"
+                                            : SUPPORT_URL
                       }
                       className="block text-xs text-slate-500 transition-colors hover:text-cyan-300"
                     >
