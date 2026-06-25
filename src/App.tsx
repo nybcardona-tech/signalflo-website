@@ -46,29 +46,193 @@ import {
   AI_ENGINE_PATH,
   APP_URL,
   LEGAL_PATH,
+  LOGIN_PATH,
   LOGIN_URL,
   PRICING_PATH,
+  SIGNUP_PATH,
   SIGNUP_URL,
   SUPPORT_EMAIL,
   SUPPORT_URL,
   TERMS_PATH,
+  VERIFICATION_REQUIRED_PATH,
+  VERIFY_EMAIL_PATH,
   WELCOME_PATH,
 } from "@/config/urls"
 import { cn } from "@/lib/utils"
 
 const LEGAL_URL = LEGAL_PATH
+const LOGIN_PAGE_URL = LOGIN_PATH
+const SIGNUP_PAGE_URL = SIGNUP_PATH
 const TERMS_URL = TERMS_PATH
 const PRICING_URL = PRICING_PATH
 const AI_ENGINE_URL = AI_ENGINE_PATH
 const WELCOME_URL = WELCOME_PATH
+const VERIFY_EMAIL_URL = VERIFY_EMAIL_PATH
+const VERIFICATION_REQUIRED_URL = VERIFICATION_REQUIRED_PATH
 const LEGAL_VERSION = "v1.0"
 const LEGAL_ACCEPTANCE_SOURCE = "pricing_page_before_whop_checkout"
+const AUTH_TOKEN_STORAGE_KEY = "signalflo.auth.access_token"
+const PENDING_VERIFICATION_EMAIL_KEY = "signalflo.auth.pending_email"
 const LEGAL_ACKNOWLEDGMENT =
   "I have read and agree to the Terms, Risk Disclosure & Refund Policy, including the no-refund policy, risk disclosure, automatic renewal terms, and the fact that SignalFlo provides educational and informational content only, not personalized investment advice."
 
 const supabaseConfig = {
   url: import.meta.env.VITE_SUPABASE_URL,
   anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+}
+
+type SupabaseAuthUser = {
+  id: string
+  email?: string
+  email_confirmed_at?: string | null
+  confirmed_at?: string | null
+}
+
+type SupabaseAuthResponse = {
+  access_token?: string
+  user?: SupabaseAuthUser | null
+  error?: string
+  error_description?: string
+  msg?: string
+}
+
+function getSupabaseAuthBaseUrl() {
+  const { url, anonKey } = supabaseConfig
+
+  if (!url || !anonKey) {
+    throw new Error(`Authentication is temporarily unavailable. Please contact ${SUPPORT_EMAIL}.`)
+  }
+
+  return {
+    authUrl: `${String(url).replace(/\/$/, "")}/auth/v1`,
+    anonKey: String(anonKey),
+  }
+}
+
+function getAuthRedirectUrl(path: string) {
+  return `${APP_URL}${path}`
+}
+
+function getAuthErrorMessage(payload: SupabaseAuthResponse, fallback: string) {
+  return payload.error_description || payload.msg || payload.error || fallback
+}
+
+function isEmailVerified(user: SupabaseAuthUser | null | undefined) {
+  return Boolean(user?.email_confirmed_at || user?.confirmed_at)
+}
+
+async function signUpWithEmail(email: string, password: string) {
+  const { authUrl, anonKey } = getSupabaseAuthBaseUrl()
+  const response = await fetch(`${authUrl}/signup`, {
+    method: "POST",
+    headers: {
+      apikey: anonKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      options: {
+        emailRedirectTo: getAuthRedirectUrl(VERIFY_EMAIL_URL),
+        email_redirect_to: getAuthRedirectUrl(VERIFY_EMAIL_URL),
+      },
+    }),
+  })
+  const payload = (await response.json().catch(() => ({}))) as SupabaseAuthResponse
+
+  if (!response.ok) {
+    throw new Error(getAuthErrorMessage(payload, "We could not create your account. Please try again."))
+  }
+
+  window.localStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email)
+  return payload
+}
+
+async function resendVerificationEmail(email: string) {
+  const { authUrl, anonKey } = getSupabaseAuthBaseUrl()
+  const response = await fetch(`${authUrl}/resend`, {
+    method: "POST",
+    headers: {
+      apikey: anonKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: "signup",
+      email,
+      options: {
+        emailRedirectTo: getAuthRedirectUrl(VERIFY_EMAIL_URL),
+        email_redirect_to: getAuthRedirectUrl(VERIFY_EMAIL_URL),
+      },
+    }),
+  })
+  const payload = (await response.json().catch(() => ({}))) as SupabaseAuthResponse
+
+  if (!response.ok) {
+    throw new Error(getAuthErrorMessage(payload, "We could not resend the verification email. Please try again."))
+  }
+
+  return payload
+}
+
+async function signInWithEmail(email: string, password: string) {
+  const { authUrl, anonKey } = getSupabaseAuthBaseUrl()
+  const response = await fetch(`${authUrl}/token?grant_type=password`, {
+    method: "POST",
+    headers: {
+      apikey: anonKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  })
+  const payload = (await response.json().catch(() => ({}))) as SupabaseAuthResponse
+
+  if (!response.ok) {
+    const message = getAuthErrorMessage(payload, "We could not sign you in. Please check your email and password.")
+
+    if (message.toLowerCase().includes("email not confirmed")) {
+      window.localStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email)
+      window.location.href = `${VERIFICATION_REQUIRED_URL}?email=${encodeURIComponent(email)}`
+      return null
+    }
+
+    throw new Error(message)
+  }
+
+  if (!isEmailVerified(payload.user)) {
+    window.localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
+    window.localStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email)
+    window.location.href = `${VERIFICATION_REQUIRED_URL}?email=${encodeURIComponent(email)}`
+    return null
+  }
+
+  if (payload.access_token) {
+    window.localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, payload.access_token)
+  }
+
+  return payload
+}
+
+async function getCurrentAuthUser() {
+  const accessToken = window.localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
+
+  if (!accessToken) {
+    return null
+  }
+
+  const { authUrl, anonKey } = getSupabaseAuthBaseUrl()
+  const response = await fetch(`${authUrl}/user`, {
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+
+  if (!response.ok) {
+    window.localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
+    return null
+  }
+
+  return (await response.json()) as SupabaseAuthUser
 }
 
 const whopCheckoutUrls = {
@@ -461,6 +625,8 @@ void Features
 void PricingTrustSections
 void Pricing
 
+const protectedDashboardPaths = ["/dashboard", "/alerts", "/analytics", "/admin", "/member", "/account"] as const
+
 function App() {
   const pathname = window.location.pathname
 
@@ -490,6 +656,22 @@ function App() {
     return <LegalPage />
   }
 
+  if (pathname === LOGIN_PAGE_URL) {
+    return <LoginPage />
+  }
+
+  if (pathname === SIGNUP_PAGE_URL) {
+    return <SignupPage />
+  }
+
+  if (pathname === VERIFY_EMAIL_URL) {
+    return <VerificationSuccessPage />
+  }
+
+  if (pathname === VERIFICATION_REQUIRED_URL) {
+    return <VerificationRequiredPage />
+  }
+
   if (pathname === TERMS_URL) {
     return <TermsPage />
   }
@@ -504,6 +686,10 @@ function App() {
 
   if (pathname === WELCOME_URL) {
     return <WelcomePage />
+  }
+
+  if (protectedDashboardPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+    return <ProtectedDashboardRoute routeLabel={pathname} />
   }
 
   return (
@@ -548,6 +734,473 @@ function BrandLogo({ className }: { className?: string }) {
       alt="SignalFlo"
       className={cn("block h-auto w-auto object-contain", className)}
     />
+  )
+}
+
+function AuthPageShell({
+  badge,
+  title,
+  description,
+  children,
+}: {
+  badge: string
+  title: string
+  description: string
+  children: ReactNode
+}) {
+  return (
+    <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <Navbar />
+      <section className="relative flex min-h-screen items-center px-4 py-28 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_8%,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(59,130,246,0.12),transparent_28%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
+        <div className="relative z-10 mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
+              {badge}
+            </Badge>
+            <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.025em] text-slate-50 sm:text-5xl">
+              {title}
+            </h1>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-400">
+              {description}
+            </p>
+          </div>
+          <Card className="border-white/[0.08] bg-[#081225]/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_24px_100px_rgba(2,8,23,0.42)]">
+            <CardContent className="p-6 sm:p-8">{children}</CardContent>
+          </Card>
+        </div>
+      </section>
+    </main>
+  )
+}
+
+function AuthStatusMessage({ tone = "info", children }: { tone?: "info" | "error" | "success"; children: ReactNode }) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl border px-4 py-3 text-sm leading-6",
+        tone === "error" && "border-red-300/18 bg-red-400/8 text-red-100",
+        tone === "success" && "border-emerald-300/18 bg-emerald-400/8 text-emerald-100",
+        tone === "info" && "border-cyan-300/14 bg-cyan-300/8 text-cyan-100",
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+
+function SignupPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isResending, setIsResending] = useState(false)
+  const [error, setError] = useState("")
+  const [notice, setNotice] = useState("")
+  const [submittedEmail, setSubmittedEmail] = useState("")
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setError("")
+    setNotice("")
+    setIsSubmitting(true)
+
+    try {
+      await signUpWithEmail(email, password)
+      setSubmittedEmail(email)
+      setNotice("Verification email sent. Please check your inbox before signing in.")
+    } catch (signUpError) {
+      setError(signUpError instanceof Error ? signUpError.message : "We could not create your account. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  async function handleResend() {
+    const targetEmail = submittedEmail || email
+
+    if (!targetEmail) {
+      setError("Enter your email address first so we can resend verification.")
+      return
+    }
+
+    setError("")
+    setNotice("")
+    setIsResending(true)
+
+    try {
+      await resendVerificationEmail(targetEmail)
+      setNotice("Verification email resent. Please check your inbox.")
+    } catch (resendError) {
+      setError(resendError instanceof Error ? resendError.message : "We could not resend verification. Please try again.")
+    } finally {
+      setIsResending(false)
+    }
+  }
+
+  if (submittedEmail) {
+    return (
+      <AuthPageShell
+        badge="Email Verification"
+        title="Check your email"
+        description="Your SignalFlo account was created, but dashboard access stays locked until you verify your email address."
+      >
+        <div className="space-y-5">
+          <AuthStatusMessage tone="success">
+            We sent a verification link to <span className="font-semibold">{submittedEmail}</span>. Open that email and confirm your address before accessing SignalFlo.
+          </AuthStatusMessage>
+          {notice && <AuthStatusMessage tone="info">{notice}</AuthStatusMessage>}
+          {error && <AuthStatusMessage tone="error">{error}</AuthStatusMessage>}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button type="button" onClick={handleResend} disabled={isResending} variant="outline" className="border-white/10 bg-white/[0.035]">
+              {isResending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Resending
+                </>
+              ) : (
+                "Resend verification email"
+              )}
+            </Button>
+            <Button asChild>
+              <a href={LOGIN_PAGE_URL}>Go to Login</a>
+            </Button>
+          </div>
+        </div>
+      </AuthPageShell>
+    )
+  }
+
+  return (
+    <AuthPageShell
+      badge="Create Account"
+      title="Create your SignalFlo account"
+      description="After signup, you will need to verify your email before dashboard access is enabled."
+    >
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        {error && <AuthStatusMessage tone="error">{error}</AuthStatusMessage>}
+        {notice && <AuthStatusMessage tone="info">{notice}</AuthStatusMessage>}
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Email</span>
+          <input
+            required
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-2 h-12 w-full rounded-xl border border-white/[0.08] bg-slate-950/70 px-4 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-700 focus:border-cyan-300/35"
+            placeholder="you@example.com"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Password</span>
+          <input
+            required
+            minLength={8}
+            type="password"
+            autoComplete="new-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="mt-2 h-12 w-full rounded-xl border border-white/[0.08] bg-slate-950/70 px-4 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-700 focus:border-cyan-300/35"
+            placeholder="Minimum 8 characters"
+          />
+        </label>
+        <Button type="submit" className="h-12 w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Creating account
+            </>
+          ) : (
+            "Create Account"
+          )}
+        </Button>
+        <p className="text-center text-xs leading-5 text-slate-500">
+          Already have an account?{" "}
+          <a href={LOGIN_PAGE_URL} className="text-cyan-300 hover:text-cyan-200">
+            Log in
+          </a>
+        </p>
+      </form>
+    </AuthPageShell>
+  )
+}
+
+function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState("")
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setError("")
+    setIsSubmitting(true)
+
+    try {
+      const payload = await signInWithEmail(email, password)
+
+      if (payload) {
+        window.location.href = "/dashboard"
+      }
+    } catch (loginError) {
+      setError(loginError instanceof Error ? loginError.message : "We could not sign you in. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <AuthPageShell
+      badge="Member Login"
+      title="Log in to SignalFlo"
+      description="Email verification is required before dashboard access. Unverified accounts will be sent to the verification-required screen."
+    >
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        {error && <AuthStatusMessage tone="error">{error}</AuthStatusMessage>}
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Email</span>
+          <input
+            required
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-2 h-12 w-full rounded-xl border border-white/[0.08] bg-slate-950/70 px-4 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-700 focus:border-cyan-300/35"
+            placeholder="you@example.com"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Password</span>
+          <input
+            required
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="mt-2 h-12 w-full rounded-xl border border-white/[0.08] bg-slate-950/70 px-4 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-700 focus:border-cyan-300/35"
+            placeholder="Your password"
+          />
+        </label>
+        <Button type="submit" className="h-12 w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              Checking account
+            </>
+          ) : (
+            "Log In"
+          )}
+        </Button>
+        <p className="text-center text-xs leading-5 text-slate-500">
+          Need an account?{" "}
+          <a href={SIGNUP_PAGE_URL} className="text-cyan-300 hover:text-cyan-200">
+            Sign up
+          </a>
+        </p>
+      </form>
+    </AuthPageShell>
+  )
+}
+
+function VerificationRequiredPage() {
+  const params = new URLSearchParams(window.location.search)
+  const initialEmail = params.get("email") || window.localStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY) || ""
+  const [email, setEmail] = useState(initialEmail)
+  const [isResending, setIsResending] = useState(false)
+  const [notice, setNotice] = useState("")
+  const [error, setError] = useState("")
+
+  async function handleResend() {
+    if (!email) {
+      setError("Enter the email used for signup so we can resend verification.")
+      return
+    }
+
+    setError("")
+    setNotice("")
+    setIsResending(true)
+
+    try {
+      await resendVerificationEmail(email)
+      window.localStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email)
+      setNotice("Verification email resent. Please check your inbox.")
+    } catch (resendError) {
+      setError(resendError instanceof Error ? resendError.message : "We could not resend verification. Please try again.")
+    } finally {
+      setIsResending(false)
+    }
+  }
+
+  return (
+    <AuthPageShell
+      badge="Verification Required"
+      title="Verify your email to continue"
+      description="SignalFlo dashboard access is blocked until your email address is confirmed."
+    >
+      <div className="space-y-5">
+        <AuthStatusMessage>
+          Please verify your email before accessing SignalFlo. Once confirmed, log in again to enter the dashboard.
+        </AuthStatusMessage>
+        {notice && <AuthStatusMessage tone="success">{notice}</AuthStatusMessage>}
+        {error && <AuthStatusMessage tone="error">{error}</AuthStatusMessage>}
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Email</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="mt-2 h-12 w-full rounded-xl border border-white/[0.08] bg-slate-950/70 px-4 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-700 focus:border-cyan-300/35"
+            placeholder="you@example.com"
+          />
+        </label>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button type="button" onClick={handleResend} disabled={isResending} variant="outline" className="border-white/10 bg-white/[0.035]">
+            {isResending ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Resending
+              </>
+            ) : (
+              "Resend verification email"
+            )}
+          </Button>
+          <Button asChild>
+            <a href={LOGIN_PAGE_URL}>Back to Login</a>
+          </Button>
+        </div>
+      </div>
+    </AuthPageShell>
+  )
+}
+
+function VerificationSuccessPage() {
+  return (
+    <AuthPageShell
+      badge="Email Verified"
+      title="Your email is verified"
+      description="You can now log in to access SignalFlo. Dashboard routes remain protected until a verified session is present."
+    >
+      <div className="space-y-5">
+        <AuthStatusMessage tone="success">
+          Thanks for confirming your email. Log in with your verified account to continue.
+        </AuthStatusMessage>
+        <Button asChild className="h-12 w-full">
+          <a href={LOGIN_PAGE_URL}>Go to Login</a>
+        </Button>
+      </div>
+    </AuthPageShell>
+  )
+}
+
+function ProtectedDashboardRoute({ routeLabel }: { routeLabel: string }) {
+  const [status, setStatus] = useState<"checking" | "anonymous" | "unverified" | "verified" | "error">("checking")
+  const [userEmail, setUserEmail] = useState("")
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function checkAccess() {
+      try {
+        const user = await getCurrentAuthUser()
+
+        if (!isMounted) {
+          return
+        }
+
+        if (!user) {
+          setStatus("anonymous")
+          return
+        }
+
+        setUserEmail(user.email ?? "")
+
+        if (!isEmailVerified(user)) {
+          if (user.email) {
+            window.localStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, user.email)
+          }
+          window.localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
+          setStatus("unverified")
+          return
+        }
+
+        setStatus("verified")
+      } catch (accessError) {
+        if (!isMounted) {
+          return
+        }
+
+        setError(accessError instanceof Error ? accessError.message : "We could not verify dashboard access.")
+        setStatus("error")
+      }
+    }
+
+    checkAccess()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  if (status === "checking") {
+    return (
+      <AuthPageShell badge="Checking Access" title="Verifying your session" description="SignalFlo is checking your verified email status before loading protected pages.">
+        <div className="flex items-center gap-3 text-sm text-slate-300">
+          <Loader2 className="size-4 animate-spin text-cyan-300" />
+          Checking email verification...
+        </div>
+      </AuthPageShell>
+    )
+  }
+
+  if (status === "anonymous") {
+    return (
+      <AuthPageShell badge="Login Required" title="Log in to continue" description="Protected SignalFlo pages require a verified account session.">
+        <div className="space-y-5">
+          <AuthStatusMessage>Please log in with your verified SignalFlo account before accessing {routeLabel}.</AuthStatusMessage>
+          <Button asChild className="h-12 w-full">
+            <a href={LOGIN_PAGE_URL}>Go to Login</a>
+          </Button>
+        </div>
+      </AuthPageShell>
+    )
+  }
+
+  if (status === "unverified") {
+    const emailQuery = userEmail ? `?email=${encodeURIComponent(userEmail)}` : ""
+    return (
+      <AuthPageShell badge="Verification Required" title="Email verification required" description="Unverified users cannot access protected SignalFlo dashboard pages.">
+        <div className="space-y-5">
+          <AuthStatusMessage tone="error">Verify your email before accessing {routeLabel}.</AuthStatusMessage>
+          <Button asChild className="h-12 w-full">
+            <a href={`${VERIFICATION_REQUIRED_URL}${emailQuery}`}>Review Verification Steps</a>
+          </Button>
+        </div>
+      </AuthPageShell>
+    )
+  }
+
+  if (status === "error") {
+    return (
+      <AuthPageShell badge="Access Check Failed" title="We could not verify access" description="SignalFlo could not complete the verification check for this protected page.">
+        <div className="space-y-5">
+          <AuthStatusMessage tone="error">{error}</AuthStatusMessage>
+          <Button asChild className="h-12 w-full">
+            <a href={SUPPORT_URL}>Contact Support</a>
+          </Button>
+        </div>
+      </AuthPageShell>
+    )
+  }
+
+  return (
+    <AuthPageShell badge="Verified Access" title="Dashboard access verified" description="Your email is confirmed. This protected route is cleared for the authenticated SignalFlo dashboard experience.">
+      <div className="space-y-5">
+        <AuthStatusMessage tone="success">
+          Verified session detected for <span className="font-semibold">{userEmail || "your account"}</span>. The existing dashboard implementation can render here without changing role, alert, admin, or database logic.
+        </AuthStatusMessage>
+      </div>
+    </AuthPageShell>
   )
 }
 

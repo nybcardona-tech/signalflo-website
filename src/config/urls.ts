@@ -6,6 +6,10 @@ export const APP_URL = trimTrailingSlash(import.meta.env.VITE_APP_URL || "https:
 export const LOGIN_URL = `${APP_URL}/login`
 export const SIGNUP_URL = `${APP_URL}/signup`
 
+export const LOGIN_PATH = "/login"
+export const SIGNUP_PATH = "/signup"
+export const VERIFY_EMAIL_PATH = "/verify-email"
+export const VERIFICATION_REQUIRED_PATH = "/verification-required"
 export const PRICING_PATH = "/pricing"
 export const TERMS_PATH = "/terms"
 export const LEGAL_PATH = "/legal"
