@@ -47,7 +47,6 @@ import {
   APP_URL,
   LEGAL_PATH,
   LOGIN_PATH,
-  LOGIN_URL,
   PRICING_PATH,
   SIGNUP_PATH,
   SIGNUP_URL,
@@ -862,7 +861,7 @@ function SignupPage() {
               )}
             </Button>
             <Button asChild>
-              <a href={LOGIN_PAGE_URL}>Go to Login</a>
+              <a href={APP_URL}>Go to Login</a>
             </Button>
           </div>
         </div>
@@ -916,7 +915,7 @@ function SignupPage() {
         </Button>
         <p className="text-center text-xs leading-5 text-slate-500">
           Already have an account?{" "}
-          <a href={LOGIN_PAGE_URL} className="text-cyan-300 hover:text-cyan-200">
+          <a href={APP_URL} className="text-cyan-300 hover:text-cyan-200">
             Log in
           </a>
         </p>
@@ -1065,7 +1064,7 @@ function VerificationRequiredPage() {
             )}
           </Button>
           <Button asChild>
-            <a href={LOGIN_PAGE_URL}>Back to Login</a>
+            <a href={APP_URL}>Back to Login</a>
           </Button>
         </div>
       </div>
@@ -1085,7 +1084,7 @@ function VerificationSuccessPage() {
           Thanks for confirming your email. Log in with your verified account to continue.
         </AuthStatusMessage>
         <Button asChild className="h-12 w-full">
-          <a href={LOGIN_PAGE_URL}>Go to Login</a>
+          <a href={APP_URL}>Go to Login</a>
         </Button>
       </div>
     </AuthPageShell>
@@ -1159,7 +1158,7 @@ function ProtectedDashboardRoute({ routeLabel }: { routeLabel: string }) {
         <div className="space-y-5">
           <AuthStatusMessage>Please log in with your verified SignalFlo account before accessing {routeLabel}.</AuthStatusMessage>
           <Button asChild className="h-12 w-full">
-            <a href={LOGIN_PAGE_URL}>Go to Login</a>
+            <a href={APP_URL}>Go to Login</a>
           </Button>
         </div>
       </AuthPageShell>
@@ -1791,7 +1790,7 @@ function AIEnginePageHero() {
             </a>
           </Button>
           <Button asChild variant="outline" className="border-white/10 bg-white/[0.035] transition-all hover:-translate-y-0.5 hover:border-purple-300/25 hover:bg-white/[0.06]">
-            <a href={SIGNUP_URL}>Get Started</a>
+            <a href={PRICING_URL}>Get Started</a>
           </Button>
         </div>
       </motion.div>
@@ -2444,7 +2443,7 @@ function Navbar() {
     ["AI Engine", "/#ai-engine"],
     ["FAQ", "/#faq"],
     ["Welcome", WELCOME_URL],
-    ["Get Started", SIGNUP_URL],
+    ["Get Started", PRICING_URL],
   ] as const
 
   return (
@@ -2470,7 +2469,7 @@ function Navbar() {
         </nav>
         <div className="hidden items-center sm:flex">
           <Button asChild variant="ghost" size="sm" className="h-8 text-xs transition-all hover:bg-white/[0.06]">
-            <a href={LOGIN_URL}>Login</a>
+            <a href={APP_URL}>Login</a>
           </Button>
         </div>
         <Button
@@ -2502,7 +2501,7 @@ function Navbar() {
               </a>
             ))}
             <a
-              href={LOGIN_URL}
+              href={APP_URL}
               className="mt-1 rounded-md border-t border-white/[0.07] px-3 py-3 text-sm font-medium text-slate-100"
             >
               Login
@@ -2546,9 +2545,6 @@ function Hero() {
                 Start Receiving Alerts
                 <ArrowRight />
               </a>
-            </Button>
-            <Button asChild variant="outline" className="border-white/10 bg-white/[0.03] transition-all hover:-translate-y-0.5 hover:bg-white/[0.06]">
-              <a href={APP_URL}>View Dashboard</a>
             </Button>
           </div>
         </motion.div>
@@ -4438,7 +4434,7 @@ function AIEngineCTA() {
           </p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" className="h-13 px-8 transition-transform hover:-translate-y-0.5">
-              <a href={SIGNUP_URL}>
+              <a href={PRICING_URL}>
                 Get Started
                 <ArrowRight className="size-4" />
               </a>
@@ -5115,7 +5111,7 @@ function DedicatedPricingPage() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="bg-blue-500 text-white shadow-[0_0_28px_rgba(59,130,246,0.28)] hover:bg-blue-400">
-              <a href={SIGNUP_URL}>
+              <a href={PRICING_URL}>
                 Get Started
                 <ArrowRight className="size-4" />
               </a>
@@ -5425,7 +5421,7 @@ function Footer() {
                       key={link}
                       href={
                         link === "Login"
-                          ? LOGIN_URL
+                          ? APP_URL
                           : link === "Pricing"
                             ? PRICING_URL
                             : link === "Terms & Conditions"
