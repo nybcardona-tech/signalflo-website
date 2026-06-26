@@ -80,6 +80,18 @@ const supabaseConfig = {
   anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
 }
 
+function getEnvUrl(...keys: string[]) {
+  for (const key of keys) {
+    const value = import.meta.env[key]
+
+    if (typeof value === "string" && value.trim()) {
+      return value.trim()
+    }
+  }
+
+  return ""
+}
+
 type SupabaseAuthUser = {
   id: string
   email?: string
@@ -235,9 +247,9 @@ async function getCurrentAuthUser() {
 }
 
 const whopCheckoutUrls = {
-  monthly: import.meta.env.VITE_WHOP_MONTHLY_URL,
-  annual: import.meta.env.VITE_WHOP_ANNUAL_URL,
-  lifetime: import.meta.env.VITE_WHOP_LIFETIME_URL,
+  monthly: getEnvUrl("VITE_WHOP_MONTHLY_URL", "VITE_WHOP_MONTHLY_CHECKOUT_URL", "VITE_WHOP_MONTHLY_LINK"),
+  annual: getEnvUrl("VITE_WHOP_ANNUAL_URL", "VITE_WHOP_ANNUAL_CHECKOUT_URL", "VITE_WHOP_ANNUAL_LINK"),
+  lifetime: getEnvUrl("VITE_WHOP_LIFETIME_URL", "VITE_WHOP_LIFETIME_CHECKOUT_URL", "VITE_WHOP_LIFETIME_LINK"),
 }
 
 const tickerTape = [
@@ -2541,7 +2553,7 @@ function Hero() {
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild className="border border-white/10 bg-[linear-gradient(135deg,#00D4FF_0%,#3B82F6_35%,#8B5CF6_70%,#EC4899_100%)] text-white shadow-[0_0_28px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:brightness-110">
-              <a href={SIGNUP_URL}>
+              <a href={PRICING_URL}>
                 Start Receiving Alerts
                 <ArrowRight />
               </a>
