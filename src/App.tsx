@@ -766,9 +766,7 @@ function AuthPageShell({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_8%,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(59,130,246,0.12),transparent_28%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
         <div className="relative z-10 mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
-            <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-              {badge}
-            </Badge>
+            <p className="section-eyebrow text-cyan-300">{badge}</p>
             <h1 className="mt-5 font-display text-4xl font-bold tracking-[-0.025em] text-slate-50 sm:text-5xl">
               {title}
             </h1>
@@ -1225,9 +1223,7 @@ function LegalPage() {
             <ArrowRight className="size-4 rotate-180" />
             Back to <strong className="font-semibold">SignalFlo</strong>
           </a>
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            Legal
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">Legal</p>
           <h1 className="mt-5 text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl">
             Terms, Risk Disclosure & Refund Policy
           </h1>
@@ -1302,9 +1298,7 @@ function TermsPage() {
             <ArrowRight className="size-4 rotate-180" />
             Back to <strong className="font-semibold">SignalFlo</strong>
           </a>
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            Legal
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">Legal</p>
           <div className="mt-5 max-w-4xl">
             <h1 className="font-display text-4xl font-bold tracking-[-0.025em] text-slate-50 sm:text-6xl">
               Terms & Conditions
@@ -1526,14 +1520,7 @@ function WelcomePage() {
           transition={{ duration: 0.65, ease: "easeOut" }}
           className="relative z-10 mx-auto max-w-5xl text-center"
         >
-          <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.055] text-cyan-200">
-            <motion.span
-              className="size-1.5 rounded-full bg-cyan-300"
-              animate={{ opacity: [0.45, 1, 0.45] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-            Payment received · Setup pending
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">Payment received · Setup pending</p>
           <h1 className="mx-auto mt-6 max-w-4xl font-display text-4xl font-bold leading-[1.03] tracking-[-0.04em] text-slate-50 sm:text-6xl lg:text-7xl">
             Welcome to <span className="heading-accent">SignalFlo</span>
           </h1>
@@ -1775,14 +1762,7 @@ function AIEnginePageHero() {
         transition={{ duration: 0.65, ease: "easeOut" }}
         className="relative z-10 mx-auto max-w-5xl text-center"
       >
-        <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.06] text-cyan-200 shadow-[0_0_28px_rgba(0,212,255,0.08)]">
-          <motion.span
-            className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(0,212,255,0.9)]"
-            animate={{ scale: [1, 1.55, 1], opacity: [0.65, 1, 0.65] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          />
-          LIVE MARKET INTELLIGENCE
-        </Badge>
+        <p className="section-eyebrow text-cyan-300">LIVE MARKET INTELLIGENCE</p>
         <h1 className="mx-auto mt-6 max-w-4xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] text-slate-50 sm:text-6xl lg:text-7xl">
           The Intelligence Behind{" "}
           <span className="heading-accent">
@@ -1832,10 +1812,7 @@ function AIEngineTeaserLegacy() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_52%,rgba(59,130,246,0.12),transparent_31%),radial-gradient(circle_at_72%_58%,rgba(139,92,246,0.09),transparent_30%),radial-gradient(circle_at_28%_58%,rgba(0,212,255,0.08),transparent_28%)]" />
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <Badge variant="outline" className="border-cyan-300/20 bg-cyan-300/[0.06] text-cyan-200">
-            <Sparkles className="size-3.5" />
-            LIVE MARKET INTELLIGENCE
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">LIVE MARKET INTELLIGENCE</p>
           <h2 className="mt-5 font-display text-3xl font-bold tracking-[-0.025em] text-slate-50 sm:text-4xl">
             Inside the <span className="heading-accent">SignalFlo AI Engine</span>
           </h2>
@@ -2322,7 +2299,7 @@ function AIEngineTeaser() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-purple-300">Live Intelligence Flow</p>
               <p className="mt-1 text-xs text-slate-500">Data → Analysis → Alert</p>
             </div>
-            <span className="flex items-center gap-2 rounded-full border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-cyan-300">
+            <span className="flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-cyan-300">
               <motion.span
                 className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(0,212,255,0.8)]"
                 animate={{ scale: [1, 1.5, 1], opacity: [0.55, 1, 0.55] }}
@@ -2454,7 +2431,6 @@ function Navbar() {
     ["Features", "/#features"],
     ["AI Engine", "/#ai-engine"],
     ["FAQ", "/#faq"],
-    ["Welcome", WELCOME_URL],
     ["Get Started", PRICING_URL],
   ] as const
 
@@ -2536,10 +2512,6 @@ function Hero() {
           transition={{ duration: 0.65 }}
           className="mx-auto mt-[clamp(1.5rem,4vw,3rem)] max-w-4xl text-center"
         >
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            <Sparkles className="text-cyan-300" />
-            AI watchlists, alerts, and trade plans
-          </Badge>
           <h1 className="mx-auto mt-4 max-w-4xl text-[2.65rem] font-semibold leading-[0.96] tracking-[-0.03em] sm:text-5xl lg:text-[4.35rem]">
             <span className="block">AI-Powered Trading Alerts</span>
             <span className="mt-0.5 block sm:mt-1">
@@ -4135,7 +4107,7 @@ function EngineClosingStatement() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-blue-400"><strong>SignalFlo</strong> Advantage</p>
         <div className="mx-auto mt-7 grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3 text-[10px] uppercase tracking-[0.18em] text-slate-600">
           <span className="h-px bg-gradient-to-r from-transparent to-cyan-300/24" />
-          <span className="rounded-full border border-cyan-300/12 bg-cyan-300/8 px-3 py-1 text-cyan-200">Alert filtered through intelligence layers</span>
+          <span className="text-cyan-200">Alert filtered through intelligence layers</span>
           <span className="h-px bg-gradient-to-l from-transparent to-cyan-300/24" />
         </div>
         <h3 className="mt-8 text-5xl font-semibold tracking-[-0.04em] text-slate-50 sm:text-7xl">
@@ -4235,7 +4207,7 @@ function PricingTrustSections() {
                 <p className="text-sm font-semibold text-slate-100">Recent Alert Activity</p>
                 <p className="mt-1 text-xs text-slate-500">Live-style product activity examples from the alert workflow.</p>
               </div>
-              <span className="flex w-fit items-center gap-2 rounded-full border border-cyan-300/14 bg-cyan-300/8 px-3 py-1 text-[11px] text-cyan-200">
+              <span className="flex w-fit items-center gap-2 text-[11px] text-cyan-200">
                 <motion.span
                   className="size-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(34,211,238,0.85)]"
                   animate={{ scale: [1, 1.8, 1], opacity: [0.6, 1, 0.6] }}
@@ -4821,9 +4793,7 @@ function PricingCheckoutModal({
         <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.17),transparent_42%)]" />
         <span className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
         <div className="relative z-10">
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            Checkout protection
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">Checkout protection</p>
           <h2 id="pricing-checkout-title" className="mt-4 text-2xl font-bold tracking-[-0.015em] text-slate-50">
             Before You Continue
           </h2>
@@ -4902,9 +4872,7 @@ function DedicatedPricingPage() {
       <section className="relative overflow-hidden border-b border-white/[0.06] px-4 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.18),transparent_34%),radial-gradient(circle_at_80%_18%,rgba(124,58,237,0.14),transparent_30%),linear-gradient(180deg,#07111f_0%,#050914_100%)]" />
         <div className="relative z-10 mx-auto max-w-7xl text-center">
-          <Badge variant="outline" className="border-cyan-400/20 bg-cyan-400/5 text-cyan-200">
-            Pricing
-          </Badge>
+          <p className="section-eyebrow text-cyan-300">Pricing</p>
           <h1 className="mx-auto mt-5 max-w-4xl font-display text-4xl font-bold leading-[1.05] tracking-[-0.03em] text-slate-50 sm:text-6xl">
             <span className="block">Choose your</span>
             <span className="heading-accent block">SignalFlo plan</span>
